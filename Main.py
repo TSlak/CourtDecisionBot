@@ -1,6 +1,6 @@
-import telebot
+# import telebot
 
-import FindCourtCase
+# import FindCourtCase
 
 # Хранить идентификатор пользователя к каждому делу
 # bot = telebot.TeleBot("946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw")
