@@ -24,8 +24,8 @@
 #         link = FindCourtCase.get_link(number, date)
 #         print(link)
 
-while True:
-    print("Hello")
+
+print("Hello")
 
 # @bot.message_handler(commands=['start', 'help'])
 # def send_welcome(message):
