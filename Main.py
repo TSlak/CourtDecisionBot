@@ -5,7 +5,7 @@ import FindCourtCase
 bot = TeleBot("946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw")
 
 bot.send_message("261617836", "Ахмед черт")
-bot.polling(none_stop=True)
+# bot.polling(none_stop=True)
 
 
 bot.set_webhook("https://court-decision-bot.herokuapp.com/" + bot.token)
