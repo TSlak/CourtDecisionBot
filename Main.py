@@ -1,9 +1,9 @@
-#import telebot
+import telebot
 import FindCourtCase
 # Хранить идентификатор пользователя к каждому делу
-# bot = telebot.TeleBot("946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw")
+bot = telebot.TeleBot("946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw")
 
-# bot.send_message("261617836", "Ахмед черт")
+bot.send_message("261617836", "Ахмед черт")
 
 # bot.set_webhook("https://court-decision-bot.herokuapp.com/" + bot.token)
 
