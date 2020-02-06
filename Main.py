@@ -6,16 +6,16 @@ import time
 
 # Хранить идентификатор пользователя к каждому делу
 bot = TeleBot("946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw")
-server = Flask("Main")
+# server = Flask("Main")
 # bot.send_message("261617836", "Ахмед черт")
 # bot.polling(none_stop=True)
 
 bot.remove_webhook()
 time.sleep(2)
 
-bot.set_webhook("https://court-decision-bot.herokuapp.com/" + bot.token)
+# bot.set_webhook("https://court-decision-bot.herokuapp.com/" + bot.token)
 
-print(bot.get_webhook_info())
+# print(bot.get_webhook_info())
 
 # bot.set_webhook("https://court-decision-bot.herokuapp.com/" + bot.token)
 
@@ -28,20 +28,20 @@ print(bot.get_webhook_info())
 #
 
 
-@server.route("/", methods=['POST'])
-def getMessage():
-  r = request.get_json()
-  if "message" in r.keys():
-    chat_id = r["message"]["chat"]["id"]
-    if "text" in r["message"]:
-      text_mess = r["message"]["text"]
-    else:
-      bot.send_message(chat_id=chat_id, text="Какая то не понятная проблема", parse_mode='HTML')
-      return "ok", 200
-
-  if text_mess == '/start':
-    bot.send_message(chat_id=chat_id, text="Привет WebHook")
-    return "ok", 200
+# @server.route("/", methods=['POST'])
+# def getMessage():
+#   r = request.get_json()
+#   if "message" in r.keys():
+#     chat_id = r["message"]["chat"]["id"]
+#     if "text" in r["message"]:
+#       text_mess = r["message"]["text"]
+#     else:
+#       bot.send_message(chat_id=chat_id, text="Какая то не понятная проблема", parse_mode='HTML')
+#       return "ok", 200
+#
+#   if text_mess == '/start':
+#     bot.send_message(chat_id=chat_id, text="Привет WebHook")
+#     return "ok", 200
 
 
 def findNewCourtCase(number, date, userId):
