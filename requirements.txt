@@ -1,3 +1,5 @@
+flask
+request
 PyTelegramBotAPI
 telebot
 bs4
