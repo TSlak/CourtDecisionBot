@@ -1,8 +1,8 @@
-import telebot
+from telebot import TeleBot
 import bs4
 import FindCourtCase
 # Хранить идентификатор пользователя к каждому делу
-bot = telebot.TeleBot("946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw")
+bot = TeleBot("946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw")
 
 bot.send_message("261617836", "Ахмед черт")
 bot.polling(none_stop=True)
