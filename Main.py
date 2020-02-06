@@ -1,6 +1,7 @@
 from telebot import TeleBot
-import bs4
+
 import FindCourtCase
+
 # Хранить идентификатор пользователя к каждому делу
 bot = TeleBot("946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw")
 
@@ -8,7 +9,8 @@ bot = TeleBot("946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw")
 # bot.polling(none_stop=True)
 
 
-bot.set_webhook("https://court-decision-bot.herokuapp.com/")
+bot.set_webhook("https://court-decision-bot.herokuapp.com/" + bot.token)
+
 
 # bot.set_webhook("https://court-decision-bot.herokuapp.com/" + bot.token)
 
@@ -19,7 +21,6 @@ bot.set_webhook("https://court-decision-bot.herokuapp.com/")
 #
 #
 #
-
 
 
 def findNewCourtCase(number, date, userId):
