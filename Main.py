@@ -8,6 +8,7 @@ bot.send_message("261617836", "Ахмед черт")
 bot.polling(none_stop=True)
 
 
+bot.set_webhook("https://court-decision-bot.herokuapp.com/" + bot.token)
 
 # bot.set_webhook("https://court-decision-bot.herokuapp.com/" + bot.token)
 
@@ -37,8 +38,8 @@ findNewCourtCase("", "", "")
 # print("Hello")
 #
 #
-# @bot.message_handler(commands=['start', 'help'])
-# def send_welcome(message):
-#     bot.reply_to(message, "Howdy, how are you doing?")
+@bot.message_handler(commands=['start', 'help'])
+def send_welcome(message):
+    bot.reply_to(message, "Howdy, how are you doing?")
 
 # findNewCourtCase("", "", "")
