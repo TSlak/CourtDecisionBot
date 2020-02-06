@@ -11,6 +11,7 @@ bot = TeleBot("946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw")
 
 bot.set_webhook("https://court-decision-bot.herokuapp.com/" + bot.token)
 
+print(bot.get_webhook_info())
 
 # bot.set_webhook("https://court-decision-bot.herokuapp.com/" + bot.token)
 
