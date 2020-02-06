@@ -1,9 +1,7 @@
-# import telebot
-
-# import FindCourtCase
+import telebot
 
 # Хранить идентификатор пользователя к каждому делу
-# bot = telebot.TeleBot("946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw")
+bot = telebot.TeleBot("946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw")
 
 # bot.send_message("261617836", "Ахмед черт")
 
@@ -27,9 +25,9 @@
 
 print("Hello")
 
-# @bot.message_handler(commands=['start', 'help'])
-# def send_welcome(message):
-#     bot.reply_to(message, "Howdy, how are you doing?")
 
+@bot.message_handler(commands=['start', 'help'])
+def send_welcome(message):
+    bot.reply_to(message, "Howdy, how are you doing?")
 
 # findNewCourtCase("", "", "")
