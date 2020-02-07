@@ -26,7 +26,7 @@ def start(message):
 
 @bot.message_handler(commands=['findCour'])
 def start(message):
-    bot.reply_to(message, 'Hello111, ' + message.from_user.first_name)
+    bot.reply_to(message, 'Hello111, ' + message)
 
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
