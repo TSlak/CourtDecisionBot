@@ -15,5 +15,5 @@ def subscribe_ready(chat_id, link, connect):
 
 def get_all_subscribe(connect, chat_id):
     cursor = connect.cursor()
-    cursor.execute("SELECT * FROM subscribe_court WHERE chat_id = %s", chat_id)
+    cursor.execute("SELECT * FROM subscribe_court WHERE chat_id = %s", str(chat_id))
     return cursor.fetchall()
