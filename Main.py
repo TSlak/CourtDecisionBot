@@ -28,9 +28,9 @@ def start(message):
     if len(arg) != 1:
         bot.reply_to(message, 'Проверьте ссылку')
         time.sleep(2)
-        bot.reply_to(message,
-                     FindCourtCase.get_link(arg[0], arg[1], message.chat.id) + arg[1],
-                     reply_markup=key)
+        bot.send_message(message.chat.id,
+                         FindCourtCase.get_link(arg[0], arg[1], message.chat.id) + arg[1],
+                         reply_markup=key)
     else:
         bot.reply_to(message, 'Тупица, вводи строку правильно, читай хелп')
 
