@@ -1,8 +1,8 @@
 import os
 
-from psycopg2 import connect
 import telebot
 from flask import Flask, request
+from psycopg2 import connect
 
 import FindCourtCase
 import SaveCourtCase
@@ -10,6 +10,9 @@ import SaveCourtCase
 DATABASE_URL = os.environ['DATABASE_URL']
 
 conn = connect(DATABASE_URL, sslmode='require')
+
+conn.execute(
+    'CREATE TABLE customers (Id SERIAL PRIMARY KEY, FirstName CHARACTER VARYING(30), LastName CHARACTER VARYING(30), Email CHARACTER VARYING(30), Age INTEGER)')
 
 TOKEN = '946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw'
 bot = telebot.TeleBot(TOKEN)
@@ -20,6 +23,8 @@ server = Flask(__name__)
 def start(message):
     bot.reply_to(message, 'Hello, ' + message.from_user.first_name)
 
+
+c
 
 
 @bot.message_handler(commands=['find'])
