@@ -1,17 +1,9 @@
-# from telebot import TeleBot
-# import request
-# from flask import Flask
-# import FindCourtCase
-# import time
-
-# Хранить идентификатор пользователя к каждому делу
-# bot = TeleBot("946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw")
-
-
 import os
 
 import telebot
 from flask import Flask, request
+
+import FindCourtCase
 
 TOKEN = '946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw'
 bot = telebot.TeleBot(TOKEN)
@@ -27,10 +19,12 @@ def start(message):
 def start(message):
     arg_string = str(message.text).replace('/find ', '')
     arg = arg_string.split(',')
-    if len(arg) > 2:
-        bot.reply_to(message, 'Тупица, вводи строку правильно, читай хелп')
+    if len(arg) != 2:
+        bot.reply_to(message,
+                     'Поиск дела по следующим аргументам: \n Номер дела: ' + arg[0] + ', дата заседания: ' + arg[1])
+        bot.reply_to(message, FindCourtCase.get_link(arg[0], arg[1]))
     else:
-        bot.reply_to(message, 'Номер дела: ' + arg[0] + ', дата заседания: ' + arg[1])
+        bot.reply_to(message, 'Тупица, вводи строку правильно, читай хелп')
 
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
@@ -53,47 +47,3 @@ def webhook():
 
 if __name__ == "__main__":
     server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
-
-# server = Flask("Main")
-# bot.send_message("261617836", "Ахмед черт")
-# bot.polling(none_stop=True)
-
-# bot.remove_webhook()
-# time.sleep(2)
-
-# bot.set_webhook("https://court-decision-bot.herokuapp.com/" + bot.token)
-
-# print(bot.get_webhook_info())
-
-# bot.set_webhook("https://court-decision-bot.herokuapp.com/" + bot.token)
-
-
-# def __main__():
-#     print("123")
-#     bot.set_webhook("https://court-decision-bot.herokuapp.com/" + bot.token)
-#
-#
-#
-
-
-# def findNewCourtCase(number, date, userId):
-#     if (FindCourtCase.readyThisNumber(number, date, userId)):
-#         print('Такой номер есть')
-#
-#     else:
-#         link = FindCourtCase.get_link(number, date)
-#         print(link)
-#     print('----------')
-#
-#
-# findNewCourtCase("", "", "")
-
-
-# print("Hello")
-#
-#
-# @bot.message_handler(commands=['start', 'help'])
-# def send_welcome(message):
-#     bot.reply_to(message, "Howdy, how are you doing?")
-
-# findNewCourtCase("", "", "")
