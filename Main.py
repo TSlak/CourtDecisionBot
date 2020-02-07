@@ -6,8 +6,6 @@ from flask import Flask, request
 import FindCourtCase
 import SaveCourtCase
 
-print(FindCourtCase.get_link('5-259/2020', '07.02.2020', '123123'))
-
 TOKEN = '946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw'
 bot = telebot.TeleBot(TOKEN)
 server = Flask(__name__)
@@ -45,7 +43,12 @@ def callback_inline(call):
         if call.data == "save":
             SaveCourtCase.save(call.message.chat.id, call.message.text)
             bot.send_message(call.message.chat.id, call.message.text)
-            SaveCourtCase.read()
+            allLink = ""
+            f = open('SubscribeCourt.txt', 'a+')
+            for line in f.readlines():
+                allLink = allLink + line
+            allLink = allLink + '1'
+            bot.send_message(call.message.chat.id, allLink)
 
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
