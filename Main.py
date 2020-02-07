@@ -39,8 +39,7 @@ def callback_inline(call):
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def echo_message(message):
-    arg_string = str(message.text).replace('/find ', '')
-    arg = arg_string.split(',')
+    arg = message.text.split(',')
     key = telebot.types.InlineKeyboardMarkup()
     key.add(telebot.types.InlineKeyboardButton("Сохранить", callback_data="save"))
     if len(arg) != 1:
