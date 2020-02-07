@@ -5,6 +5,8 @@ from flask import Flask, request
 
 import FindCourtCase
 
+print(FindCourtCase.get_link('5-259/2020', '07.02.2020', '123123'))
+
 TOKEN = '946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw'
 bot = telebot.TeleBot(TOKEN)
 server = Flask(__name__)
@@ -19,10 +21,10 @@ def start(message):
 def start(message):
     arg_string = str(message.text).replace('/find ', '')
     arg = arg_string.split(',')
-    if len(arg) != 2:
+    if len(arg) != 1:
         bot.reply_to(message,
-                     'Поиск дела по следующим аргументам: \n Номер дела: ' + arg[0] + ', дата заседания: ' + arg[1])
-        bot.reply_to(message, FindCourtCase.get_link(arg[0], arg[1]))
+                     'Поиск дела по следующим аргументам:\nНомер дела: ' + arg[0] + ', дата заседания: ' + arg[1], reply_markup='markup')
+        bot.reply_to(message, FindCourtCase.get_link(arg[0], arg[1], message.chat.id))
     else:
         bot.reply_to(message, 'Тупица, вводи строку правильно, читай хелп')
 
