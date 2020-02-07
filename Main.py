@@ -29,7 +29,7 @@ def start(message):
         bot.reply_to(message, 'Проверьте ссылку')
         time.sleep(2)
         bot.send_message(message.chat.id,
-                         FindCourtCase.get_link(arg[0], arg[1], message.chat.id) + arg[1],
+                         FindCourtCase.get_link(arg[0], arg[1], message.chat.id),
                          reply_markup=key)
     else:
         bot.reply_to(message, 'Тупица, вводи строку правильно, читай хелп')
