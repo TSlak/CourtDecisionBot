@@ -22,23 +22,11 @@ def start(message):
 
 @bot.message_handler(commands=['find'])
 def start(message):
-    arg_string = str(message.text).replace('/find ', '')
-    arg = arg_string.split(',')
+    subscribe_list = WorkWithData.get_all_subscribe(conn, message.chat.id)
     key = telebot.types.InlineKeyboardMarkup()
-    key.add(telebot.types.InlineKeyboardButton("Сохранить", callback_data="save"))
-    if len(arg) != 1:
-        bot.reply_to(message, 'Проверьте ссылку')
-        link = FindCourtCase.get_link(arg[0], arg[1], message.chat.id)
-        if link:
-            bot.send_message(message.chat.id,
-                             link,
-                             reply_markup=key)
-        else:
-            bot.send_message(message.chat.id,
-                             'Дело не найдено',
-                             reply_markup=key)
-    else:
-        bot.reply_to(message, 'Тупица, вводи строку правильно, читай /help')
+    key.add(telebot.types.InlineKeyboardButton("Отписаться", callback_data="unsubscribe"))
+    for item in subscribe_list:
+        bot.send_message(message.chat.id, item[1], reply_markup=key)
 
 
 @bot.callback_query_handler(func=lambda call: True)
@@ -51,7 +39,19 @@ def callback_inline(call):
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def echo_message(message):
-    bot.reply_to(message, message.text)
+    arg_string = str(message.text).replace('/find ', '')
+    arg = arg_string.split(',')
+    key = telebot.types.InlineKeyboardMarkup()
+    key.add(telebot.types.InlineKeyboardButton("Сохранить", callback_data="save"))
+    if len(arg) != 1:
+        bot.reply_to(message, 'Проверьте ссылку')
+        link = FindCourtCase.get_link(arg[0], arg[1], message.chat.id)
+        if link:
+            bot.send_message(message.chat.id, link, reply_markup=key)
+        else:
+            bot.send_message(message.chat.id, 'Дело не найдено')
+    else:
+        bot.reply_to(message, 'Тупица, вводи строку правильно, читай /help')
 
 
 @server.route('/' + TOKEN, methods=['POST'])

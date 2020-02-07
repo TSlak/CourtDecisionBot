@@ -11,3 +11,9 @@ def subscribe_ready(chat_id, link, connect):
     cursor.execute("SELECT COUNT(*) FROM subscribe_court WHERE chat_id = %s AND court_link = %s", (str(chat_id), link))
     count = cursor.fetchone()[0]
     return count > 0
+
+
+def get_all_subscribe(connect, chat_id):
+    cursor = connect.cursor()
+    cursor.execute("SELECT * FROM subscribe_court WHERE chat_id = %s", (str(chat_id)))
+    return cursor.fetchall()
