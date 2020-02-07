@@ -12,7 +12,9 @@ DATABASE_URL = os.environ['DATABASE_URL']
 conn = connect(DATABASE_URL, sslmode='require')
 cursor = conn.cursor()
 cursor.execute(
-    'CREATE TABLE customers (Id SERIAL PRIMARY KEY, FirstName CHARACTER VARYING(30), LastName CHARACTER VARYING(30), Email CHARACTER VARYING(30), Age INTEGER)')
+    'SELECT * FROM subscribe_court')
+records = cursor.fetchone()
+print(records)
 
 TOKEN = '946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw'
 bot = telebot.TeleBot(TOKEN)
@@ -22,9 +24,6 @@ server = Flask(__name__)
 @bot.message_handler(commands=['start'])
 def start(message):
     bot.reply_to(message, 'Hello, ' + message.from_user.first_name)
-
-
-c
 
 
 @bot.message_handler(commands=['find'])
