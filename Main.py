@@ -27,6 +27,8 @@ def start(message):
     key.add(telebot.types.InlineKeyboardButton("Отписаться", callback_data="unsubscribe"))
     for item in subscribe_list:
         bot.send_message(message.chat.id, item[1], reply_markup=key)
+    if len(subscribe_list) == 0:
+        bot.send_message(message.chat.id, 'Вы не подписаны -_-')
 
 
 @bot.callback_query_handler(func=lambda call: True)
@@ -35,6 +37,8 @@ def callback_inline(call):
         if call.data == "save":
             WorkWithData.insert_subscribe_data(call.message.chat.id, call.message.text, conn)
             bot.answer_callback_query(call.id, text="Судебное дело сохранено")
+        if call.data == "unsubscribe":
+            WorkWithData.delete_subscribe_data(call.message.chat.id, call.message.text, conn)
 
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])

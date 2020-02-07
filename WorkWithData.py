@@ -17,3 +17,9 @@ def get_all_subscribe(connect, chat_id):
     cursor = connect.cursor()
     cursor.execute("SELECT * FROM subscribe_court WHERE chat_id = %s", (str(chat_id),))
     return cursor.fetchall()
+
+
+def delete_subscribe_data(chat_id, link, connect):
+    cursor = connect.cursor()
+    cursor.execute("DELETE FROM subscribe_court WHERE chat_id = %s AND court_link = %s", (str(chat_id), link))
+    connect.commit()
