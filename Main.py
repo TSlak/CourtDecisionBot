@@ -1,10 +1,15 @@
 import os
 
+import psycopg2
 import telebot
 from flask import Flask, request
 
 import FindCourtCase
 import SaveCourtCase
+
+DATABASE_URL = os.environ['https://data.heroku.com/datastores/52aff227-33e6-44c8-849d-15c553eb9146']
+
+conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
 TOKEN = '946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw'
 bot = telebot.TeleBot(TOKEN)
@@ -44,7 +49,7 @@ def callback_inline(call):
             SaveCourtCase.save(call.message.chat.id, call.message.text)
             bot.send_message(call.message.chat.id, call.message.text)
             allLink = ""
-            f = open('SubscribeCourt.txt', 'a+')
+            f = open('https://next.dagparus.ru/index.php/s/aLCRJbceBcZFDCa', 'a+')
             for line in f.readlines():
                 allLink = allLink + line
             allLink = allLink + '1'
