@@ -4,6 +4,7 @@ import telebot
 from flask import Flask, request
 
 import FindCourtCase
+import SaveCourtCase
 
 print(FindCourtCase.get_link('5-259/2020', '07.02.2020', '123123'))
 
@@ -24,11 +25,10 @@ def start(message):
     key = telebot.types.InlineKeyboardMarkup()
     key.add(telebot.types.InlineKeyboardButton("Сохранить", callback_data="save"))
     if len(arg) != 1:
+        bot.reply_to(message, 'Проверьте ссылку')
         bot.reply_to(message,
-                     'Поиск дела по следующим аргументам:\nНомер дела: ' + arg[0] + ', дата заседания: ' + arg[1],
+                     FindCourtCase.get_link(arg[0], arg[1], message.chat.id) + arg[1],
                      reply_markup=key)
-
-        bot.reply_to(message, FindCourtCase.get_link(arg[0], arg[1], message.chat.id))
     else:
         bot.reply_to(message, 'Тупица, вводи строку правильно, читай хелп')
 
@@ -37,6 +37,7 @@ def start(message):
 def callback_inline(call):
     if call.message:
         if call.data == "save":
+            SaveCourtCase.save(call.message.chat.id, call.message.text)
             bot.send_message(call.message.chat.id, call.message.text)
 
 
