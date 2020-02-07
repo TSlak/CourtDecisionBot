@@ -5,7 +5,6 @@ from flask import Flask, request
 from psycopg2 import connect
 
 import FindCourtCase
-import SaveCourtCase
 import WorkWithData
 
 DATABASE_URL = os.environ['DATABASE_URL']
@@ -14,8 +13,6 @@ cursor = conn.cursor()
 TOKEN = '946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw'
 bot = telebot.TeleBot(TOKEN)
 server = Flask(__name__)
-
-WorkWithData.insert_subscribe_data('11111', 'https://yandex.ru', conn)
 
 
 @bot.message_handler(commands=['start'])
@@ -48,8 +45,8 @@ def start(message):
 def callback_inline(call):
     if call.message:
         if call.data == "save":
-            SaveCourtCase.save(call.message.chat.id, call.message.text)
-            bot.send_message(call.message.chat.id, call.message.text)
+            WorkWithData.insert_subscribe_data(call.message.chat.id, call.message.text, conn)
+            bot.answer_callback_query(call.id, text="Судебное дело сохранено")
 
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
