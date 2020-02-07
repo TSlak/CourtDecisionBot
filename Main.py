@@ -22,8 +22,13 @@ def start(message):
     arg_string = str(message.text).replace('/find ', '')
     arg = arg_string.split(',')
     if len(arg) != 1:
+        keyboard = telebot.types.InlineKeyboardMarkup
+        save_button = telebot.types.InlineKeyboardButton(text=1, callback_data=1)
+        keyboard.add(save_button)
         bot.reply_to(message,
-                     'Поиск дела по следующим аргументам:\nНомер дела: ' + arg[0] + ', дата заседания: ' + arg[1], reply_markup='markup')
+                     'Поиск дела по следующим аргументам:\nНомер дела: ' + arg[0] + ', дата заседания: ' + arg[1],
+                     reply_markup=keyboard)
+
         bot.reply_to(message, FindCourtCase.get_link(arg[0], arg[1], message.chat.id))
     else:
         bot.reply_to(message, 'Тупица, вводи строку правильно, читай хелп')
