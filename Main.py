@@ -1,4 +1,5 @@
 import os
+import time
 
 import telebot
 from flask import Flask, request
@@ -26,6 +27,7 @@ def start(message):
     key.add(telebot.types.InlineKeyboardButton("Сохранить", callback_data="save"))
     if len(arg) != 1:
         bot.reply_to(message, 'Проверьте ссылку')
+        time.sleep(2)
         bot.reply_to(message,
                      FindCourtCase.get_link(arg[0], arg[1], message.chat.id) + arg[1],
                      reply_markup=key)
