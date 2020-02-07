@@ -22,7 +22,7 @@ def start(message):
     arg_string = str(message.text).replace('/find ', '')
     arg = arg_string.split(',')
     key = telebot.types.InlineKeyboardMarkup()
-    key.add(telebot.types.InlineKeyboardButton("Сохранить", callback_data="[save]"))
+    key.add(telebot.types.InlineKeyboardButton("Сохранить", callback_data="save"))
     if len(arg) != 1:
         bot.reply_to(message,
                      'Поиск дела по следующим аргументам:\nНомер дела: ' + arg[0] + ', дата заседания: ' + arg[1],
@@ -33,9 +33,11 @@ def start(message):
         bot.reply_to(message, 'Тупица, вводи строку правильно, читай хелп')
 
 
-@bot.message_handler(commands=['save'])
-def saveCourt(message):
-    bot.reply_to(message, message.text)
+@bot.callback_query_handler(func=lambda call: True)
+def callback_inline(call):
+    if call.message:
+        if call.data == "save":
+            bot.send_message(call.message.chat.id, call.message.text)
 
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
