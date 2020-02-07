@@ -1,6 +1,6 @@
 import os
 
-import psycopg2
+from psycopg2 import connect
 import telebot
 from flask import Flask, request
 
@@ -9,7 +9,7 @@ import SaveCourtCase
 
 DATABASE_URL = os.environ['https://data.heroku.com/datastores/52aff227-33e6-44c8-849d-15c553eb9146']
 
-conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+conn = connect(DATABASE_URL, sslmode='require')
 
 TOKEN = '946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw'
 bot = telebot.TeleBot(TOKEN)
