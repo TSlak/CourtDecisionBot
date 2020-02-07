@@ -10,9 +10,8 @@
 
 import os
 
-from flask import Flask, request
-
 import telebot
+from flask import Flask, request
 
 TOKEN = '946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw'
 bot = telebot.TeleBot(TOKEN)
@@ -24,9 +23,14 @@ def start(message):
     bot.reply_to(message, 'Hello, ' + message.from_user.first_name)
 
 
-@bot.message_handler(commands=['findCour'])
+@bot.message_handler(commands=['find'])
 def start(message):
-    bot.reply_to(message, 'Hello111, ' + message.text)
+    arg_string = str(message.text).replace('/find ', '')
+    arg = arg_string.split(',')
+    if len(arg) > 2:
+        bot.reply_to(message, 'Тупица, вводи строку правильно, читай хелп')
+    else:
+        bot.reply_to(message, 'Номер дела: ' + arg[0] + ', дата заседания: ' + arg[1])
 
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
