@@ -6,18 +6,16 @@ from psycopg2 import connect
 
 import FindCourtCase
 import SaveCourtCase
+import WorkWithData
 
 DATABASE_URL = os.environ['DATABASE_URL']
-
 conn = connect(DATABASE_URL, sslmode='require')
 cursor = conn.cursor()
-
-cursor.execute("INSERT INTO subscribe_court (chat_id, court_link) VALUES (%s, %s)", ('123123123', 'httttttttp'))
-conn.commit()
-
 TOKEN = '946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw'
 bot = telebot.TeleBot(TOKEN)
 server = Flask(__name__)
+
+WorkWithData.insert_subscribe_data('11111', 'https://yandex.ru', conn)
 
 
 @bot.message_handler(commands=['start'])
@@ -52,12 +50,6 @@ def callback_inline(call):
         if call.data == "save":
             SaveCourtCase.save(call.message.chat.id, call.message.text)
             bot.send_message(call.message.chat.id, call.message.text)
-            allLink = ""
-            f = open('https://next.dagparus.ru/index.php/s/aLCRJbceBcZFDCa', 'a+')
-            for line in f.readlines():
-                allLink = allLink + line
-            allLink = allLink + '1'
-            bot.send_message(call.message.chat.id, allLink)
 
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
