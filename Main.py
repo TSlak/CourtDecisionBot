@@ -16,6 +16,8 @@ cursor.execute(
 records = cursor.fetchone()
 print(records)
 
+cursor.execute("INSERT INTO subscribe_court (chat_id, court_link) VALUES (%s, %s)", ('123123123', 'httttttttp'))
+
 TOKEN = '946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw'
 bot = telebot.TeleBot(TOKEN)
 server = Flask(__name__)
