@@ -45,6 +45,7 @@ def callback_inline(call):
         if call.data == "save":
             SaveCourtCase.save(call.message.chat.id, call.message.text)
             bot.send_message(call.message.chat.id, call.message.text)
+            SaveCourtCase.read()
 
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])

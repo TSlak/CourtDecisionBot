@@ -14,3 +14,9 @@ def save(user_id, link):
         f = open('SubscribeCourt.txt', 'a+')
         f.write(user_id + "," + link + '\n')
         f.close()
+
+
+def read():
+    f = open('SubscribeCourt.txt', 'a+')
+    for line in f.readlines():
+        print(line)
