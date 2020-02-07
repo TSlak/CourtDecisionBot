@@ -7,7 +7,7 @@ from flask import Flask, request
 import FindCourtCase
 import SaveCourtCase
 
-DATABASE_URL = os.environ['https://data.heroku.com/datastores/52aff227-33e6-44c8-849d-15c553eb9146']
+DATABASE_URL = os.environ['DATABASE_URL']
 
 conn = connect(DATABASE_URL, sslmode='require')
 
