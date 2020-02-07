@@ -11,10 +11,6 @@ DATABASE_URL = os.environ['DATABASE_URL']
 
 conn = connect(DATABASE_URL, sslmode='require')
 cursor = conn.cursor()
-cursor.execute(
-    'SELECT * FROM subscribe_court')
-records = cursor.fetchone()
-print(records)
 
 cursor.execute("INSERT INTO subscribe_court (chat_id, court_link) VALUES (%s, %s)", ('123123123', 'httttttttp'))
 conn.commit()
