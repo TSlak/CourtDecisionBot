@@ -29,8 +29,6 @@ def delete_subscribe_data(chat_id, link, connect):
     cursor = connect.cursor()
     cursor.execute("SELECT COUNT(*) FROM subscribe_court WHERE court_link = %s", (link,))
     count = cursor.fetchone()
-    print(count)
-    print(count[0])
     if count[0] == 0:
         cursor.execute("DELETE FROM court_data WHERE link = %s", (link,))
         connect.commit()
@@ -63,6 +61,12 @@ def update_court_data(connect, link, cont1_data, cont2_data, cont3_data):
 
 
 def insert_court_data(connect, link, cont1_data, cont2_data, cont3_data):
+    cursor = connect.cursor()
+    cursor.execute("SELECT COUNT(*) FROM court_data WHERE link = %s", (link,))
+    is_ready = cursor.fetchone()
+    if is_ready[0] != 0:
+        return
+
     query = 'INSERT INTO court_data(date_of_receipt, protocol_number, judge, date_of_review, result, event_name, ' \
             'event_date, event_time, event_courtroom, event_result, event_placement, sides, link) VALUES (%s, %s, %s, ' \
             '%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
