@@ -88,5 +88,5 @@ def webhook():
 
 if __name__ == "__main__":
     thread = threading.Thread(target=update_court_state)
-    # thread.start()
+    thread.start()
     server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
