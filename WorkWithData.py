@@ -40,6 +40,12 @@ def get_all_chat_id(connect):
     return cursor.fetchall()
 
 
+def get_data_by_link(connect, link):
+    cursor = connect.cursor()
+    cursor.execute("SELECT * FROM court_data WHERE link = %s")
+    return cursor.fetchone()
+
+
 def get_all_court_link(connect):
     cursor = connect.cursor()
     cursor.execute("SELECT link FROM court_data")
