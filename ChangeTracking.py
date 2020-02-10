@@ -26,7 +26,7 @@ cont3_data = ""
 updated = False
 
 
-def check_to_notify(connect, link):
+def check_to_notify(connect, link=None):
     headers = {'user-agent': 'my-app/0.0.1'}
     if link:
         court_link = link
@@ -38,7 +38,7 @@ def check_to_notify(connect, link):
         WorkWithData.insert_court_data(connect, link, cont1_data, cont2_data, cont3_data)
         print("Инсерт")
     else:
-        court_link_list = WorkWithData.get_all_subscribe_court_link(connect)
+        court_link_list = WorkWithData.get_all_court_link(connect)
         for court_link in court_link_list:
             updated = False
             court_link = court_link[0]
@@ -97,4 +97,3 @@ def parse_cont3(soup):
         rows = item.findAll('td')
         for item in range(header_len, len(rows)):
             cont3_data = cont3_data + " " + rows[item].get_text(strip=True)
-

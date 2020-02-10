@@ -26,6 +26,12 @@ def delete_subscribe_data(chat_id, link, connect):
     cursor = connect.cursor()
     cursor.execute("DELETE FROM subscribe_court WHERE chat_id = %s AND court_link = %s", (str(chat_id), link))
     connect.commit()
+    cursor = connect.cursor()
+    cursor.execute("SELECT COUNT(*) FROM subscribe_court WHERE court_link = %s", (link,))
+    count = cursor.fetchone()
+    if count == 0:
+        cursor.execute("DELETE FROM court_data WHERE link = %s", (link,))
+        connect.commit()
 
 
 def get_all_chat_id(connect):
@@ -34,9 +40,9 @@ def get_all_chat_id(connect):
     return cursor.fetchall()
 
 
-def get_all_subscribe_court_link(connect):
+def get_all_court_link(connect):
     cursor = connect.cursor()
-    cursor.execute("SELECT court_link FROM subscribe_court")
+    cursor.execute("SELECT link FROM court_data")
     return cursor.fetchall()
 
 
@@ -50,7 +56,7 @@ def update_court_data(connect, link, cont1_data, cont2_data, cont3_data):
                            cont1_data[ChangeTracking.RESULT], cont2_data[ChangeTracking.EVENT_NAME],
                            cont2_data[ChangeTracking.EVENT_DATE], cont2_data[ChangeTracking.EVENT_TIME],
                            cont2_data[ChangeTracking.EVENT_COURTROOM], cont2_data[ChangeTracking.EVENT_RESULT],
-                           cont2_data[ChangeTracking.EVENT_PLACEMENT], cont3_data])
+                           cont2_data[ChangeTracking.EVENT_PLACEMENT], cont3_data, link])
     connect.commit()
 
 
