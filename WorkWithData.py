@@ -42,7 +42,7 @@ def get_all_chat_id(connect):
 
 def get_data_by_link(connect, link):
     cursor = connect.cursor()
-    cursor.execute("SELECT * FROM court_data WHERE link = %s")
+    cursor.execute("SELECT * FROM court_data WHERE link = %s", (link,))
     return cursor.fetchone()
 
 
