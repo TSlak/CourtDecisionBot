@@ -73,9 +73,7 @@ def update_court_state():
 # update_court_state()
 
 
-# thread = threading.Thread(target=update_court_state)
-# thread.start()
-# thread.join()
+
 
 
 @server.route('/' + TOKEN, methods=['POST'])
@@ -93,3 +91,5 @@ def webhook():
 
 if __name__ == "__main__":
     server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
+    thread = threading.Thread(target=update_court_state)
+    thread.start()
