@@ -1,5 +1,4 @@
 import os
-import threading
 import time
 
 import telebot
@@ -70,9 +69,12 @@ def update_court_state():
             bot.send_message(chat_id, 'Тестовое сообщение')
 
 
-thread = threading.Thread(target=update_court_state)
-thread.start()
-thread.join()
+update_court_state()
+
+
+# thread = threading.Thread(target=update_court_state)
+# thread.start()
+# thread.join()
 
 
 @server.route('/' + TOKEN, methods=['POST'])
