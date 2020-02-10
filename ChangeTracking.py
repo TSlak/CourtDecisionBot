@@ -29,6 +29,8 @@ updated = False
 def check_to_notify(connect, link=None):
     headers = {'user-agent': 'my-app/0.0.1'}
     if link:
+        if WorkWithData.get_count_data_by_link(connect, link) != 0:
+            return
         court_link = link
         r = requests.get(court_link, headers=headers)
         soup = BeautifulSoup(r.text)
@@ -41,7 +43,7 @@ def check_to_notify(connect, link=None):
         court_link_list = WorkWithData.get_all_court_link(connect)
         for court_link in court_link_list:
             data_court = WorkWithData.get_data_by_link(connect, court_link)
-            print(data_court)
+            print(data_court['Наименование события'])
             messages = ""
             updated = False
             court_link = court_link[0]
@@ -50,8 +52,28 @@ def check_to_notify(connect, link=None):
             check_cont1(soup, data_court)
             check_cont2(soup, data_court)
             check_cont3(soup, data_court)
+
+            i = 0
+            for cont1 in cont1_data.keys():
+                if cont1_data[cont1] != data_court[i]:
+                    messages = messages + '\n Изменен ' + cont1 + ' ' + cont1_data[cont1]
+                    updated = True
+                i = i + 1
+
+            for cont2 in cont2_data.keys():
+                if cont1_data[cont2] != data_court[i]:
+                    messages = messages + '\n Изменен ' + cont2 + ' ' + cont1_data[cont2]
+                    updated = True
+                i = i + 1
+
+            if cont3_data == data_court[i]:
+                messages = messages + '\n Изменены стороны' + ' ' + cont3_data
+                updated = True
+
             if updated:
                 WorkWithData.update_court_data(connect, link, cont1_data, cont2_data, cont3_data)
+                return messages, link
+
             print("Упдате")
 
 
@@ -88,8 +110,6 @@ def parse_cont2(soup):
             for index in cont2_data.keys():
                 if item % header_len == cont2_data[index]:
                     cont2_data[index] = rows[item].get_text(strip=True)
-
-    print(cont2_data)
 
 
 def parse_cont3(soup):
@@ -136,8 +156,6 @@ def check_cont2(soup, data_court):
             for index in cont2_data.keys():
                 if item % header_len == cont2_data[index]:
                     cont2_data[index] = rows[item].get_text(strip=True)
-
-    print(cont2_data)
 
 
 def check_cont3(soup, data_court):

@@ -40,6 +40,12 @@ def get_all_chat_id(connect):
     return cursor.fetchall()
 
 
+def get_all_chat_id_by_link(connect, link):
+    cursor = connect.cursor()
+    cursor.execute("SELECT chat_id FROM subscribe_court WHERE court_link = %s", (link,))
+    return cursor.fetchall()
+
+
 def get_data_by_link(connect, link):
     cursor = connect.cursor()
     cursor.execute("SELECT * FROM court_data WHERE link = %s", (link,))
@@ -67,12 +73,6 @@ def update_court_data(connect, link, cont1_data, cont2_data, cont3_data):
 
 
 def insert_court_data(connect, link, cont1_data, cont2_data, cont3_data):
-    cursor = connect.cursor()
-    cursor.execute("SELECT COUNT(*) FROM court_data WHERE link = %s", (link,))
-    is_ready = cursor.fetchone()
-    if is_ready[0] != 0:
-        return
-
     query = 'INSERT INTO court_data(date_of_receipt, protocol_number, judge, date_of_review, result, event_name, ' \
             'event_date, event_time, event_courtroom, event_result, event_placement, sides, link) VALUES (%s, %s, %s, ' \
             '%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
@@ -84,3 +84,9 @@ def insert_court_data(connect, link, cont1_data, cont2_data, cont3_data):
                            cont2_data[ChangeTracking.EVENT_COURTROOM], cont2_data[ChangeTracking.EVENT_RESULT],
                            cont2_data[ChangeTracking.EVENT_PLACEMENT], cont3_data, link])
     connect.commit()
+
+
+def get_count_data_by_link(connect, link):
+    cursor = connect.cursor()
+    cursor.execute("SELECT COUNT(*) FROM court_data WHERE link = %s", (link,))
+    return cursor.fetchone()[0]
