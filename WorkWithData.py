@@ -29,7 +29,9 @@ def delete_subscribe_data(chat_id, link, connect):
     cursor = connect.cursor()
     cursor.execute("SELECT COUNT(*) FROM subscribe_court WHERE court_link = %s", (link,))
     count = cursor.fetchone()
-    if count == 0:
+    print(count)
+    print(count[0])
+    if count[0] == 0:
         cursor.execute("DELETE FROM court_data WHERE link = %s", (link,))
         connect.commit()
 
