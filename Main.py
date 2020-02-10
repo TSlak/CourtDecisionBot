@@ -65,10 +65,8 @@ def update_court_state():
         chat_id_list = WorkWithData.get_all_chat_id(conn)
         print(chat_id_list)
         for chat_id in chat_id_list:
-            print(chat_id)
-            ((points,),) = chat_id
-            print(points)
-            bot.send_message(points, 'Тестовое сообщение')
+            print(chat_id[0])
+            bot.send_message(chat_id[0], 'Тестовое сообщение')
 
 
 update_court_state()
