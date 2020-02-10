@@ -66,7 +66,9 @@ def update_court_state():
         print(chat_id_list)
         for chat_id in chat_id_list:
             print(chat_id)
-            bot.send_message(chat_id, 'Тестовое сообщение')
+            ((points,),) = chat_id
+            print(points)
+            bot.send_message(points, 'Тестовое сообщение')
 
 
 update_court_state()
