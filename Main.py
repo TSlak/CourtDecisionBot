@@ -66,11 +66,13 @@ def update_court_state():
         chat_id_list = WorkWithData.get_all_chat_id(conn)
         print(chat_id_list)
         for chat_id in chat_id_list:
+            print(chat_id)
             bot.send_message(chat_id, 'Тестовое сообщение')
 
 
 thread = threading.Thread(target=update_court_state)
 thread.start()
+thread.join()
 
 
 @server.route('/' + TOKEN, methods=['POST'])
