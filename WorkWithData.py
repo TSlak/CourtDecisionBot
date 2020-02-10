@@ -49,7 +49,7 @@ def get_all_court_link(connect):
 def update_court_data(connect, link, cont1_data, cont2_data, cont3_data):
     query = 'UPDATE court_data SET date_of_receipt=%s, protocol_number=%s, judge=%s, date_of_review=%s, ' \
             'result=%s, event_name=%s, event_date=%s, event_time=%s, event_courtroom=%s, event_result=%s, ' \
-            'event_placement=%s, sides=%s, WHERE link = %s '
+            'event_placement=%s, sides=%s WHERE link = %s '
     cursor = connect.cursor()
     cursor.execute(query, [cont1_data[ChangeTracking.DATE_OF_RECEIPT], cont1_data[ChangeTracking.PROTOCOL_NUMBER],
                            cont1_data[ChangeTracking.JUDGE], cont1_data[ChangeTracking.DATE_OF_REVIEW],
