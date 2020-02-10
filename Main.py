@@ -1,4 +1,6 @@
 import os
+import threading
+import time
 
 import telebot
 from flask import Flask, request
@@ -56,6 +58,18 @@ def echo_message(message):
             bot.send_message(message.chat.id, 'Дело не найдено')
     else:
         bot.reply_to(message, 'Тупица, вводи строку правильно, читай /help')
+
+
+def update_court_state():
+    while True:
+        time.sleep(10)
+        chat_id_list = WorkWithData.get_all_chat_id(conn)
+        for chat_id in chat_id_list:
+            bot.send_message(chat_id, 'Тестовое сообщение')
+
+
+thread = threading.Thread(target=update_court_state)
+thread.start()
 
 
 @server.route('/' + TOKEN, methods=['POST'])
