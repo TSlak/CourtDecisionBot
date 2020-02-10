@@ -51,6 +51,7 @@ def update_court_data(connect, link, cont1_data, cont2_data, cont3_data):
                            cont2_data[ChangeTracking.EVENT_DATE], cont2_data[ChangeTracking.EVENT_TIME],
                            cont2_data[ChangeTracking.EVENT_COURTROOM], cont2_data[ChangeTracking.EVENT_RESULT],
                            cont2_data[ChangeTracking.EVENT_PLACEMENT], cont3_data])
+    connect.commit()
 
 
 def insert_court_data(connect, link, cont1_data, cont2_data, cont3_data):
@@ -64,3 +65,4 @@ def insert_court_data(connect, link, cont1_data, cont2_data, cont3_data):
                            cont2_data[ChangeTracking.EVENT_DATE], cont2_data[ChangeTracking.EVENT_TIME],
                            cont2_data[ChangeTracking.EVENT_COURTROOM], cont2_data[ChangeTracking.EVENT_RESULT],
                            cont2_data[ChangeTracking.EVENT_PLACEMENT], cont3_data, link])
+    connect.commit()
