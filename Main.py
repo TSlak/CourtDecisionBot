@@ -1,5 +1,6 @@
 import os
 import time
+import threading
 
 import telebot
 from flask import Flask, request
@@ -69,12 +70,12 @@ def update_court_state():
             bot.send_message(chat_id[0], 'Тестовое сообщение')
 
 
-update_court_state()
+# update_court_state()
 
 
-# thread = threading.Thread(target=update_court_state)
-# thread.start()
-# thread.join()
+thread = threading.Thread(target=update_court_state)
+thread.start()
+thread.join()
 
 
 @server.route('/' + TOKEN, methods=['POST'])
