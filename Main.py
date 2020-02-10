@@ -6,6 +6,7 @@ import telebot
 from flask import Flask, request
 from psycopg2 import connect
 
+import ChangeTracking
 import FindCourtCase
 import WorkWithData
 
@@ -38,6 +39,7 @@ def callback_inline(call):
     if call.message:
         if call.data == "save":
             WorkWithData.insert_subscribe_data(call.message.chat.id, call.message.text, conn)
+            ChangeTracking.check_to_notify(conn, call.message.text)
             bot.answer_callback_query(call.id, text="Судебное дело сохранено")
         if call.data == "unsubscribe":
             WorkWithData.delete_subscribe_data(call.message.chat.id, call.message.text, conn)
@@ -51,7 +53,7 @@ def echo_message(message):
     key.add(telebot.types.InlineKeyboardButton("Сохранить", callback_data="save"))
     if len(arg) != 1:
         bot.reply_to(message, 'Проверьте ссылку')
-        link = FindCourtCase.get_link(arg[0].strip(), arg[1].strip(), message.chat.id)
+        link = FindCourtCase.get_link(arg[0].strip(), arg[1].strip())
         if link:
             bot.send_message(message.chat.id, link, reply_markup=key)
         else:
@@ -62,15 +64,13 @@ def echo_message(message):
 
 def update_court_state():
     while True:
-        time.sleep(10)
+        time.sleep(30)
+        ChangeTracking.check_to_notify(conn)
         chat_id_list = WorkWithData.get_all_chat_id(conn)
         print(chat_id_list)
         for chat_id in chat_id_list:
             print(chat_id[0])
             bot.send_message(chat_id[0], 'Тестовое сообщение')
-
-
-# update_court_state()
 
 
 @server.route('/' + TOKEN, methods=['POST'])

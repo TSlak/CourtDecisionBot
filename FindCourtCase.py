@@ -1,16 +1,13 @@
-import datetime
-
 import requests
 from bs4 import BeautifulSoup
-
-date = datetime.datetime.now()
+import ChangeTracking
 
 courtLinks = {'https://dzerginsky--nnov.sudrf.ru/modules.php?name=sud_delo&srv_num=1&H_date=',
               'https://avtozavodsky--nnov.sudrf.ru/modules.php?name=sud_delo&srv_num=2&H_date=',
               'https://avtozavodsky--nnov.sudrf.ru/modules.php?name=sud_delo&srv_num=1&H_date='}
 
 
-def get_link(number, date_court, user_id):
+def get_link(number, date_court):
     for courtLink in courtLinks:
         headers = {'user-agent': 'my-app/0.0.1'}
         r = requests.get(
