@@ -84,7 +84,7 @@ def check_to_notify(connect, link=None):
             i = i + 1
 
             if court_result_link != data_court[i]:
-                messages = messages_list + '\n *Добавлена ссылка: * [Перейти](' + court_result_link + ')'
+                messages = messages + '\n *Добавлена ссылка: * [Перейти](' + court_result_link + ')'
                 updated = True
 
             if updated:
@@ -136,7 +136,7 @@ def check_to_notify_by_link(connect, link_list):
         i = i + 1
 
         if court_result_link != data_court[i]:
-            messages = messages_list + '\n *Добавлена ссылка: * [Перейти](' + court_result_link + ')'
+            messages = messages + '\n *Добавлена ссылка: * [Перейти](' + court_result_link + ')'
             updated = True
 
         if updated:
