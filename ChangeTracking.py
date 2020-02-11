@@ -211,9 +211,10 @@ def parse_cont3(soup):
         rows = item.findAll('td', {'align': 'center'})
         header_len = len(rows)
         rows = item.findAll('td')
-        for item in range(header_len, len(rows) - 1):
-            cont3_data = cont3_data + " " + rows[item].get_text(strip=True) + ":* " + \
-                         rows[item + 1].get_text(strip=True) + '\n'
+        for item in range(header_len, len(rows)):
+            cont3_data = cont3_data + " " + rows[item].get_text(strip=True)
+            if item % header_len == 0:
+                cont3_data = cont3_data + '\n'
 
 
 def parse_cont4(soup):
