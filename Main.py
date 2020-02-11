@@ -28,7 +28,9 @@ def start(message):
     key = telebot.types.InlineKeyboardMarkup()
     key.add(telebot.types.InlineKeyboardButton("Отписаться", callback_data="unsubscribe"))
     for item in subscribe_list:
-        bot.send_message(message.chat.id, item[1], reply_markup=key)
+        case_number = ChangeTracking.check_to_notify_by_link(item[1])
+        message_text = case_number.get_text(strip=True) + '\n' + item[1]
+        bot.send_message(message.chat.id, message_text, reply_markup=key)
     if len(subscribe_list) == 0:
         bot.send_message(message.chat.id, 'У вас нет подписок')
 
@@ -42,7 +44,8 @@ def callback_inline(call):
             ChangeTracking.check_to_notify(conn, link)
             bot.answer_callback_query(call.id, text="Судебное дело сохранено")
         if call.data == "unsubscribe":
-            WorkWithData.delete_subscribe_data(call.message.chat.id, call.message.text, conn)
+            case_number, link = call.message.text.split('\n')
+            WorkWithData.delete_subscribe_data(call.message.chat.id, link, conn)
             bot.answer_callback_query(call.id, text="Подписка отменена")
 
 
