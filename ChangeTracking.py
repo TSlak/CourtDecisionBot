@@ -41,7 +41,7 @@ def check_to_notify(connect, link=None):
         parse_cont2(soup)
         parse_cont3(soup)
         print(head_case_data)
-        WorkWithData.insert_court_data(connect, link, cont1_data, cont2_data, cont3_data)
+        WorkWithData.insert_court_data(connect, link, cont1_data, cont2_data, cont3_data, head_case_data)
         print("Инсерт")
     else:
         court_link_list = WorkWithData.get_all_court_link(connect)
@@ -78,7 +78,7 @@ def check_to_notify(connect, link=None):
                 i = i + 1
 
             if updated:
-                WorkWithData.update_court_data(connect, court_link, cont1_data, cont2_data, cont3_data)
+                WorkWithData.update_court_data(connect, court_link, cont1_data, cont2_data, cont3_data, head_case_data)
                 print(messages)
                 print(court_link)
                 messages_list[court_link] = messages
@@ -122,7 +122,7 @@ def check_to_notify_by_link(connect, link_list):
             updated = True
 
         if updated:
-            WorkWithData.update_court_data(connect, court_link, cont1_data, cont2_data, cont3_data)
+            WorkWithData.update_court_data(connect, court_link, cont1_data, cont2_data, cont3_data, head_case_data)
             print(messages)
             print(court_link)
             messages_list[court_link] = messages
