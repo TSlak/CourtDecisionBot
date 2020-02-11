@@ -7,7 +7,6 @@ from flask import Flask, request
 from psycopg2 import connect
 
 import ChangeTracking
-import FindCourtCase
 import WorkWithData
 
 DATABASE_URL = os.environ['DATABASE_URL']
@@ -51,12 +50,15 @@ def check_command(message):
     link_list = WorkWithData.get_all_link_by_chat_id(conn, message.chat.id)
     messages_list = ChangeTracking.check_to_notify_by_link(conn, link_list)
     for message_item in messages_list.keys():
+        link_keyboard = telebot.types.InlineKeyboardMarkup()
+        link_button = telebot.types.InlineKeyboardButton(text='Перейти', url=message_item)
+        link_keyboard.add(link_button)
         print(message_item)
         chat_id_list = WorkWithData.get_all_chat_id_by_link(conn, message_item)
         print(chat_id_list)
         for chat_id in chat_id_list:
             print(chat_id)
-            bot.send_message(chat_id[0], messages_list[message_item], parse_mode= 'Markdown')
+            bot.send_message(chat_id[0], messages_list[message_item], parse_mode='Markdown', reply_markup=link_keyboard)
     if len(messages_list) == 0:
         bot.send_message(message.chat.id, 'Обновлений нет', parse_mode='Markdown')
 
@@ -65,7 +67,6 @@ def check_command(message):
 def help_command(message):
     help_text = '*Справка*\n\n' \
                 'Отправьте ссылку на судебное дело, для отслеживания (https://...)\n' \
-                'Или отправьте номер дела и дату заседания через запятую (2-2728/2019, 20.11.2019)\n' \
                 'Команда */check* - принудительный запуск проверки изменений\n' \
                 'Команда */find* - отобразить текущие подписки\n' \
                 'Команда */help* - отобразить эту подсказку'
@@ -79,15 +80,7 @@ def echo_message(message):
     if message.text.find('https://') > -1:
         bot.send_message(message.chat.id, message.text, reply_markup=key)
     else:
-        arg = message.text.split(',')
-        if len(arg) != 1:
-            link = FindCourtCase.get_link(arg[0].strip(), arg[1].strip())
-            if message.text:
-                bot.send_message(message.chat.id, link, reply_markup=key)
-            else:
-                bot.send_message(message.chat.id, 'Дело не найдено')
-        else:
-            bot.reply_to(message, 'Ошибка обработки запроса, прочти /help')
+        bot.reply_to(message, 'Ошибка обработки запроса, прочти /help')
 
 
 def update_court_state():
@@ -96,11 +89,14 @@ def update_court_state():
         messages_list = ChangeTracking.check_to_notify(conn)
         for message_item in messages_list.keys():
             print(message_item)
+            link_keyboard = telebot.types.InlineKeyboardMarkup()
+            link_button = telebot.types.InlineKeyboardButton(text='Перейти', url=message_item)
+            link_keyboard.add(link_button)
             chat_id_list = WorkWithData.get_all_chat_id_by_link(conn, message_item)
             print(chat_id_list)
             for chat_id in chat_id_list:
                 print(chat_id)
-                bot.send_message(chat_id[0], messages_list[message_item], parse_mode= 'Markdown')
+                bot.send_message(chat_id[0], messages_list[message_item], parse_mode='Markdown', reply_markup=link_keyboard)
 
 
 @server.route('/' + TOKEN, methods=['POST'])
