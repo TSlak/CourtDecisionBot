@@ -136,8 +136,8 @@ def parse_cont1(soup):
             values = rows[item].get_text(strip=True).split('\n')
             if values[0] == DATE_OF_RECEIPT:
                 cont1_data[DATE_OF_RECEIPT] = rows[item + 1].get_text(strip=True).split('\n')[0]
-            elif values[0] == PROTOCOL_NUMBER + '11':
-                cont1_data[PROTOCOL_NUMBER] = rows[item + 1].get_text(strip=True).split('\n')[0]
+            elif values[0] == PROTOCOL_NUMBER:
+                cont1_data[PROTOCOL_NUMBER] = rows[item + 1].get_text(strip=True).split('\n')[0] + '11'
             elif values[0] == JUDGE:
                 cont1_data[JUDGE] = rows[item + 1].get_text(strip=True).split('\n')[0]
             elif values[0] == DATE_OF_REVIEW:
