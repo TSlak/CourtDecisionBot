@@ -28,7 +28,7 @@ def start(message):
     key = telebot.types.InlineKeyboardMarkup()
     key.add(telebot.types.InlineKeyboardButton("Отписаться", callback_data="unsubscribe"))
     for item in subscribe_list:
-        case_number = ChangeTracking.check_to_notify_by_link(item[1])
+        case_number = ChangeTracking.get_head_case_data_by_link(item[1])
         message_text = case_number.get_text(strip=True) + '\n' + item[1]
         bot.send_message(message.chat.id, message_text, reply_markup=key)
     if len(subscribe_list) == 0:
