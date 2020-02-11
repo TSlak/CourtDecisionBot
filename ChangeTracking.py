@@ -39,7 +39,7 @@ def check_to_notify(connect, link=None):
         parse_cont1(soup)
         parse_cont2(soup)
         parse_cont3(soup)
-        # parse_head_case_data(soup)
+        parse_head_case_data(soup)
         WorkWithData.insert_court_data(connect, link, cont1_data, cont2_data, cont3_data)
         print("Инсерт")
     else:
@@ -136,7 +136,7 @@ def parse_cont1(soup):
             values = rows[item].get_text(strip=True).split('\n')
             if values[0] == DATE_OF_RECEIPT:
                 cont1_data[DATE_OF_RECEIPT] = rows[item + 1].get_text(strip=True).split('\n')[0]
-            elif values[0] == PROTOCOL_NUMBER:
+            elif values[0] == PROTOCOL_NUMBER + '11':
                 cont1_data[PROTOCOL_NUMBER] = rows[item + 1].get_text(strip=True).split('\n')[0]
             elif values[0] == JUDGE:
                 cont1_data[JUDGE] = rows[item + 1].get_text(strip=True).split('\n')[0]
@@ -147,8 +147,8 @@ def parse_cont1(soup):
 
 
 def parse_cont2(soup):
-    cont1_list = soup.findAll('div', {'id': 'cont2'})
-    for item in cont1_list:
+    cont2_list = soup.findAll('div', {'id': 'cont2'})
+    for item in cont2_list:
         rows = item.findAll('td', {'align': 'center'})
         header_len = len(rows)
         for index in range(header_len):
@@ -165,8 +165,8 @@ def parse_cont2(soup):
 
 def parse_cont3(soup):
     global cont3_data
-    cont1_list = soup.findAll('div', {'id': 'cont3'})
-    for item in cont1_list:
+    cont3_list = soup.findAll('div', {'id': 'cont3'})
+    for item in cont3_list:
         rows = item.findAll('td', {'align': 'center'})
         header_len = len(rows)
         rows = item.findAll('td')
@@ -174,4 +174,6 @@ def parse_cont3(soup):
             cont3_data = cont3_data + " " + rows[item].get_text(strip=True)
 
 
-# parse_head_case_data(soup)
+def parse_head_case_data(soup):
+    global head_case_data
+    case_number = soup.findAll('div', {'class': 'casenumber'})
