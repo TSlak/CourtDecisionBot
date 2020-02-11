@@ -63,7 +63,7 @@ def echo_message(message):
 
 def update_court_state():
     while True:
-        time.sleep(60)
+        time.sleep(40)
         messages_list = ChangeTracking.check_to_notify(conn)
         for message_item in messages_list.keys():
             print(message_item)
