@@ -184,13 +184,12 @@ def parse_head_case_data(soup):
     head_case_data = case_number.get_text(strip=True)
 
 
-def parse_head_case_data_by_link(link):
-    global head_case_data
+def get_head_case_data_by_link(link):
     headers = {'user-agent': 'my-app/0.0.1'}
     r = requests.get(link, headers=headers)
     soup = BeautifulSoup(r.text)
     case_number = soup.find('div', {'class': 'casenumber'})
-    head_case_data = case_number
+    return case_number
 
 
 def reset_value():
