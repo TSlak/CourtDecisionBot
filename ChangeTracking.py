@@ -43,8 +43,8 @@ def check_to_notify(connect, link=None):
         parse_cont2(soup)
         parse_cont3(soup)
         parse_head_case_data(soup)
-        parse_court_result_link(soup)
-        WorkWithData.insert_court_data(connect, link, cont1_data, cont2_data, cont3_data, head_case_data, court_result_link_data)
+        court_result_link = court_link[:court_link.find('/modules')] + parse_court_result_link(soup)
+        WorkWithData.insert_court_data(connect, link, cont1_data, cont2_data, cont3_data, head_case_data, court_result_link)
         print("Инсерт")
     else:
         court_link_list = WorkWithData.get_all_court_link(connect)
@@ -62,6 +62,7 @@ def check_to_notify(connect, link=None):
             parse_cont3(soup)
             parse_head_case_data(soup)
             parse_court_result_link(soup)
+            court_result_link = court_link[:court_link.find('/modules')] + parse_court_result_link(soup)
             i = 0
             messages = messages + 'Номер дела: ' + head_case_data + '\n*Изменены следующие поля: * \n'
             for cont1 in cont1_data.keys():
@@ -82,11 +83,11 @@ def check_to_notify(connect, link=None):
 
             i = i + 1
 
-            if court_result_link_data == data_court[i]:
-                messages = messages_list + '\n *Добавлена ссылка: *' + court_result_link_data
+            if court_result_link == data_court[i]:
+                messages = messages_list + '\n *Добавлена ссылка: *' + court_result_link
 
             if updated:
-                WorkWithData.update_court_data(connect, court_link, cont1_data, cont2_data, cont3_data, head_case_data, court_result_link_data)
+                WorkWithData.update_court_data(connect, court_link, cont1_data, cont2_data, cont3_data, head_case_data, court_result_link)
                 print(messages)
                 print(court_link)
                 messages_list[court_link] = messages
@@ -112,6 +113,7 @@ def check_to_notify_by_link(connect, link_list):
         parse_cont3(soup)
         parse_head_case_data(soup)
         parse_court_result_link(soup)
+        court_result_link = court_link[:court_link.find('/modules')] + parse_court_result_link(soup)
         i = 0
         messages = messages + 'Номер дела: ' + head_case_data + '\n*Изменены следующие поля: * \n'
         for cont1 in cont1_data.keys():
@@ -132,11 +134,11 @@ def check_to_notify_by_link(connect, link_list):
 
         i = i + 1
 
-        if court_result_link_data == data_court[i]:
-            messages = messages_list + '\n *Добавлена ссылка: *' + court_result_link_data
+        if court_result_link == data_court[i]:
+            messages = messages_list + '\n *Добавлена ссылка: *' + court_result_link
 
         if updated:
-            WorkWithData.update_court_data(connect, court_link, cont1_data, cont2_data, cont3_data, head_case_data, court_result_link_data)
+            WorkWithData.update_court_data(connect, court_link, cont1_data, cont2_data, cont3_data, head_case_data, court_result_link)
             print(messages)
             print(court_link)
             messages_list[court_link] = messages
