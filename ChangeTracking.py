@@ -137,7 +137,7 @@ def check_to_notify_by_link(connect, link_list):
 
         if court_result_link != data_court[i]:
             print(court_result_link)
-            print('\n')
+            print('-----------------------------------------------------')
             print(data_court[i])
             messages = messages + '\n *Добавлена ссылка: * [Перейти](' + court_result_link + ')'
             updated = True
