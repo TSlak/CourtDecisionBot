@@ -129,17 +129,26 @@ def check_to_notify_by_link(connect, link_list):
         court_result_link = court_link[:court_link.find('/modules')] + court_result_link_data
         i = 0
         messages = messages + 'Номер дела: ' + head_case_data + '\n*Изменены следующие поля: * \n'
+
+        cont1_messages = ""
         for cont1 in cont1_data.keys():
             if cont1_data[cont1] != data_court[i]:
-                messages = messages + '\n*' + cont1 + ':* ' + cont1_data[cont1]
+                cont1_messages = cont1_messages + '\n*' + cont1 + ':* ' + cont1_data[cont1]
                 updated = True
             i = i + 1
 
+        if cont1_messages:
+            messages = messages + '\n------\n*Дело*\n------\n' + cont1_messages
+
+        cont2_messages = ""
         for cont2 in cont2_data.keys():
             if cont2_data[cont2] != data_court[i]:
-                messages = messages + '\n*' + cont2 + ':* ' + cont2_data[cont2]
+                cont2_messages = cont2_messages + '\n*' + cont2 + ':* ' + cont2_data[cont2]
                 updated = True
             i = i + 1
+
+        if cont2_messages:
+            messages = messages + '\n------\n*Движение дела*\n------\n' + cont2_messages
 
         if cont3_data != data_court[i]:
             messages = messages + '\n------\n*Изменены стороны:* \n------\n' + cont3_data
@@ -212,9 +221,9 @@ def parse_cont3(soup):
         header_len = len(rows)
         rows = item.findAll('td')
         for item in range(header_len, len(rows)):
-            cont3_data = cont3_data + " " + rows[item].get_text(strip=True)
             if item % header_len == 0:
                 cont3_data = cont3_data + '\n'
+            cont3_data = cont3_data + " " + rows[item].get_text(strip=True)
 
 
 def parse_cont4(soup):
