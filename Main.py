@@ -80,7 +80,7 @@ def echo_message(message):
     key.add(telebot.types.InlineKeyboardButton("Сохранить", callback_data="save"))
     if message.text.find('https://') > -1:
         case_number = ChangeTracking.get_head_case_data_by_link(message.text)
-        message_text = case_number + '\n' + message.text
+        message_text = case_number + "\n" + message.text
         bot.send_message(message.chat.id, message_text, reply_markup=key)
     else:
         bot.reply_to(message, 'Ошибка обработки запроса, прочти /help')
