@@ -228,7 +228,10 @@ def parse_court_result_link(soup):
         link = link.find('a')
         if link:
             link = link.get('href')
-    court_result_link_data = link
+            court_result_link_data = str(link)
+    else:
+        court_result_link_data = ""
+
 
 
 def get_head_case_data_by_link(link):
