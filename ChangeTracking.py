@@ -35,7 +35,7 @@ def check_to_notify(connect, link=None):
             return
         court_link = link
         r = requests.get(court_link, headers=headers)
-        soup = BeautifulSoup(r.text)
+        soup = BeautifulSoup(r.text, features="html.parser")
         reset_value()
         parse_cont1(soup)
         parse_cont2(soup)
@@ -52,7 +52,7 @@ def check_to_notify(connect, link=None):
             updated = False
             court_link = court_link[0]
             r = requests.get(court_link, headers=headers)
-            soup = BeautifulSoup(r.text)
+            soup = BeautifulSoup(r.text, features="html.parser")
             reset_value()
             parse_cont1(soup)
             parse_cont2(soup)
@@ -97,7 +97,7 @@ def check_to_notify_by_link(connect, link_list):
         updated = False
         court_link = court_link[0]
         r = requests.get(court_link, headers=headers)
-        soup = BeautifulSoup(r.text)
+        soup = BeautifulSoup(r.text, features="html.parser")
         reset_value()
         parse_cont1(soup)
         parse_cont2(soup)
@@ -187,7 +187,7 @@ def parse_head_case_data(soup):
 def get_head_case_data_by_link(link):
     headers = {'user-agent': 'my-app/0.0.1'}
     r = requests.get(link, headers=headers)
-    soup = BeautifulSoup(r.text)
+    soup = BeautifulSoup(r.text, features="html.parser")
     case_number = soup.find('div', {'class': 'casenumber'})
     return case_number
 

@@ -13,7 +13,7 @@ def get_link(number, date_court):
         r = requests.get(
             courtLink + date_court,
             headers=headers)
-        soup = BeautifulSoup(r.text)
+        soup = BeautifulSoup(r.text, features="html.parser")
         decision_list = soup.findAll('table', {'id': 'tablcont'})
 
         for item in decision_list:
