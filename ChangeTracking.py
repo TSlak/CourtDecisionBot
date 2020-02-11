@@ -133,7 +133,7 @@ def check_to_notify_by_link(connect, link_list):
             messages = messages + '\n*Стороны:*' + cont3_data
             updated = True
 
-        i = i + 2
+        i = i + 3
 
         if court_result_link != data_court[i]:
             print(court_result_link)
