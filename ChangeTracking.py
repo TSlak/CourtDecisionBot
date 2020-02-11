@@ -81,7 +81,7 @@ def check_to_notify(connect, link=None):
                 messages = messages + '\n*Стороны:*' + cont3_data
                 updated = True
 
-            i = i + 1
+            i = i + 2
 
             if court_result_link != data_court[i]:
                 messages = messages + '\n *Добавлена ссылка: * [Перейти](' + court_result_link + ')'
@@ -133,7 +133,7 @@ def check_to_notify_by_link(connect, link_list):
             messages = messages + '\n*Стороны:*' + cont3_data
             updated = True
 
-        i = i + 1
+        i = i + 2
 
         if court_result_link != data_court[i]:
             messages = messages + '\n *Добавлена ссылка: * [Перейти](' + court_result_link + ')'
