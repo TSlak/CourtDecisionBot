@@ -40,7 +40,7 @@ def check_to_notify(connect, link=None):
         parse_cont1(soup)
         parse_cont2(soup)
         parse_cont3(soup)
-        print(head_case_data)
+        parse_head_case_data(soup)
         WorkWithData.insert_court_data(connect, link, cont1_data, cont2_data, cont3_data, head_case_data)
         print("Инсерт")
     else:
@@ -184,6 +184,15 @@ def parse_head_case_data(soup):
     head_case_data = case_number.get_text(strip=True)
 
 
+def parse_head_case_data_by_link(link):
+    global head_case_data
+    headers = {'user-agent': 'my-app/0.0.1'}
+    r = requests.get(link, headers=headers)
+    soup = BeautifulSoup(r.text)
+    case_number = soup.find('div', {'class': 'casenumber'})
+    head_case_data = case_number.get_text(strip=True)
+
+
 def reset_value():
     global cont3_data
     global head_case_data
@@ -193,3 +202,5 @@ def reset_value():
         cont2_data[cont2] = ""
     cont3_data = ""
     head_case_data = ""
+
+

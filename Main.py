@@ -79,6 +79,7 @@ def echo_message(message):
     key.add(telebot.types.InlineKeyboardButton("Сохранить", callback_data="save"))
     if message.text.find('https://') > -1:
         bot.send_message(message.chat.id, message.text, reply_markup=key)
+        bot.send_message(message.chat.id, ChangeTracking.parse_head_case_data_by_link(message.text))
     else:
         bot.reply_to(message, 'Ошибка обработки запроса, прочти /help')
 
@@ -96,7 +97,8 @@ def update_court_state():
             print(chat_id_list)
             for chat_id in chat_id_list:
                 print(chat_id)
-                bot.send_message(chat_id[0], messages_list[message_item], parse_mode='Markdown', reply_markup=link_keyboard)
+                bot.send_message(chat_id[0], messages_list[message_item], parse_mode='Markdown',
+                                 reply_markup=link_keyboard)
 
 
 @server.route('/' + TOKEN, methods=['POST'])
