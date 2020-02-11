@@ -23,6 +23,8 @@ cont2_data = {EVENT_NAME: "", EVENT_DATE: "", EVENT_TIME: "", EVENT_COURTROOM: "
 
 cont3_data = ""
 
+cont4_data = ""
+
 head_case_data = ""
 
 court_result_link_data = ""
@@ -42,6 +44,7 @@ def check_to_notify(connect, link=None):
         parse_cont1(soup)
         parse_cont2(soup)
         parse_cont3(soup)
+        parse_cont4(soup)
         parse_head_case_data(soup)
         court_result_link = court_link[:court_link.find('/modules')] + court_result_link_data
         WorkWithData.insert_court_data(connect, link, cont1_data, cont2_data, cont3_data, head_case_data, court_result_link)
@@ -60,6 +63,7 @@ def check_to_notify(connect, link=None):
             parse_cont1(soup)
             parse_cont2(soup)
             parse_cont3(soup)
+            parse_cont4(soup)
             parse_head_case_data(soup)
             parse_court_result_link(soup)
             court_result_link = court_link[:court_link.find('/modules')] + court_result_link_data
@@ -81,7 +85,7 @@ def check_to_notify(connect, link=None):
                 messages = messages + '\n*Стороны:*' + cont3_data
                 updated = True
 
-            i = i + 2
+            i = i + 3
 
             if court_result_link != data_court[i]:
                 messages = messages + '\n *Добавлена ссылка: * [Перейти](' + court_result_link + ')'
@@ -112,6 +116,7 @@ def check_to_notify_by_link(connect, link_list):
         parse_cont1(soup)
         parse_cont2(soup)
         parse_cont3(soup)
+        parse_cont4(soup)
         parse_head_case_data(soup)
         parse_court_result_link(soup)
         court_result_link = court_link[:court_link.find('/modules')] + court_result_link_data
@@ -199,6 +204,17 @@ def parse_cont3(soup):
             cont3_data = cont3_data + " " + rows[item].get_text(strip=True)
 
 
+def parse_cont4(soup):
+    global cont4_data
+    cont4_list = soup.findAll('div', {'id': 'cont4'})
+    for item in cont4_list:
+        rows = item.findAll('td', {'align': 'center'})
+        header_len = len(rows)
+        rows = item.findAll('td')
+        for item in range(header_len, len(rows)):
+            cont4_data = cont4_data + " " + rows[item].get_text(strip=True)
+
+
 def parse_head_case_data(soup):
     global head_case_data
     case_number = soup.find('div', {'class': 'casenumber'})
@@ -208,7 +224,10 @@ def parse_head_case_data(soup):
 def parse_court_result_link(soup):
     global court_result_link_data
     link = soup.find('th', {'style': 'border-top: 0px'})
-    link = link.find('a').get('href')
+    if link:
+        link = link.find('a')
+        if link:
+            link = link.get('href')
     court_result_link_data = link
 
 
@@ -224,6 +243,7 @@ def reset_value():
     global cont3_data
     global head_case_data
     global court_result_link_data
+    global cont4_data
     for cont1 in cont1_data.keys():
         cont1_data[cont1] = ""
     for cont2 in cont2_data.keys():
@@ -231,3 +251,4 @@ def reset_value():
     cont3_data = ""
     head_case_data = ""
     court_result_link_data = ""
+    cont4_data = ""
