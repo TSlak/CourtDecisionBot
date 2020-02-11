@@ -90,7 +90,7 @@ def insert_court_data(connect, link, cont1_data, cont2_data, cont3_data, case_nu
                            cont2_data[ChangeTracking.EVENT_DATE], cont2_data[ChangeTracking.EVENT_TIME],
                            cont2_data[ChangeTracking.EVENT_COURTROOM], cont2_data[ChangeTracking.EVENT_RESULT],
                            cont2_data[ChangeTracking.EVENT_PLACEMENT], cont3_data, link, case_number,
-                           court_result_link, appeal_decision])
+                           court_result_link, str(appeal_decision)])
     connect.commit()
 
 
