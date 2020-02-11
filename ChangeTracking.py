@@ -117,7 +117,7 @@ def check_to_notify_by_link(connect, link_list):
                 updated = True
             i = i + 1
 
-        if cont3_data == data_court[i]:
+        if cont3_data != data_court[i]:
             messages = messages + '\n*Стороны:*' + cont3_data
             updated = True
 
