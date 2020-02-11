@@ -9,6 +9,8 @@ from psycopg2 import connect
 import ChangeTracking
 import WorkWithData
 
+
+ChangeTracking.parse_cont4('https://dzerginsky--nnov.sudrf.ru/modules.php?name=sud_delo&srv_num=1&name_op=case&case_id=46300552&case_uid=843b72cf-3f1a-4727-800f-d4ccfaab5d0e&delo_id=1500001')
 DATABASE_URL = os.environ['DATABASE_URL']
 conn = connect(DATABASE_URL, sslmode='require')
 cursor = conn.cursor()

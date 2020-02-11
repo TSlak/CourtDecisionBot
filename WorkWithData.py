@@ -64,10 +64,10 @@ def get_all_court_link(connect):
     return cursor.fetchall()
 
 
-def update_court_data(connect, link, cont1_data, cont2_data, cont3_data, case_number, court_result_link):
+def update_court_data(connect, link, cont1_data, cont2_data, cont3_data, case_number, court_result_link, appeal_decision):
     query = 'UPDATE court_data SET date_of_receipt=%s, protocol_number=%s, judge=%s, date_of_review=%s, ' \
             'result=%s, event_name=%s, event_date=%s, event_time=%s, event_courtroom=%s, event_result=%s, ' \
-            'event_placement=%s, sides=%s, case_number=%s, court_result_link=%s WHERE link = %s '
+            'event_placement=%s, sides=%s, case_number=%s, court_result_link=%s, appeal_decision = %s WHERE link = %s '
     cursor = connect.cursor()
     cursor.execute(query, [cont1_data[ChangeTracking.DATE_OF_RECEIPT], cont1_data[ChangeTracking.PROTOCOL_NUMBER],
                            cont1_data[ChangeTracking.JUDGE], cont1_data[ChangeTracking.DATE_OF_REVIEW],
@@ -75,14 +75,14 @@ def update_court_data(connect, link, cont1_data, cont2_data, cont3_data, case_nu
                            cont2_data[ChangeTracking.EVENT_DATE], cont2_data[ChangeTracking.EVENT_TIME],
                            cont2_data[ChangeTracking.EVENT_COURTROOM], cont2_data[ChangeTracking.EVENT_RESULT],
                            cont2_data[ChangeTracking.EVENT_PLACEMENT], cont3_data, case_number,
-                           court_result_link, link])
+                           court_result_link, appeal_decision, link])
     connect.commit()
 
 
-def insert_court_data(connect, link, cont1_data, cont2_data, cont3_data, case_number, court_result_link):
+def insert_court_data(connect, link, cont1_data, cont2_data, cont3_data, case_number, court_result_link, appeal_decision):
     query = 'INSERT INTO court_data(date_of_receipt, protocol_number, judge, date_of_review, result, event_name, ' \
-            'event_date, event_time, event_courtroom, event_result, event_placement, sides, link, case_number, court_result_link) ' \
-            'VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
+            'event_date, event_time, event_courtroom, event_result, event_placement, sides, link, case_number, ' \
+            'court_result_link, appeal_decision) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
     cursor = connect.cursor()
     cursor.execute(query, [cont1_data[ChangeTracking.DATE_OF_RECEIPT], cont1_data[ChangeTracking.PROTOCOL_NUMBER],
                            cont1_data[ChangeTracking.JUDGE], cont1_data[ChangeTracking.DATE_OF_REVIEW],
@@ -90,7 +90,7 @@ def insert_court_data(connect, link, cont1_data, cont2_data, cont3_data, case_nu
                            cont2_data[ChangeTracking.EVENT_DATE], cont2_data[ChangeTracking.EVENT_TIME],
                            cont2_data[ChangeTracking.EVENT_COURTROOM], cont2_data[ChangeTracking.EVENT_RESULT],
                            cont2_data[ChangeTracking.EVENT_PLACEMENT], cont3_data, link, case_number,
-                           court_result_link])
+                           court_result_link, appeal_decision])
     connect.commit()
 
 

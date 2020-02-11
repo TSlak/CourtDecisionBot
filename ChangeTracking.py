@@ -91,8 +91,13 @@ def check_to_notify(connect, link=None):
                 messages = messages + '\n *Добавлена ссылка: * [Перейти](' + court_result_link + ')'
                 updated = True
 
+            i = i + 1
+
+            if cont4_data != data_court[i]:
+                messages = messages + '\n *Изменения в пересмотре: * \n' + cont4_data
+
             if updated:
-                WorkWithData.update_court_data(connect, court_link, cont1_data, cont2_data, cont3_data, head_case_data, court_result_link)
+                WorkWithData.update_court_data(connect, court_link, cont1_data, cont2_data, cont3_data, head_case_data, court_result_link, cont4_data)
                 print(messages)
                 print(court_link)
                 messages_list[court_link] = messages
@@ -140,6 +145,9 @@ def check_to_notify_by_link(connect, link_list):
 
         i = i + 3
 
+        if cont4_data != data_court[i]:
+            messages = messages + '\n *Изменения в пересмотре: * \n' + cont4_data
+
         if court_result_link != data_court[i]:
             print(court_result_link)
             print('-----------------------------------------------------')
@@ -148,7 +156,7 @@ def check_to_notify_by_link(connect, link_list):
             updated = True
 
         if updated:
-            WorkWithData.update_court_data(connect, court_link, cont1_data, cont2_data, cont3_data, head_case_data, court_result_link)
+            WorkWithData.update_court_data(connect, court_link, cont1_data, cont2_data, cont3_data, head_case_data, court_result_link, cont4_data)
             print(messages)
             print(court_link)
             messages_list[court_link] = messages
@@ -204,15 +212,18 @@ def parse_cont3(soup):
             cont3_data = cont3_data + " " + rows[item].get_text(strip=True)
 
 
-def parse_cont4(soup):
+def parse_cont4(link):
+    headers = {'user-agent': 'my-app/0.0.1'}
+    r = requests.get(link, headers=headers)
+    soup = BeautifulSoup(r.text, features="html.parser")
     global cont4_data
     cont4_list = soup.findAll('div', {'id': 'cont4'})
     for item in cont4_list:
-        rows = item.findAll('td', {'align': 'center'})
-        header_len = len(rows)
         rows = item.findAll('td')
-        for item in range(header_len, len(rows)):
-            cont4_data = cont4_data + " " + rows[item].get_text(strip=True)
+        for item in range(1, len(rows) - 1):
+            cont4_data = cont4_data + " *" + rows[item].get_text(strip=True) + ":* " + \
+                         rows[item+1].get_text(strip=True) + "\n"
+    print(cont4_data)
 
 
 def parse_head_case_data(soup):
