@@ -98,6 +98,7 @@ def check_to_notify_by_link(connect, link_list):
         court_link = court_link[0]
         r = requests.get(court_link, headers=headers)
         soup = BeautifulSoup(r.text)
+        reset_value()
         parse_cont1(soup)
         parse_cont2(soup)
         parse_cont3(soup)
