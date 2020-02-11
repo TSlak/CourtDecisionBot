@@ -71,7 +71,7 @@ def check_to_notify(connect, link=None):
                 updated = True
 
             if updated:
-                WorkWithData.update_court_data(connect, link, cont1_data, cont2_data, cont3_data)
+                WorkWithData.update_court_data(connect, court_link, cont1_data, cont2_data, cont3_data)
                 print(messages)
                 print(court_link)
                 messages_list[court_link] = messages
