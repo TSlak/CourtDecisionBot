@@ -79,18 +79,18 @@ def check_command(message):
 
 @bot.message_handler(commands=['help'])
 def help_command(message):
-    help_text = '<b>Справка</b>\n\n' \
+    help_text = '*Справка*\n\n' \
                 'Отправьте ссылку на судебное дело, для отслеживания (https://...)\n' \
                 'Или отправьте номер дела и дату заседания через запятую (2-2728/2019, 20.11.2019)\n' \
-                'Команда <b>/check</b> - принудительный запуск проверки изменений\n' \
-                'Команда <b>/find</b> - отобразить текущие подписки\n' \
-                'Команда <b>/help</b> - отобразить эту подсказку'
+                'Команда */check* - принудительный запуск проверки изменений\n' \
+                'Команда */find* - отобразить текущие подписки\n' \
+                'Команда */help* - отобразить эту подсказку'
     bot.send_message(message.chat.id, help_text)
 
 
 def update_court_state():
     while True:
-        time.sleep(40)
+        time.sleep(600)
         messages_list = ChangeTracking.check_to_notify(conn)
         for message_item in messages_list.keys():
             print(message_item)

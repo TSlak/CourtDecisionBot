@@ -54,21 +54,21 @@ def check_to_notify(connect, link=None):
             check_cont3(soup, data_court)
 
             i = 0
-            messages = messages + '<b>Изменены следующие поля: </b> \n'
+            messages = messages + '*Изменены следующие поля: * \n'
             for cont1 in cont1_data.keys():
                 if cont1_data[cont1] != data_court[i]:
-                    messages = messages + '\n<b>' + cont1 + ':</b> ' + cont1_data[cont1]
+                    messages = messages + '\n*' + cont1 + ':* ' + cont1_data[cont1]
                     updated = True
                 i = i + 1
 
             for cont2 in cont2_data.keys():
                 if cont2_data[cont2] != data_court[i]:
-                    messages = messages + '\n<b>' + cont2 + ':</b> ' + cont2_data[cont2]
+                    messages = messages + '\n*' + cont2 + ':* ' + cont2_data[cont2]
                     updated = True
                 i = i + 1
 
             if cont3_data == data_court[i]:
-                messages = messages + '\n<b>Стороны:</b>' + cont3_data
+                messages = messages + '\n*Стороны:*' + cont3_data
                 updated = True
 
             if updated:
@@ -97,21 +97,21 @@ def check_to_notify_by_link(connect, link_list):
         check_cont3(soup, data_court)
 
         i = 0
-        messages = messages + '<b>Изменены следующие поля: </b> \n'
+        messages = messages + '*Изменены следующие поля: * \n'
         for cont1 in cont1_data.keys():
             if cont1_data[cont1] != data_court[i]:
-                messages = messages + '\n<b>' + cont1 + ':</b> ' + cont1_data[cont1]
+                messages = messages + '\n*' + cont1 + ':* ' + cont1_data[cont1]
                 updated = True
             i = i + 1
 
         for cont2 in cont2_data.keys():
             if cont2_data[cont2] != data_court[i]:
-                messages = messages + '\n<b>' + cont2 + ':</b> ' + cont2_data[cont2]
+                messages = messages + '\n*' + cont2 + ':* ' + cont2_data[cont2]
                 updated = True
             i = i + 1
 
         if cont3_data == data_court[i]:
-            messages = messages + '\n<b>Стороны:</b>' + cont3_data
+            messages = messages + '\n*Стороны:*' + cont3_data
             updated = True
 
         if updated:
