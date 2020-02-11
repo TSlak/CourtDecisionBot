@@ -72,11 +72,13 @@ def check_to_notify(connect, link=None):
 
             if updated:
                 WorkWithData.update_court_data(connect, link, cont1_data, cont2_data, cont3_data)
-                messages_list[link] = {messages}
+                print(messages)
+                print(link)
+                messages_list[link] = messages
 
+        print(messages_list)
         print("Упдате")
         return messages_list
-
 
 
 def parse_cont1(soup):
