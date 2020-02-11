@@ -36,6 +36,7 @@ def check_to_notify(connect, link=None):
         court_link = link
         r = requests.get(court_link, headers=headers)
         soup = BeautifulSoup(r.text)
+        reset_value()
         parse_cont1(soup)
         parse_cont2(soup)
         parse_cont3(soup)
@@ -52,6 +53,7 @@ def check_to_notify(connect, link=None):
             court_link = court_link[0]
             r = requests.get(court_link, headers=headers)
             soup = BeautifulSoup(r.text)
+            reset_value()
             parse_cont1(soup)
             parse_cont2(soup)
             parse_cont3(soup)
@@ -130,7 +132,6 @@ def check_to_notify_by_link(connect, link_list):
 
 
 def parse_cont1(soup):
-    cont1_data.clear()
     cont1_list = soup.findAll('div', {'id': 'cont1'})
     for item in cont1_list:
         rows = item.findAll('td')
@@ -149,7 +150,6 @@ def parse_cont1(soup):
 
 
 def parse_cont2(soup):
-    cont2_data.clear()
     cont2_list = soup.findAll('div', {'id': 'cont2'})
     for item in cont2_list:
         rows = item.findAll('td', {'align': 'center'})
@@ -168,7 +168,6 @@ def parse_cont2(soup):
 
 def parse_cont3(soup):
     global cont3_data
-    cont3_data = ""
     cont3_list = soup.findAll('div', {'id': 'cont3'})
     for item in cont3_list:
         rows = item.findAll('td', {'align': 'center'})
@@ -180,6 +179,16 @@ def parse_cont3(soup):
 
 def parse_head_case_data(soup):
     global head_case_data
-    head_case_data = ""
     case_number = soup.find('div', {'class': 'casenumber'})
     head_case_data = case_number.get_text(strip=True)
+
+
+def reset_value():
+    global cont3_data
+    global head_case_data
+    for cont1 in cont1_data.keys():
+        cont1_data[cont1] = ""
+    for cont2 in cont2_data.keys():
+        cont2_data[cont2] = ""
+    cont3_data = ""
+    head_case_data = ""
