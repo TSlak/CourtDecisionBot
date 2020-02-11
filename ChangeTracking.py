@@ -190,7 +190,7 @@ def parse_head_case_data_by_link(link):
     r = requests.get(link, headers=headers)
     soup = BeautifulSoup(r.text)
     case_number = soup.find('div', {'class': 'casenumber'})
-    head_case_data = case_number.get_text(strip=True)
+    head_case_data = case_number
 
 
 def reset_value():
