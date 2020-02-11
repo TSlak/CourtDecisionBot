@@ -70,17 +70,26 @@ def check_to_notify(connect, link=None):
             court_result_link = court_link[:court_link.find('/modules')] + court_result_link_data
             i = 0
             messages = messages + 'Номер дела: ' + head_case_data + '\n*Изменены следующие поля: * \n'
+
+            cont1_messages = ""
             for cont1 in cont1_data.keys():
                 if cont1_data[cont1] != data_court[i]:
-                    messages = messages + '\n*' + cont1 + ':* ' + cont1_data[cont1]
+                    cont1_messages = cont1_messages + '\n*' + cont1 + ':* ' + cont1_data[cont1]
                     updated = True
                 i = i + 1
 
+            if cont1_messages:
+                messages = messages + '\n------\n*Дело*\n------' + cont1_messages
+
+            cont2_messages = ""
             for cont2 in cont2_data.keys():
                 if cont2_data[cont2] != data_court[i]:
-                    messages = messages + '\n*' + cont2 + ':* ' + cont2_data[cont2]
+                    cont2_messages = cont2_messages + '\n*' + cont2 + ':* ' + cont2_data[cont2]
                     updated = True
                 i = i + 1
+
+            if cont2_messages:
+                messages = messages + '\n------\n*Движение дела*\n------' + cont2_messages
 
             if cont3_data != data_court[i]:
                 messages = messages + '\n*Стороны:*' + cont3_data
@@ -95,7 +104,7 @@ def check_to_notify(connect, link=None):
             i = i + 1
 
             if cont4_data != data_court[i]:
-                messages = messages + '\n------\n*Изменения в пересмотре: * \n------\n' + cont4_data
+                messages = messages + '\n------\n*Изменения в пересмотре: * \n------' + cont4_data
 
             if updated:
                 WorkWithData.update_court_data(connect, court_link, cont1_data, cont2_data, cont3_data, head_case_data,
@@ -138,7 +147,7 @@ def check_to_notify_by_link(connect, link_list):
             i = i + 1
 
         if cont1_messages:
-            messages = messages + '\n------\n*Дело*\n------\n' + cont1_messages
+            messages = messages + '\n------\n*Дело*\n------' + cont1_messages
 
         cont2_messages = ""
         for cont2 in cont2_data.keys():
@@ -148,16 +157,16 @@ def check_to_notify_by_link(connect, link_list):
             i = i + 1
 
         if cont2_messages:
-            messages = messages + '\n------\n*Движение дела*\n------\n' + cont2_messages
+            messages = messages + '\n------\n*Движение дела*\n------' + cont2_messages
 
         if cont3_data != data_court[i]:
-            messages = messages + '\n------\n*Изменены стороны:* \n------\n' + cont3_data
+            messages = messages + '\n------\n*Изменены стороны:* \n------' + cont3_data
             updated = True
 
         i = i + 3
 
         if cont4_data != data_court[i]:
-            messages = messages + '\n------\n*Изменения в пересмотре: * \n------\n' + cont4_data
+            messages = messages + '\n------\n*Изменения в пересмотре: * \n------' + cont4_data
 
         if court_result_link != data_court[i]:
             print(court_result_link)
