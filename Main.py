@@ -66,6 +66,7 @@ def update_court_state():
         time.sleep(60)
         messages_list = ChangeTracking.check_to_notify(conn)
         for message_item in messages_list.keys():
+            print(message_item)
             chat_id_list = WorkWithData.get_all_chat_id_by_link(conn, message_item)
             for chat_id in chat_id_list:
                 bot.send_message(chat_id, messages_list[message_item])
