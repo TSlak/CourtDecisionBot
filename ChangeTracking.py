@@ -212,10 +212,7 @@ def parse_cont3(soup):
             cont3_data = cont3_data + " " + rows[item].get_text(strip=True)
 
 
-def parse_cont4(link):
-    headers = {'user-agent': 'my-app/0.0.1'}
-    r = requests.get(link, headers=headers)
-    soup = BeautifulSoup(r.text, features="html.parser")
+def parse_cont4(soup):
     global cont4_data
     cont4_list = soup.findAll('div', {'id': 'cont4'})
     for item in cont4_list:
