@@ -63,11 +63,12 @@ def echo_message(message):
 
 def update_court_state():
     while True:
-        time.sleep(120)
-        (messages, link) = ChangeTracking.check_to_notify(conn)
-        chat_id_list = WorkWithData.get_all_chat_id_by_link(conn, link)
-        for chat_id in chat_id_list:
-            bot.send_message(chat_id, messages)
+        time.sleep(60)
+        messages_list = ChangeTracking.check_to_notify(conn)
+        for message_item in messages_list.keys():
+            chat_id_list = WorkWithData.get_all_chat_id_by_link(conn, message_item)
+            for chat_id in chat_id_list:
+                bot.send_message(chat_id, messages_list[message_item])
 
 
 @server.route('/' + TOKEN, methods=['POST'])
