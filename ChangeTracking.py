@@ -60,8 +60,8 @@ def check_to_notify(connect, link=None):
                 i = i + 1
 
             for cont2 in cont2_data.keys():
-                if cont1_data[cont2] != data_court[i]:
-                    messages = messages + '\n Изменен ' + cont2 + ' ' + cont1_data[cont2]
+                if cont2_data[cont2] != data_court[i]:
+                    messages = messages + '\n Изменен ' + cont2 + ' ' + cont2_data[cont2]
                     updated = True
                 i = i + 1
 
