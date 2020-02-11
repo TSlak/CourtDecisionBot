@@ -46,24 +46,6 @@ def callback_inline(call):
             bot.answer_callback_query(call.id, text="Подписка отменена")
 
 
-@bot.message_handler(func=lambda message: True, content_types=['text'])
-def echo_message(message):
-    key = telebot.types.InlineKeyboardMarkup()
-    key.add(telebot.types.InlineKeyboardButton("Сохранить", callback_data="save"))
-    if message.text.find('https://'):
-        bot.send_message(message.chat.id, message.text, reply_markup=key)
-    else:
-        arg = message.text.split(',')
-        if len(arg) != 1:
-            link = FindCourtCase.get_link(arg[0].strip(), arg[1].strip())
-            if message.text:
-                bot.send_message(message.chat.id, link, reply_markup=key)
-            else:
-                bot.send_message(message.chat.id, 'Дело не найдено')
-        else:
-            bot.reply_to(message, 'Ошибка обработки запроса, прочти /help')
-
-
 @bot.message_handler(commands=['check'])
 def check_command(message):
     link_list = WorkWithData.get_all_link_by_chat_id(conn, message.chat.id)
@@ -86,6 +68,24 @@ def help_command(message):
                 'Команда */find* - отобразить текущие подписки\n' \
                 'Команда */help* - отобразить эту подсказку'
     bot.send_message(message.chat.id, help_text)
+
+
+@bot.message_handler(func=lambda message: True, content_types=['text'])
+def echo_message(message):
+    key = telebot.types.InlineKeyboardMarkup()
+    key.add(telebot.types.InlineKeyboardButton("Сохранить", callback_data="save"))
+    if message.text.find('https://'):
+        bot.send_message(message.chat.id, message.text, reply_markup=key)
+    else:
+        arg = message.text.split(',')
+        if len(arg) != 1:
+            link = FindCourtCase.get_link(arg[0].strip(), arg[1].strip())
+            if message.text:
+                bot.send_message(message.chat.id, link, reply_markup=key)
+            else:
+                bot.send_message(message.chat.id, 'Дело не найдено')
+        else:
+            bot.reply_to(message, 'Ошибка обработки запроса, прочти /help')
 
 
 def update_court_state():
