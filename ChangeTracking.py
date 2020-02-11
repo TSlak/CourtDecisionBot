@@ -43,7 +43,6 @@ def check_to_notify(connect, link=None):
         court_link_list = WorkWithData.get_all_court_link(connect)
         for court_link in court_link_list:
             data_court = WorkWithData.get_data_by_link(connect, court_link)
-            print(data_court['Наименование события'])
             messages = ""
             updated = False
             court_link = court_link[0]

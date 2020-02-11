@@ -52,10 +52,9 @@ def echo_message(message):
     key = telebot.types.InlineKeyboardMarkup()
     key.add(telebot.types.InlineKeyboardButton("Сохранить", callback_data="save"))
     if len(arg) != 1:
-        bot.reply_to(message, 'Проверьте ссылку')
-        link = FindCourtCase.get_link(arg[0].strip(), arg[1].strip())
-        if link:
-            bot.send_message(message.chat.id, link, reply_markup=key)
+        # link = FindCourtCase.get_link(arg[0].strip(), arg[1].strip())
+        if message.text:
+            bot.send_message(message.chat.id, message.text, reply_markup=key)
         else:
             bot.send_message(message.chat.id, 'Дело не найдено')
     else:
@@ -64,7 +63,7 @@ def echo_message(message):
 
 def update_court_state():
     while True:
-        time.sleep(600)
+        time.sleep(120)
         (messages, link) = ChangeTracking.check_to_notify(conn)
         chat_id_list = WorkWithData.get_all_chat_id_by_link(conn, link)
         for chat_id in chat_id_list:
