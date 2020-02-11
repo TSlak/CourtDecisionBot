@@ -42,7 +42,6 @@ def check_to_notify(connect, link=None):
     else:
         court_link_list = WorkWithData.get_all_court_link(connect)
         messages_list = {}
-        index = 0
         for court_link in court_link_list:
             data_court = WorkWithData.get_data_by_link(connect, court_link)
             messages = ""
@@ -74,7 +73,6 @@ def check_to_notify(connect, link=None):
             if updated:
                 WorkWithData.update_court_data(connect, link, cont1_data, cont2_data, cont3_data)
                 messages_list[link] = {messages}
-                index = index + 1
 
         print("Упдате")
         return messages_list
