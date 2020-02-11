@@ -37,8 +37,9 @@ def start(message):
 def callback_inline(call):
     if call.message:
         if call.data == "save":
-            WorkWithData.insert_subscribe_data(call.message.chat.id, call.message.text, conn)
-            ChangeTracking.check_to_notify(conn, call.message.text)
+            case_number, link = call.message.text.split('\n')
+            WorkWithData.insert_subscribe_data(call.message.chat.id, link, conn)
+            ChangeTracking.check_to_notify(conn, link)
             bot.answer_callback_query(call.id, text="Судебное дело сохранено")
         if call.data == "unsubscribe":
             WorkWithData.delete_subscribe_data(call.message.chat.id, call.message.text, conn)
@@ -78,8 +79,8 @@ def echo_message(message):
     key = telebot.types.InlineKeyboardMarkup()
     key.add(telebot.types.InlineKeyboardButton("Сохранить", callback_data="save"))
     if message.text.find('https://') > -1:
-        bot.send_message(message.chat.id, message.text, reply_markup=key)
-        bot.send_message(message.chat.id, ChangeTracking.get_head_case_data_by_link(message.text))
+        case_number = ChangeTracking.get_head_case_data_by_link(message.text)
+        bot.send_message(message.chat.id, case_number + '\n' + message.text, reply_markup=key)
     else:
         bot.reply_to(message, 'Ошибка обработки запроса, прочти /help')
 
