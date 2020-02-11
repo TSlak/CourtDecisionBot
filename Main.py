@@ -23,7 +23,7 @@ def start(message):
     bot.reply_to(message, 'Привет, ' + message.from_user.first_name + ', перед началом прочти /help')
 
 
-@bot.message_handler(commands=['find'])
+@bot.message_handler(commands=['sub'])
 def start(message):
     subscribe_list = WorkWithData.get_all_subscribe(conn, message.chat.id)
     key = telebot.types.InlineKeyboardMarkup()
