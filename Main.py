@@ -67,14 +67,14 @@ def help_command(message):
                 'Команда */check* - принудительный запуск проверки изменений\n' \
                 'Команда */find* - отобразить текущие подписки\n' \
                 'Команда */help* - отобразить эту подсказку'
-    bot.send_message(message.chat.id, help_text)
+    bot.send_message(message.chat.id, help_text, parse_mode='Markdown')
 
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def echo_message(message):
     key = telebot.types.InlineKeyboardMarkup()
     key.add(telebot.types.InlineKeyboardButton("Сохранить", callback_data="save"))
-    if message.text.find('https://'):
+    if message.text.find('https://') > -1:
         bot.send_message(message.chat.id, message.text, reply_markup=key)
     else:
         arg = message.text.split(',')
