@@ -47,7 +47,8 @@ def check_to_notify(connect, link=None):
         parse_cont4(soup)
         parse_head_case_data(soup)
         court_result_link = court_link[:court_link.find('/modules')] + court_result_link_data
-        WorkWithData.insert_court_data(connect, link, cont1_data, cont2_data, cont3_data, head_case_data, court_result_link, cont4_data)
+        WorkWithData.insert_court_data(connect, link, cont1_data, cont2_data, cont3_data, head_case_data,
+                                       court_result_link, cont4_data)
         print("Инсерт")
     else:
         court_link_list = WorkWithData.get_all_court_link(connect)
@@ -88,16 +89,17 @@ def check_to_notify(connect, link=None):
             i = i + 3
 
             if court_result_link != data_court[i]:
-                messages = messages + '\n *Добавлена ссылка: * [Перейти](' + court_result_link + ')'
+                messages = messages + '\n*Добавлена ссылка: * [Перейти](' + court_result_link + ')'
                 updated = True
 
             i = i + 1
 
             if cont4_data != data_court[i]:
-                messages = messages + '\n *Изменения в пересмотре: * \n' + cont4_data
+                messages = messages + '\n------\n*Изменения в пересмотре: * \n------\n' + cont4_data
 
             if updated:
-                WorkWithData.update_court_data(connect, court_link, cont1_data, cont2_data, cont3_data, head_case_data, court_result_link, cont4_data)
+                WorkWithData.update_court_data(connect, court_link, cont1_data, cont2_data, cont3_data, head_case_data,
+                                               court_result_link, cont4_data)
                 print(messages)
                 print(court_link)
                 messages_list[court_link] = messages
@@ -140,23 +142,24 @@ def check_to_notify_by_link(connect, link_list):
             i = i + 1
 
         if cont3_data != data_court[i]:
-            messages = messages + '\n*Стороны:*' + cont3_data
+            messages = messages + '\n------\n*Изменены стороны:* \n------\n' + cont3_data
             updated = True
 
         i = i + 3
 
         if cont4_data != data_court[i]:
-            messages = messages + '\n *Изменения в пересмотре: * \n' + cont4_data
+            messages = messages + '\n------\n*Изменения в пересмотре: * \n------\n' + cont4_data
 
         if court_result_link != data_court[i]:
             print(court_result_link)
             print('-----------------------------------------------------')
             print(data_court[i])
-            messages = messages + '\n *Добавлена ссылка: * [Перейти](' + court_result_link + ')'
+            messages = messages + '\n*Добавлена ссылка: * [Перейти](' + court_result_link + ')'
             updated = True
 
         if updated:
-            WorkWithData.update_court_data(connect, court_link, cont1_data, cont2_data, cont3_data, head_case_data, court_result_link, cont4_data)
+            WorkWithData.update_court_data(connect, court_link, cont1_data, cont2_data, cont3_data, head_case_data,
+                                           court_result_link, cont4_data)
             print(messages)
             print(court_link)
             messages_list[court_link] = messages
@@ -208,8 +211,9 @@ def parse_cont3(soup):
         rows = item.findAll('td', {'align': 'center'})
         header_len = len(rows)
         rows = item.findAll('td')
-        for item in range(header_len, len(rows)):
-            cont3_data = cont3_data + " " + rows[item].get_text(strip=True)
+        for item in range(header_len, len(rows) - 1):
+            cont3_data = cont3_data + " " + rows[item].get_text(strip=True) + ":* " + \
+                         rows[item + 1].get_text(strip=True) + '\n'
 
 
 def parse_cont4(soup):
@@ -219,7 +223,7 @@ def parse_cont4(soup):
         rows = item.findAll('td')
         for item in range(1, len(rows) - 1):
             cont4_data = cont4_data + " *" + rows[item].get_text(strip=True) + ":* " + \
-                         rows[item+1].get_text(strip=True) + "\n"
+                         rows[item + 1].get_text(strip=True) + "\n"
     print(cont4_data)
 
 
@@ -239,7 +243,6 @@ def parse_court_result_link(soup):
             court_result_link_data = str(link)
     else:
         court_result_link_data = ""
-
 
 
 def get_head_case_data_by_link(link):
