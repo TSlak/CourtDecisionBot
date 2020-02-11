@@ -39,7 +39,7 @@ def check_to_notify(connect, link=None):
         parse_cont1(soup)
         parse_cont2(soup)
         parse_cont3(soup)
-        parse_head_case_data(soup)
+        print(head_case_data)
         WorkWithData.insert_court_data(connect, link, cont1_data, cont2_data, cont3_data)
         print("Инсерт")
     else:
@@ -55,9 +55,9 @@ def check_to_notify(connect, link=None):
             parse_cont1(soup)
             parse_cont2(soup)
             parse_cont3(soup)
-
+            parse_head_case_data(soup)
             i = 0
-            messages = messages + '*Изменены следующие поля: * \n'
+            messages = messages + 'Номер дела: ' + head_case_data + '\n*Изменены следующие поля: * \n'
             for cont1 in cont1_data.keys():
                 if cont1_data[cont1] != data_court[i]:
                     messages = messages + '\n*' + cont1 + ':* ' + cont1_data[cont1]
@@ -70,9 +70,10 @@ def check_to_notify(connect, link=None):
                     updated = True
                 i = i + 1
 
-            if cont3_data == data_court[i]:
+            if cont3_data != data_court[i]:
                 messages = messages + '\n*Стороны:*' + cont3_data
                 updated = True
+                i = i + 1
 
             if updated:
                 WorkWithData.update_court_data(connect, court_link, cont1_data, cont2_data, cont3_data)
@@ -98,9 +99,9 @@ def check_to_notify_by_link(connect, link_list):
         parse_cont1(soup)
         parse_cont2(soup)
         parse_cont3(soup)
-
+        parse_head_case_data(soup)
         i = 0
-        messages = messages + 'Номер дела: ' + '*Изменены следующие поля: * \n'
+        messages = messages + 'Номер дела: ' + head_case_data + '\n*Изменены следующие поля: * \n'
         for cont1 in cont1_data.keys():
             if cont1_data[cont1] != data_court[i]:
                 messages = messages + '\n*' + cont1 + ':* ' + cont1_data[cont1]
@@ -129,6 +130,7 @@ def check_to_notify_by_link(connect, link_list):
 
 
 def parse_cont1(soup):
+    cont1_data.clear()
     cont1_list = soup.findAll('div', {'id': 'cont1'})
     for item in cont1_list:
         rows = item.findAll('td')
@@ -137,7 +139,7 @@ def parse_cont1(soup):
             if values[0] == DATE_OF_RECEIPT:
                 cont1_data[DATE_OF_RECEIPT] = rows[item + 1].get_text(strip=True).split('\n')[0]
             elif values[0] == PROTOCOL_NUMBER:
-                cont1_data[PROTOCOL_NUMBER] = rows[item + 1].get_text(strip=True).split('\n')[0] + '11'
+                cont1_data[PROTOCOL_NUMBER] = rows[item + 1].get_text(strip=True).split('\n')[0]
             elif values[0] == JUDGE:
                 cont1_data[JUDGE] = rows[item + 1].get_text(strip=True).split('\n')[0]
             elif values[0] == DATE_OF_REVIEW:
@@ -147,6 +149,7 @@ def parse_cont1(soup):
 
 
 def parse_cont2(soup):
+    cont2_data.clear()
     cont2_list = soup.findAll('div', {'id': 'cont2'})
     for item in cont2_list:
         rows = item.findAll('td', {'align': 'center'})
@@ -165,6 +168,7 @@ def parse_cont2(soup):
 
 def parse_cont3(soup):
     global cont3_data
+    cont3_data = ""
     cont3_list = soup.findAll('div', {'id': 'cont3'})
     for item in cont3_list:
         rows = item.findAll('td', {'align': 'center'})
@@ -176,4 +180,6 @@ def parse_cont3(soup):
 
 def parse_head_case_data(soup):
     global head_case_data
-    case_number = soup.findAll('div', {'class': 'casenumber'})
+    head_case_data = ""
+    case_number = soup.find('div', {'class': 'casenumber'})
+    head_case_data = case_number.get_text(strip=True)
