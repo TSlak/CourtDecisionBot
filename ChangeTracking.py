@@ -217,9 +217,8 @@ def parse_cont4(soup):
     cont4_list = soup.findAll('div', {'id': 'cont4'})
     for item in cont4_list:
         rows = item.findAll('td')
-        for item in range(1, len(rows) - 1):
-            cont4_data = cont4_data + " *" + rows[item].get_text(strip=True) + ":* " + \
-                         rows[item+1].get_text(strip=True) + "\n"
+        for item in range(1, len(rows)):
+            cont4_data = cont4_data + " " + rows[item].get_text(strip=True)
     print(cont4_data)
 
 
