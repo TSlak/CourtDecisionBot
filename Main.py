@@ -56,7 +56,9 @@ def check_command(message):
         print(chat_id_list)
         for chat_id in chat_id_list:
             print(chat_id)
-            bot.send_message(chat_id[0], messages_list[message_item])
+            bot.send_message(chat_id[0], messages_list[message_item], parse_mode= 'Markdown')
+    if len(messages_list) == 0:
+        bot.send_message(message.chat.id, 'Обновлений нет', parse_mode='Markdown')
 
 
 @bot.message_handler(commands=['help'])
@@ -98,7 +100,7 @@ def update_court_state():
             print(chat_id_list)
             for chat_id in chat_id_list:
                 print(chat_id)
-                bot.send_message(chat_id[0], messages_list[message_item])
+                bot.send_message(chat_id[0], messages_list[message_item], parse_mode= 'Markdown')
 
 
 @server.route('/' + TOKEN, methods=['POST'])
