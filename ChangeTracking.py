@@ -73,7 +73,7 @@ def check_to_notify(connect, link=None):
 
             if updated:
                 WorkWithData.update_court_data(connect, link, cont1_data, cont2_data, cont3_data)
-                messages_list[index] = {link: messages}
+                messages_list[link] = {messages}
                 index = index + 1
 
         print("Упдате")
