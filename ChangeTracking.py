@@ -165,16 +165,17 @@ def check_to_notify_by_link(connect, link_list):
 
         i = i + 3
 
-        if cont4_data != data_court[i]:
-            messages = messages + '\n------\n*Изменения в пересмотре: * \n------\n' + cont4_data
-
-        print(data_court[i] + '-----------1111111111111')
-
         if court_result_link != data_court[i]:
             print(court_result_link)
             print('-----------------------------------------------------')
             print(data_court[i])
             messages = messages + '\n*Добавлена ссылка: * [Перейти](' + court_result_link + ')'
+            updated = True
+
+        i = i + 1
+
+        if cont4_data != data_court[i]:
+            messages = messages + '\n------\n*Изменения в пересмотре: * \n------\n' + cont4_data
             updated = True
 
         if updated:
