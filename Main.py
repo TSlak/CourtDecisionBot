@@ -28,7 +28,7 @@ def start(message):
 
 
 @bot.message_handler(commands=['sub'])
-def show_subscribe(message):
+def show_subscribe_command(message):
     subscribe_list = WorkWithData.get_all_subscribe(conn, message.chat.id)
     key = telebot.types.InlineKeyboardMarkup()
     key.add(telebot.types.InlineKeyboardButton("Отписаться", callback_data="unsubscribe"))
@@ -52,8 +52,6 @@ def callback_inline(call):
             case_number, link = call.message.text.split('\n')
             WorkWithData.delete_subscribe_data(call.message.chat.id, link, conn)
             bot.answer_callback_query(call.id, text="Подписка отменена")
-        if call.data == 'Мои подписки':
-            show_subscribe(call.message)
 
 
 @bot.message_handler(commands=['check'])
@@ -92,6 +90,12 @@ def echo_message(message):
         case_number = ChangeTracking.get_head_case_data_by_link(message.text).get_text(strip=True)
         message_text = str(case_number) + str("\n") + str(message.text)
         bot.send_message(message.chat.id, message_text, reply_markup=key)
+    elif message.text == 'Мои подписки':
+        show_subscribe_command(message)
+    elif message.text == 'Проверить обновления':
+        check_command(message)
+    elif message.text == 'Показать справку':
+        help_command(message)
     else:
         bot.reply_to(message, 'Ошибка обработки запроса, прочти /help')
 
