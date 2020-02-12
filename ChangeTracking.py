@@ -104,7 +104,7 @@ def check_to_notify(connect, link=None):
             i = i + 1
 
             if cont4_data != data_court[i]:
-                messages = messages + '\n------\n*Изменения в пересмотре: * \n------' + cont4_data
+                messages = messages + '\n------\n*Изменения в пересмотре: * \n------\n' + cont4_data
 
             if updated:
                 WorkWithData.update_court_data(connect, court_link, cont1_data, cont2_data, cont3_data, head_case_data,
@@ -166,7 +166,7 @@ def check_to_notify_by_link(connect, link_list):
         i = i + 3
 
         if cont4_data != data_court[i]:
-            messages = messages + '\n------\n*Изменения в пересмотре: * \n------' + cont4_data
+            messages = messages + '\n------\n*Изменения в пересмотре: * \n------\n' + cont4_data
 
         if court_result_link != data_court[i]:
             print(court_result_link)
