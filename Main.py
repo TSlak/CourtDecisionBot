@@ -19,7 +19,12 @@ server = Flask(__name__)
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    bot.reply_to(message, 'Привет, ' + message.from_user.first_name + ', перед началом прочти /help')
+    keyboard = telebot.types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
+    button_subscribe_list = telebot.types.KeyboardButton(text="Мои подписки")
+    button_update = telebot.types.KeyboardButton(text="Проверить обновления")
+    button_help = telebot.types.KeyboardButton(text="Показать справку")
+    keyboard.add(button_subscribe_list, button_update, button_help)
+    bot.reply_to(message, 'Привет, ' + message.from_user.first_name + ', перед началом прочти /help', reply_markup=keyboard)
 
 
 @bot.message_handler(commands=['sub'])
