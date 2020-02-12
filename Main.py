@@ -28,7 +28,7 @@ def start(message):
 
 
 @bot.message_handler(commands=['sub'])
-def start(message):
+def show_subscribe(message):
     subscribe_list = WorkWithData.get_all_subscribe(conn, message.chat.id)
     key = telebot.types.InlineKeyboardMarkup()
     key.add(telebot.types.InlineKeyboardButton("Отписаться", callback_data="unsubscribe"))
@@ -52,6 +52,8 @@ def callback_inline(call):
             case_number, link = call.message.text.split('\n')
             WorkWithData.delete_subscribe_data(call.message.chat.id, link, conn)
             bot.answer_callback_query(call.id, text="Подписка отменена")
+        if call.data == 'Мои подписки':
+            show_subscribe(call.message)
 
 
 @bot.message_handler(commands=['check'])
