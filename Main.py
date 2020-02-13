@@ -60,7 +60,7 @@ def check_command(message):
     messages_list = ChangeTracking.check_to_notify_by_link(conn, link_list)
     for message_item in messages_list.keys():
         link_keyboard = telebot.types.InlineKeyboardMarkup()
-        link_button = telebot.types.InlineKeyboardButton(text='Перейти', url=message_item)
+        link_button = telebot.types.InlineKeyboardButton(text='Открыть дело в браузере', url=message_item)
         link_keyboard.add(link_button)
         chat_id_list = WorkWithData.get_all_chat_id_by_link(conn, message_item)
         for chat_id in chat_id_list:
@@ -103,7 +103,7 @@ def update_court_state():
         messages_list = ChangeTracking.check_to_notify(conn)
         for message_item in messages_list.keys():
             link_keyboard = telebot.types.InlineKeyboardMarkup()
-            link_button = telebot.types.InlineKeyboardButton(text='Перейти', url=message_item)
+            link_button = telebot.types.InlineKeyboardButton(text='Открыть дело в браузере', url=message_item)
             link_keyboard.add(link_button)
             chat_id_list = WorkWithData.get_all_chat_id_by_link(conn, message_item)
             for chat_id in chat_id_list:
