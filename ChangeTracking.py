@@ -49,7 +49,6 @@ def check_to_notify(connect, link=None):
         court_result_link = court_link[:court_link.find('/modules')] + court_result_link_data
         WorkWithData.insert_court_data(connect, link, cont1_data, cont2_data, cont3_data, head_case_data,
                                        court_result_link, cont4_data)
-        print("Инсерт")
     else:
         court_link_list = WorkWithData.get_all_court_link(connect)
         messages_list = {}
@@ -110,12 +109,8 @@ def check_to_notify(connect, link=None):
             if updated:
                 WorkWithData.update_court_data(connect, court_link, cont1_data, cont2_data, cont3_data, head_case_data,
                                                court_result_link, cont4_data)
-                print(messages)
-                print(court_link)
                 messages_list[court_link] = messages
 
-        print(messages_list)
-        print("Упдате")
         return messages_list
 
 
@@ -167,9 +162,6 @@ def check_to_notify_by_link(connect, link_list):
         i = i + 3
 
         if court_result_link != data_court[i]:
-            print(court_result_link)
-            print('-----------------------------------------------------')
-            print(data_court[i])
             messages = messages + '\n*Добавлена ссылка: * [Перейти](' + court_result_link + ')'
             updated = True
 
@@ -182,12 +174,8 @@ def check_to_notify_by_link(connect, link_list):
         if updated:
             WorkWithData.update_court_data(connect, court_link, cont1_data, cont2_data, cont3_data, head_case_data,
                                            court_result_link, cont4_data)
-            print(messages)
-            print(court_link)
             messages_list[court_link] = messages
 
-    print(messages_list)
-    print("Упдате")
     return messages_list
 
 
@@ -247,7 +235,6 @@ def parse_cont4(soup):
         for item in range(1, len(rows) - 1, 2):
             cont4_data = cont4_data + " *" + rows[item].get_text(strip=True) + ":* " + \
                          rows[item + 1].get_text(strip=True) + "\n"
-    print(cont4_data)
 
 
 def parse_head_case_data(soup):

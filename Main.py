@@ -62,11 +62,8 @@ def check_command(message):
         link_keyboard = telebot.types.InlineKeyboardMarkup()
         link_button = telebot.types.InlineKeyboardButton(text='Перейти', url=message_item)
         link_keyboard.add(link_button)
-        print(message_item)
         chat_id_list = WorkWithData.get_all_chat_id_by_link(conn, message_item)
-        print(chat_id_list)
         for chat_id in chat_id_list:
-            print(chat_id)
             bot.send_message(chat_id[0], messages_list[message_item], parse_mode='Markdown', reply_markup=link_keyboard)
     if len(messages_list) == 0:
         bot.send_message(message.chat.id, 'Обновлений нет', parse_mode='Markdown')
@@ -105,14 +102,11 @@ def update_court_state():
         time.sleep(600)
         messages_list = ChangeTracking.check_to_notify(conn)
         for message_item in messages_list.keys():
-            print(message_item)
             link_keyboard = telebot.types.InlineKeyboardMarkup()
             link_button = telebot.types.InlineKeyboardButton(text='Перейти', url=message_item)
             link_keyboard.add(link_button)
             chat_id_list = WorkWithData.get_all_chat_id_by_link(conn, message_item)
-            print(chat_id_list)
             for chat_id in chat_id_list:
-                print(chat_id)
                 bot.send_message(chat_id[0], messages_list[message_item], parse_mode='Markdown',
                                  reply_markup=link_keyboard)
 
