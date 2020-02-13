@@ -98,9 +98,8 @@ def echo_message(message):
 
 
 def update_court_state():
-    print('Ну вот, процесс запущен')
     while True:
-        time.sleep(600)
+        time.sleep(1200)
         messages_list = ChangeTracking.check_to_notify(conn)
         for message_item in messages_list.keys():
             link_keyboard = telebot.types.InlineKeyboardMarkup()
@@ -126,7 +125,6 @@ def webhook():
 
 
 if __name__ == "__main__":
-    print('Кажется, он сейчас запустит новый процесс')
     thread = threading.Thread(target=update_court_state)
     thread.start()
     server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))

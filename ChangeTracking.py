@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 import WorkWithData
+import time
 
 DATE_OF_RECEIPT = "Дата поступления"
 PROTOCOL_NUMBER = "Номер протокола об АП"
@@ -53,6 +54,7 @@ def check_to_notify(connect, link=None):
         court_link_list = WorkWithData.get_all_court_link(connect)
         messages_list = {}
         for court_link in court_link_list:
+            time.sleep(5)
             data_court = WorkWithData.get_data_by_link(connect, court_link)
             messages = ""
             updated = False
