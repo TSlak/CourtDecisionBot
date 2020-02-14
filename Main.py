@@ -8,10 +8,10 @@ from psycopg2 import connect
 
 import ChangeTracking
 import WorkWithData
+import WorkWithLicense
 
 DATABASE_URL = os.environ['DATABASE_URL']
 conn = connect(DATABASE_URL, sslmode='require')
-cursor = conn.cursor()
 TOKEN = '946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw'
 bot = telebot.TeleBot(TOKEN)
 server = Flask(__name__)
@@ -19,12 +19,36 @@ server = Flask(__name__)
 
 @bot.message_handler(commands=['start'])
 def start(message):
+    WorkWithData.update_chat_id_by_user_id(message.chat.id, message.from_user.id)
+    license_valid = WorkWithLicense.check_license(message.from_user.id)
+    if not license_valid:
+        send_payment_message(message.chat.id)
+        return
     keyboard = telebot.types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
     button_subscribe_list = telebot.types.KeyboardButton(text="Мои подписки")
     button_update = telebot.types.KeyboardButton(text="Проверить обновления")
     button_help = telebot.types.KeyboardButton(text="Показать справку")
-    keyboard.add(button_subscribe_list, button_update, button_help)
+    button_license = telebot.types.KeyboardButton(text="Остаток по подписке")
+    keyboard.add(button_subscribe_list, button_update, button_help, button_license)
     bot.reply_to(message, 'Привет, ' + message.from_user.first_name + ', перед началом прочти /help', reply_markup=keyboard)
+
+
+def send_payment_message(chat_id):
+    message_text = 'Привет. Для работы с ботом, пожалуйста, произведите оплату.' \
+                   '\n------' \
+                   '\nОдин месяц - 50р.' \
+                   '\nТри месяца - 125р.' \
+                   '\nШесть месяцев - 250р.' \
+                   '\nГод - 475р.' \
+                   '\n------' \
+                   '\nИли нажмите на кнопку "Проверить наличие оплаты", в случае, если оплата была проведена' \
+                   '\nПроблема с доступом? Обращаться @TSlak'
+    key = telebot.types.InlineKeyboardMarkup()
+    key.add(telebot.types.InlineKeyboardButton("Оплатить", url='https://yandex.ru'),
+            telebot.types.InlineKeyboardButton("Проверить наличие оплаты", callback_data="check_payment"))
+    bot.send_message(chat_id, message_text, key)
+
+
 
 
 @bot.message_handler(commands=['sub'])
@@ -52,6 +76,9 @@ def callback_inline(call):
             case_number, link = call.message.text.split('\n')
             WorkWithData.delete_subscribe_data(call.message.chat.id, link, conn)
             bot.answer_callback_query(call.id, text="Подписка отменена")
+        if call.data == 'check_payment':
+            # TODO:Добавить проверку оплаты
+            start(call.message)
 
 
 @bot.message_handler(commands=['check'])
@@ -82,8 +109,8 @@ def help_command(message):
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def echo_message(message):
     key = telebot.types.InlineKeyboardMarkup()
-    key.add(telebot.types.InlineKeyboardButton("Сохранить", callback_data="save"))
-    if message.text.find('https://') > -1:
+    key.add(telebot.types.InlineKeyboardButton("Подписаться", callback_data="save"))
+    if message.text.find('https://') == 0:
         case_number = ChangeTracking.get_head_case_data_by_link(message.text).get_text(strip=True)
         message_text = str(case_number) + str("\n") + str(message.text)
         bot.send_message(message.chat.id, message_text, reply_markup=key)
