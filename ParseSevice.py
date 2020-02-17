@@ -69,7 +69,6 @@ def _parse_cont1(soup):
 def _parse_cont2(soup):
     cont2_data = {EVENT_NAME: "", EVENT_DATE: "", EVENT_TIME: "", EVENT_COURTROOM: "", EVENT_RESULT: "",
                   EVENT_BASIS: "", EVENT_NOTE: "", EVENT_DATE_PLACEMENT: ""}
-    result = []
     cont2_list = soup.findAll('div', {'id': 'cont2'})
     for item in cont2_list:
         rows = item.findAll('td', {'align': 'center'})
@@ -81,14 +80,11 @@ def _parse_cont2(soup):
                     cont2_data[event] = index
         rows = item.findAll('td')
         for data_item in range(len(rows) - header_len, len(rows)):
-            result_item = {EVENT_NAME: "", EVENT_DATE: "", EVENT_TIME: "", EVENT_COURTROOM: "", EVENT_RESULT: "",
-                           EVENT_BASIS: "", EVENT_NOTE: "", EVENT_DATE_PLACEMENT: ""}
             for index in cont2_data.keys():
                 if data_item % header_len == cont2_data[index]:
-                    result_item[index] = rows[data_item].get_text(strip=True)
-            result.append(result_item)
+                    cont2_data[index] = rows[data_item].get_text(strip=True)
 
-    return result
+    return cont2_data
 
 
 def _parse_cont3(soup):
