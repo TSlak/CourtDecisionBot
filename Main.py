@@ -73,15 +73,17 @@ def callback_inline(call):
             bot.answer_callback_query(call.id, text="Судебное дело сохранено")
         if call.data == "unsubscribe":
             case_number, link = call.message.text.split('\n')
-            WorkWithData.delete_subscribe_data(call.message.chat.id, link, conn)
+            WorkWithData.delete_subscribe_data(call.message.chat.id, link, call.message.from_user.id)
             bot.answer_callback_query(call.id, text="Подписка отменена")
         if call.data == 'check_payment':
             # TODO:Добавить проверку оплаты
             start(call.message)
         if call.data == 'more_data':
+            key = telebot.types.InlineKeyboardMarkup()
+            key.add(telebot.types.InlineKeyboardButton("Отписаться", callback_data="unsubscribe"))
             link = CourtService.get_link_by_message(call.message)
             message_text = CourtService.get_court_message_by_link(link)
-            bot.edit_message_text(message_text, call.message.chat.id, call.message.message_id)
+            bot.edit_message_text(message_text, call.message.chat.id, call.message.message_id, parse_mode='Markdown')
 
 
 @bot.message_handler(commands=['check'])

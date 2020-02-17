@@ -47,16 +47,17 @@ def get_all_subscribe_link_by_chat_id(connect, chat_id):
     return cursor.fetchall()
 
 
-def delete_subscribe_data(chat_id, link, connect):
-    cursor = connect.cursor()
-    cursor.execute("DELETE FROM subscribe_court WHERE chat_id = %s AND court_link = %s", (str(chat_id), link))
-    connect.commit()
-    cursor = connect.cursor()
+def delete_subscribe_data(chat_id, link, user_id):
+    cursor = Main.conn.cursor()
+    cursor.execute("DELETE FROM subscribe_court WHERE chat_id = %s AND court_link = %s "
+                   "AND user_id = %s", (str(chat_id), link, str(user_id)))
+    Main.conn.commit()
+    cursor = Main.conn.cursor()
     cursor.execute("SELECT COUNT(*) FROM subscribe_court WHERE court_link = %s", (link,))
     count = cursor.fetchone()
     if count[0] == 0:
         cursor.execute("DELETE FROM court_data WHERE link = %s", (link,))
-        connect.commit()
+        Main.conn.commit()
 
 
 def get_all_chat_id(connect):
