@@ -123,7 +123,7 @@ def insert_court_data(cont1, cont2, cont3, cont4, cont5, case_number, court_resu
             'case_number, court_result_link, appeal_decision, unic_id, case_category, sign_of_review, create_date, ' \
             'is_saved, undefined_field, event_name, event_date, event_time, event_room, event_result, event_basis, ' \
             'event_note, event_placement_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, ' \
-            '%s, %s, %s %s %s %s %s %s %s %s)'
+            '%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
     cursor = Main.conn.cursor()
     cursor.execute(query, [cont1[ParseSevice.DATE_OF_RECEIPT], cont1[ParseSevice.PROTOCOL_NUMBER],
                            cont1[ParseSevice.JUDGE], cont1[ParseSevice.DATE_OF_REVIEW],
