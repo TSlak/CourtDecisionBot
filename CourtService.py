@@ -56,14 +56,38 @@ def form_court_message(court_data):
         messages = messages + '\n*Дата размещения:* ' + court_data[15]
 
     if court_data[16]:
-        messages = messages + '\n------\n*Стороны:*\n------\n' + court_data[16]
+        messages = messages + '\n------\n*Стороны:*\n------' + court_data[16]
     if court_data[17]:
         messages = messages + '\n------\n*Данные пересмотра: * \n------\n' + court_data[17]
     if court_data[18]:
         messages = messages + '\n------\n*Иные сведения: * \n------\n' + court_data[18]
     if court_data[20]:
         messages = messages + '\n*Судебный акт: * [Перейти](' + court_data[20] + ')'
-    print(messages)
+    return messages
+
+
+def get_short_message_by_link(link):
+    court_data = WorkWithData.get_court_data_by_link(link)
+    return form_short_court_message(court_data)
+
+
+def form_short_court_message(court_data):
+    messages = ""
+    if court_data[21]:
+        messages = messages + '[Открыть дело в браузере](' + court_data[21] + ')'
+    messages = messages + '\n------'
+    if court_data[19]:
+        messages = messages + '\n*Номер дела:* ' + court_data[19]
+    if court_data[1]:
+        messages = messages + '\n*Категория дела:* ' + court_data[1]
+    if court_data[3]:
+        messages = messages + '\n*Номер протокола об АП:* ' + court_data[3]
+    if court_data[4]:
+        messages = messages + '\n*Судья:* ' + court_data[4]
+    if court_data[5]:
+        messages = messages + '\n*Дата рассмотрения:* ' + court_data[5]
+    if court_data[7]:
+        messages = messages + '\n*Результат рассмотрения:* ' + court_data[7]
     return messages
 
 

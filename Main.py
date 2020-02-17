@@ -58,7 +58,7 @@ def show_subscribe_command(message):
     key.add(telebot.types.InlineKeyboardButton("Раскрыть", callback_data="more_data"),
             telebot.types.InlineKeyboardButton("Отписаться", callback_data="unsubscribe"))
     for item in subscribe_list:
-        message_text = CourtService.get_court_message_by_link(item[0])
+        message_text = CourtService.get_short_message_by_link(item[0])
         message_text = message_text[:message_text.find('------\n*Движение дела*')]
         bot.send_message(message.chat.id, message_text, reply_markup=key, parse_mode='Markdown')
     if len(subscribe_list) == 0:

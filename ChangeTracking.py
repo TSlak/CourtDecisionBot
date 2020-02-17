@@ -45,7 +45,7 @@ def get_change_message(cont1, cont2, cont3, cont4, cont5, head_case_number, cour
         messages = messages + '\n------\n*Движение дела*\n------' + cont2_messages
 
     if cont3 != data_court[i]:
-        messages = messages + '\n------\n*Стороны:*\n------\n' + cont3
+        messages = messages + '\n------\n*Стороны:*\n------' + cont3
         updated = True
 
     i = i + 1
