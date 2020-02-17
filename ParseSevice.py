@@ -30,7 +30,9 @@ def parse_court_by_link(court_link):
     cont4 = _parse_cont4(soup)
     cont5 = _parse_cont5(soup)
     head_case_number = _parse_head_case_number(soup)
-    court_result_link = court_link[:court_link.find('/modules')] + _parse_court_result_link(soup)
+    court_result_link = _parse_court_result_link(soup)
+    if court_result_link:
+        court_result_link = court_link[:court_link.find('/modules')] + court_result_link
 
     return cont1, cont2, cont3, cont4, cont5, head_case_number, court_result_link
 

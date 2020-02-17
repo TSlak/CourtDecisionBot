@@ -67,7 +67,7 @@ def form_court_message(court_data):
 
 
 def subscribe_court_by_call(call):
-    text = call.message.text
+    text = call.message.html_text
     link = text[text.find("](") + 2:text.find(")'")]
     print(text)
     print(link+"-------123123123")
