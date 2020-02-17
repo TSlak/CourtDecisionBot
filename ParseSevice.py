@@ -21,16 +21,24 @@ EVENT_DATE_PLACEMENT = "Дата размещения"
 
 
 def parse_court_by_link(link):
+    print(1.0)
     headers = {'user-agent': 'my-app/0.0.1'}
     r = requests.get(link, headers)
     soup = BeautifulSoup(r.text, features="html.parser")
     cont1 = _parse_cont1(soup)
+    print(1.1)
     cont2 = _parse_cont2(soup)
+    print(1.2)
     cont3 = _parse_cont3(soup)
+    print(1.3)
     cont4 = _parse_cont4(soup)
+    print(1.4)
     cont5 = _parse_cont5(soup)
+    print(1.5)
     head_case_number = _parse_head_case_number(soup)
+    print(1.6)
     court_result_link = _parse_court_result_link(soup)
+    print(1.7)
 
     return cont1, cont2, cont3, cont4, cont5, head_case_number, court_result_link
 
