@@ -26,7 +26,7 @@ def insert_subscribe_data(chat_id, link, user_id):
 
 
 def set_court_data_save_flag(court_link, flag):
-    query = 'UPDATE court_data SET is_saved=%s, WHERE link = %s'
+    query = 'UPDATE court_data SET is_saved=%s WHERE link = %s'
     cursor = Main.conn.cursor()
     cursor.execute(query, [flag, court_link])
     Main.conn.commit()
