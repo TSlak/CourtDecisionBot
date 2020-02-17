@@ -80,7 +80,7 @@ def _parse_cont2(soup):
                 if values[0] == event:
                     cont2_data[event] = index
         rows = item.findAll('td')
-        for data_item in range(len(rows)):
+        for data_item in range(len(rows) - header_len, len(rows)):
             result_item = {EVENT_NAME: "", EVENT_DATE: "", EVENT_TIME: "", EVENT_COURTROOM: "", EVENT_RESULT: "",
                            EVENT_BASIS: "", EVENT_NOTE: "", EVENT_DATE_PLACEMENT: ""}
             for index in cont2_data.keys():

@@ -14,7 +14,7 @@ def check_to_notify_by_link(court_link):
     messages_list = {}
 
     if updated:
-        WorkWithData.update_court_data(cont1, cont3, cont4, cont5, case_number, court_result_link, court_link)
+        WorkWithData.update_court_data(cont1, cont2, cont3, cont4, cont5, case_number, court_result_link, court_link)
         messages_list[court_link] = messages
 
     return messages_list

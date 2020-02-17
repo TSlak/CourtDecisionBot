@@ -8,7 +8,7 @@ def get_court_message_by_link(link):
         return form_court_message(court_data)
     else:
         cont1, cont2, cont3, cont4, cont5, case_number, court_result_link = ParseSevice.parse_court_by_link(link)
-        WorkWithData.insert_court_data(cont1, cont3, cont4, cont5, case_number, court_result_link, link)
+        WorkWithData.insert_court_data(cont1, cont2, cont3, cont4, cont5, case_number, court_result_link, link)
         court_data = WorkWithData.get_court_data_by_link(link)
         return form_court_message(court_data)
 
