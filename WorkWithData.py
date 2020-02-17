@@ -41,9 +41,9 @@ def subscribe_ready(chat_id, link, user_id):
     return count > 0
 
 
-def get_all_subscribe(connect, chat_id):
+def get_all_subscribe_link_by_chat_id(connect, chat_id):
     cursor = connect.cursor()
-    cursor.execute("SELECT * FROM subscribe_court WHERE chat_id = %s", (str(chat_id),))
+    cursor.execute("SELECT court_link FROM subscribe_court WHERE chat_id = %s", (str(chat_id),))
     return cursor.fetchall()
 
 

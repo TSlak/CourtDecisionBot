@@ -53,7 +53,7 @@ def form_court_message(court_data):
         messages = messages + '\n*Дата размещения:* ' + court_data[15]
 
     if court_data[16]:
-        messages = messages + '\n*Стороны:*' + court_data[16]
+        messages = messages + '\n------\n*Стороны:*\n------\n' + court_data[16]
     if court_data[17]:
         messages = messages + '\n------\n*Данные пересмотра: * \n------\n' + court_data[17]
     if court_data[18]:

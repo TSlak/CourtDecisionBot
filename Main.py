@@ -53,12 +53,11 @@ def send_payment_message(chat_id):
 
 @bot.message_handler(commands=['sub'])
 def show_subscribe_command(message):
-    subscribe_list = WorkWithData.get_all_subscribe(conn, message.chat.id)
+    subscribe_list = WorkWithData.get_all_subscribe_link_by_chat_id(conn, message.chat.id)
     key = telebot.types.InlineKeyboardMarkup()
     key.add(telebot.types.InlineKeyboardButton("Отписаться", callback_data="unsubscribe"))
     for item in subscribe_list:
-        case_number = CourtService.get_head_case_data_by_link(item[1])
-        message_text = case_number.get_text(strip=True) + '\n' + item[1]
+        message_text = CourtService.get_court_message_by_link(item[0])
         bot.send_message(message.chat.id, message_text, reply_markup=key)
     if len(subscribe_list) == 0:
         bot.send_message(message.chat.id, 'У вас нет подписок')
