@@ -25,6 +25,7 @@ def parse_court_by_link(link):
     headers = {'user-agent': 'my-app/0.0.1'}
     r = requests.get(link, headers)
     soup = BeautifulSoup(r.text, features="html.parser")
+    print(r.text)
     cont1 = _parse_cont1(soup)
     print(1.1)
     cont2 = _parse_cont2(soup)
@@ -44,6 +45,7 @@ def parse_court_by_link(link):
 
 
 def _parse_cont1(soup):
+    print("cont1")
     cont1_data = {UNIC_ID: "", CASE_CATEGORY: "", DATE_OF_RECEIPT: "", PROTOCOL_NUMBER: "", JUDGE: "",
                   DATE_OF_REVIEW: "", SIGN_OF_REVIEW: "", RESULT: ""}
     cont1_list = soup.findAll('div', {'id': 'cont1'})
@@ -67,7 +69,7 @@ def _parse_cont1(soup):
                 cont1_data[SIGN_OF_REVIEW] = rows[data_item + 1].get_text(strip=True).split('\n')[0]
             elif values[0] == RESULT:
                 cont1_data[RESULT] = rows[data_item + 1].get_text(strip=True).split('\n')[0]
-
+    print(cont1_data)
     return cont1_data
 
 
