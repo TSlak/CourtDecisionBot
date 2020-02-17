@@ -73,3 +73,8 @@ def subscribe_court_by_call(call):
     link = link[link.find('="')+2:link.find('">')]
     WorkWithData.insert_subscribe_data(call.message.chat.id, link, call.message.from_user.id)
 
+
+def get_link_by_message(message):
+    text = message.html_text.split("\n")
+    link = text[0]
+    return link[link.find('="')+2:link.find('">')]

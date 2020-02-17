@@ -55,8 +55,8 @@ def send_payment_message(chat_id):
 def show_subscribe_command(message):
     subscribe_list = WorkWithData.get_all_subscribe_link_by_chat_id(conn, message.chat.id)
     key = telebot.types.InlineKeyboardMarkup()
-    key.add(telebot.types.InlineKeyboardButton("Отписаться", callback_data="unsubscribe"),
-            telebot.types.InlineKeyboardButton("Расскрыть", callback_data="more_data"))
+    key.add(telebot.types.InlineKeyboardButton("Раскрыть", callback_data="more_data"),
+            telebot.types.InlineKeyboardButton("Отписаться", callback_data="unsubscribe"))
     for item in subscribe_list:
         message_text = CourtService.get_court_message_by_link(item[0])
         message_text = message_text[:message_text.find('------\n*Движение дела*')]
@@ -78,9 +78,10 @@ def callback_inline(call):
         if call.data == 'check_payment':
             # TODO:Добавить проверку оплаты
             start(call.message)
-        # if call.data == more_data:
-        #     bot.edit_message_text()
-
+        if call.data == 'more_data':
+            link = CourtService.get_link_by_message(call.message)
+            message_text = CourtService.get_court_message_by_link(link)
+            bot.edit_message_text(message_text, call.message.chat.id, call.message.message_id)
 
 
 @bot.message_handler(commands=['check'])
