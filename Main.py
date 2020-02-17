@@ -7,9 +7,9 @@ from flask import Flask, request
 from psycopg2 import connect
 
 import ChangeTracking
+import CourtService
 import WorkWithData
 import WorkWithLicense
-import CourtService
 
 DATABASE_URL = os.environ['DATABASE_URL']
 conn = connect(DATABASE_URL, sslmode='require')
@@ -31,7 +31,8 @@ def start(message):
     button_help = telebot.types.KeyboardButton(text="Показать справку")
     button_license = telebot.types.KeyboardButton(text="Остаток по подписке")
     keyboard.add(button_subscribe_list, button_update, button_help, button_license)
-    bot.reply_to(message, 'Привет, ' + message.from_user.first_name + ', перед началом прочти /help', reply_markup=keyboard)
+    bot.reply_to(message, 'Привет, ' + message.from_user.first_name + ', перед началом прочти /help',
+                 reply_markup=keyboard)
 
 
 def send_payment_message(chat_id):
@@ -48,8 +49,6 @@ def send_payment_message(chat_id):
     key.add(telebot.types.InlineKeyboardButton("Оплатить", url='https://yandex.ru'),
             telebot.types.InlineKeyboardButton("Проверить наличие оплаты", callback_data="check_payment"))
     bot.send_message(chat_id, message_text, key)
-
-
 
 
 @bot.message_handler(commands=['sub'])
@@ -113,7 +112,7 @@ def echo_message(message):
     key.add(telebot.types.InlineKeyboardButton("Подписаться", callback_data="save"))
     if message.text.find('https://') == 0:
         message_text = CourtService.get_court_message_by_link(message.text)
-        bot.send_message(message.chat.id, message_text, reply_markup=key)
+        bot.send_message(message.chat.id, message_text, reply_markup=key, parse_mode='Markdown')
     elif message.text == 'Мои подписки':
         show_subscribe_command(message)
     elif message.text == 'Проверить обновления':

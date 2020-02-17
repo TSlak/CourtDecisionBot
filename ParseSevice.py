@@ -20,9 +20,9 @@ EVENT_NOTE = "Примечание"
 EVENT_DATE_PLACEMENT = "Дата размещения"
 
 
-def parse_court_by_link(link):
+def parse_court_by_link(court_link):
     headers = {'user-agent': 'my-app/0.0.1'}
-    r = requests.get(link, headers=headers)
+    r = requests.get(court_link, headers=headers)
     soup = BeautifulSoup(r.text, features="html.parser")
     cont1 = _parse_cont1(soup)
     cont2 = _parse_cont2(soup)
@@ -30,7 +30,7 @@ def parse_court_by_link(link):
     cont4 = _parse_cont4(soup)
     cont5 = _parse_cont5(soup)
     head_case_number = _parse_head_case_number(soup)
-    court_result_link = _parse_court_result_link(soup)
+    court_result_link = court_link[:court_link.find('/modules')] + _parse_court_result_link(soup)
 
     return cont1, cont2, cont3, cont4, cont5, head_case_number, court_result_link
 
