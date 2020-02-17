@@ -79,7 +79,7 @@ def get_court_data_by_link(link):
     cursor.execute("SELECT cd.unic_id, cd.case_category, cd.date_of_receipt, cd.protocol_number, cd.judge, "
                    "cd.date_of_review, cd.sign_of_review, cd.result, "
                    "cm.event_name, cm.event_date, cm.event_time, cm.event_courtroom, cm.event_result, "
-                   "cm.event_basis, cm.event_note, cm.event_date_placement "
+                   "cm.event_basis, cm.event_note, cm.event_date_placement, "
                    "cd.sides, cd.appeal_decision, cd.undefined_field, cd.case_number, cd.court_result_link"
                    "FROM court_data as cd "
                    "LEFT JOIN court_moving as cm ON cm.court_link = cd.link"
