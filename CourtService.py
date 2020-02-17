@@ -16,41 +16,41 @@ def get_court_message_by_link(link):
 def form_court_message(court_data):
     messages = '\n------\n*Дело*\n------'
     if court_data[19]:
-        messages = messages + '\nНомер дела: ' + court_data[19]
+        messages = messages + '\n*Номер дела:* ' + court_data[19]
     if court_data[0]:
-        messages = messages + '\nУникальный идентификатор дела: ' + court_data[0]
+        messages = messages + '\n*Уникальный идентификатор дела:* ' + court_data[0]
     if court_data[1]:
-        messages = messages + '\nКатегория дела: ' + court_data[1]
+        messages = messages + '\n*Категория дела:* ' + court_data[1]
     if court_data[2]:
-        messages = messages + '\nДата поступления: ' + court_data[2]
+        messages = messages + '\n*Дата поступления:* ' + court_data[2]
     if court_data[3]:
-        messages = messages + '\nНомер протокола об АП: ' + court_data[3]
+        messages = messages + '\n*Номер протокола об АП:* ' + court_data[3]
     if court_data[4]:
-        messages = messages + '\nСудья: ' + court_data[4]
+        messages = messages + '\n*Судья:* ' + court_data[4]
     if court_data[5]:
-        messages = messages + '\nДата рассмотрения: ' + court_data[5]
+        messages = messages + '\n*Дата рассмотрения:* ' + court_data[5]
     if court_data[6]:
-        messages = messages + '\nПризнак рассмотрения дела: ' + court_data[6]
+        messages = messages + '\n*Признак рассмотрения дела:* ' + court_data[6]
     if court_data[7]:
-        messages = messages + '\nРезультат рассмотрения: ' + court_data[7]
+        messages = messages + '\n*Результат рассмотрения:* ' + court_data[7]
 
         messages = messages + '\n------\n*Движение дела*\n------'
     if court_data[8]:
-        messages = messages + '\nНаименование события: ' + court_data[8]
+        messages = messages + '\n*Наименование события:* ' + court_data[8]
     if court_data[9]:
-        messages = messages + '\nДата: ' + court_data[9]
+        messages = messages + '\n*Дата:* ' + court_data[9]
     if court_data[10]:
-        messages = messages + '\nВремя: ' + court_data[10]
+        messages = messages + '\n*Время:* ' + court_data[10]
     if court_data[11]:
-        messages = messages + '\nЗал судебного заседания: ' + court_data[11]
+        messages = messages + '\n*Зал судебного заседания:* ' + court_data[11]
     if court_data[12]:
-        messages = messages + '\nРезультат события: ' + court_data[12]
+        messages = messages + '\n*Результат события:* ' + court_data[12]
     if court_data[13]:
-        messages = messages + '\nОснование для выбранного результата события: ' + court_data[13]
+        messages = messages + '\n*Основание для выбранного результата события:* ' + court_data[13]
     if court_data[14]:
-        messages = messages + '\nПримечание: ' + court_data[14]
+        messages = messages + '\n*Примечание:* ' + court_data[14]
     if court_data[15]:
-        messages = messages + '\nДата размещения: ' + court_data[15]
+        messages = messages + '\n*Дата размещения:* ' + court_data[15]
 
     if court_data[16]:
         messages = messages + '\n*Стороны:*' + court_data[16]
@@ -60,5 +60,14 @@ def form_court_message(court_data):
         messages = messages + '\n------\n*Иные сведения: * \n------\n' + court_data[18]
     if court_data[20]:
         messages = messages + '\n*Судебный акт: * [Перейти](' + court_data[20] + ')'
+    if court_data[21]:
+        messages = messages + '\n------\n[Открыть дело в браузере](' + court_data[21] + ')'
     print(messages)
     return messages
+
+
+def subscribe_court_by_call(call):
+    text = call.message.text
+    link = text[text.find("](") + 2:text.find(")'")]
+    WorkWithData.insert_subscribe_data(call.message.chat.id, link)
+

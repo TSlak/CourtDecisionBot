@@ -15,12 +15,13 @@ def get_user_payment_license_date(user_id):
     return cursor.fetchone()[0]
 
 
-def insert_subscribe_data(chat_id, link):
-    if subscribe_ready(chat_id, link):
+def insert_subscribe_data(chat_id, link, user_id):
+    if subscribe_ready(chat_id, link, user_id):
         return
     set_court_data_save_flag(link, True)
     cursor = Main.conn.cursor()
-    cursor.execute("INSERT INTO subscribe_court (chat_id, court_link) VALUES (%s, %s)", (chat_id, link))
+    cursor.execute("INSERT INTO subscribe_court (chat_id, court_link, user_id) VALUES (%s, %s, %s)",
+                   (chat_id, link, user_id))
     Main.conn.commit()
 
 
@@ -31,9 +32,10 @@ def set_court_data_save_flag(court_link, flag):
     Main.conn.commit()
 
 
-def subscribe_ready(chat_id, link):
+def subscribe_ready(chat_id, link, user_id):
     cursor = Main.conn.cursor()
-    cursor.execute("SELECT COUNT(*) FROM subscribe_court WHERE chat_id = %s AND court_link = %s", (str(chat_id), link))
+    cursor.execute("SELECT COUNT(*) FROM subscribe_court "
+                   "WHERE chat_id = %s AND court_link = %s AND user_id = %s", (str(chat_id), link, user_id))
     count = cursor.fetchone()[0]
     return count > 0
 
@@ -80,7 +82,7 @@ def get_court_data_by_link(link):
                    "cd.date_of_review, cd.sign_of_review, cd.result, "
                    "cm.event_name, cm.event_date, cm.event_time, cm.event_room, cm.event_result, "
                    "cm.event_basis, cm.event_note, cm.event_placement_date, "
-                   "cd.sides, cd.appeal_decision, cd.undefined_field, cd.case_number, cd.court_result_link "
+                   "cd.sides, cd.appeal_decision, cd.undefined_field, cd.case_number, cd.court_result_link, cd.link "
                    "FROM court_data as cd "
                    "LEFT JOIN court_moving as cm ON cm.court_link = cd.link "
                    "WHERE link = %s LIMIT 1", (link,))

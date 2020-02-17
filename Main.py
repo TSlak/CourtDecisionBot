@@ -67,10 +67,8 @@ def show_subscribe_command(message):
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
     if call.message:
-        if call.data == "save":
-            case_number, link = call.message.text.split('\n')
-            WorkWithData.insert_subscribe_data(call.message.chat.id, link)
-            ChangeTracking.check_to_notify(conn, link)
+        if call.data == "subscribe":
+            CourtService.subscribe_court_by_call(call)
             bot.answer_callback_query(call.id, text="Судебное дело сохранено")
         if call.data == "unsubscribe":
             case_number, link = call.message.text.split('\n')
@@ -109,7 +107,7 @@ def help_command(message):
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def echo_message(message):
     key = telebot.types.InlineKeyboardMarkup()
-    key.add(telebot.types.InlineKeyboardButton("Подписаться", callback_data="save"))
+    key.add(telebot.types.InlineKeyboardButton("Подписаться", callback_data="subscribe"))
     if message.text.find('https://') == 0:
         message_text = CourtService.get_court_message_by_link(message.text)
         bot.send_message(message.chat.id, message_text, reply_markup=key, parse_mode='Markdown')
