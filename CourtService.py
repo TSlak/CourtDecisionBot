@@ -3,13 +3,20 @@ import ParseSevice
 
 
 def get_court_message_by_link(link):
+    print("До входа")
     court_data = WorkWithData.get_court_data_by_link(link)
+    print(court_data)
     if court_data:
+        print("Первое условие")
         return form_court_message(court_data)
     else:
+        print("2.1")
         cont1, cont2, cont3, cont4, cont5, case_number, court_result_link = ParseSevice.parse_court_by_link(link)
+        print(2.2)
         WorkWithData.insert_court_data(cont1, cont3, cont4, cont5, case_number, court_result_link, link)
+        print(2.3)
         court_data = WorkWithData.get_court_data_by_link(link)
+        print(2.4)
         return form_court_message(court_data)
 
 
@@ -39,5 +46,5 @@ def form_court_message(court_data):
     messages = messages + '\n------\n*Данные пересмотра: * \n------\n' + court_data[18]
     messages = messages + '\n------\n*Иные сведения: * \n------\n' + court_data[19]
     messages = messages + '\n*Судебный акт: * [Перейти](' + court_data[20] + ')'
-
+    print(messages)
     return messages
