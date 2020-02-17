@@ -24,8 +24,9 @@ def parse_court_by_link(link):
     print(1.0)
     headers = {'user-agent': 'my-app/0.0.1'}
     r = requests.get(link, headers)
+    print("22222")
     soup = BeautifulSoup(r.text, features="html.parser")
-    print(r.text)
+    print(r.text + ' 111111')
     cont1 = _parse_cont1(soup)
     print(1.1)
     cont2 = _parse_cont2(soup)
