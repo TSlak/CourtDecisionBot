@@ -6,13 +6,13 @@ import ParseSevice
 
 def update_chat_id_by_user_id(chat_id, user_id):
     cursor = Main.conn.cursor()
-    cursor.execute("UPDATE subscribe_court SET chat_id=%s WHERE user_id=%s", (chat_id, user_id))
+    cursor.execute("UPDATE subscribe_court SET chat_id=%s WHERE user_id=%s", (str(chat_id), str(user_id)))
     Main.conn.commit()
 
 
 def get_user_payment_license_date(user_id):
     cursor = Main.conn.cursor()
-    cursor.execute("SELECT data_end FROM user_payment WHERE user_id = %s", (user_id,))
+    cursor.execute("SELECT data_end FROM user_payment WHERE user_id = %s", (str(user_id),))
     return cursor.fetchone()[0]
 
 

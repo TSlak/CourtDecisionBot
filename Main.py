@@ -58,7 +58,7 @@ def show_subscribe_command(message):
     key.add(telebot.types.InlineKeyboardButton("Отписаться", callback_data="unsubscribe"))
     for item in subscribe_list:
         message_text = CourtService.get_court_message_by_link(item[0])
-        bot.send_message(message.chat.id, message_text, reply_markup=key)
+        bot.send_message(message.chat.id, message_text, reply_markup=key, parse_mode='Markdown')
     if len(subscribe_list) == 0:
         bot.send_message(message.chat.id, 'У вас нет подписок')
 
