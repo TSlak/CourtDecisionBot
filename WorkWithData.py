@@ -82,7 +82,7 @@ def get_court_data_by_link(link):
                    "cm.event_basis, cm.event_note, cm.event_date_placement, "
                    "cd.sides, cd.appeal_decision, cd.undefined_field, cd.case_number, cd.court_result_link "
                    "FROM court_data as cd "
-                   "LEFT JOIN court_moving as cm ON cm.court_link = cd.link"
+                   "LEFT JOIN court_moving as cm ON cm.court_link = cd.link "
                    "WHERE link = %s LIMIT 1", (link,))
 
     return cursor.fetchone()
