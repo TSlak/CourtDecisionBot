@@ -35,7 +35,7 @@ def set_court_data_save_flag(court_link, flag):
 def subscribe_ready(chat_id, link, user_id):
     cursor = Main.conn.cursor()
     cursor.execute("SELECT COUNT(*) FROM subscribe_court "
-                   "WHERE chat_id = %s AND court_link = %s AND user_id = %s", (str(chat_id), link, user_id))
+                   "WHERE chat_id = %s AND court_link = %s AND user_id = %s", (str(chat_id), link, str(user_id)))
     count = cursor.fetchone()[0]
     return count > 0
 
