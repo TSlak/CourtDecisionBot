@@ -70,7 +70,7 @@ def callback_inline(call):
     if call.message:
         if call.data == "save":
             case_number, link = call.message.text.split('\n')
-            WorkWithData.insert_subscribe_data(call.message.chat.id, link, conn)
+            WorkWithData.insert_subscribe_data(call.message.chat.id, link)
             ChangeTracking.check_to_notify(conn, link)
             bot.answer_callback_query(call.id, text="Судебное дело сохранено")
         if call.data == "unsubscribe":
