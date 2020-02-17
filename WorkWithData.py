@@ -118,7 +118,6 @@ def update_court_data(cont1, cont2, cont3, cont4, cont5, case_number, court_resu
 
 
 def insert_court_data(cont1, cont2, cont3, cont4, cont5, case_number, court_result_link, link):
-    print(cont2)
     query = 'INSERT INTO court_data(date_of_receipt, protocol_number, judge, date_of_review, result, sides, link, ' \
             'case_number, court_result_link, appeal_decision, unic_id, case_category, sign_of_review, create_date, ' \
             'is_saved, undefined_field, event_name, event_date, event_time, event_room, event_result, event_basis, ' \
