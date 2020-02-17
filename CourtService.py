@@ -16,7 +16,7 @@ def get_court_message_by_link(link):
 def form_court_message(court_data):
     messages = ""
     if court_data[21]:
-        messages = messages + '\n------\n[Открыть дело в браузере](' + court_data[21] + ')'
+        messages = messages + '[Открыть дело в браузере](' + court_data[21] + ')'
     messages = messages + '\n------\n*Дело*\n------'
     if court_data[19]:
         messages = messages + '\n*Номер дела:* ' + court_data[19]
