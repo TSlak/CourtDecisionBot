@@ -14,7 +14,10 @@ def get_court_message_by_link(link):
 
 
 def form_court_message(court_data):
-    messages = '\n------\n*Дело*\n------'
+    messages = ""
+    if court_data[21]:
+        messages = messages + '\n------\n[Открыть дело в браузере](' + court_data[21] + ')'
+    messages = messages + '\n------\n*Дело*\n------'
     if court_data[19]:
         messages = messages + '\n*Номер дела:* ' + court_data[19]
     if court_data[0]:
@@ -60,15 +63,13 @@ def form_court_message(court_data):
         messages = messages + '\n------\n*Иные сведения: * \n------\n' + court_data[18]
     if court_data[20]:
         messages = messages + '\n*Судебный акт: * [Перейти](' + court_data[20] + ')'
-    if court_data[21]:
-        messages = messages + '\n------\n[Открыть дело в браузере](' + court_data[21] + ')'
     print(messages)
     return messages
 
 
 def subscribe_court_by_call(call):
     text = call.message.html_text.split("\n")
-    link = text[-1]
+    link = text[0]
     link = link[link.find('="')+2:link.find('">')]
     WorkWithData.insert_subscribe_data(call.message.chat.id, link, call.message.from_user.id)
 
