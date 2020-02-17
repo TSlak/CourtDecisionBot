@@ -67,8 +67,9 @@ def form_court_message(court_data):
 
 
 def subscribe_court_by_call(call):
-    text = call.message.html_text
-    link = text[text.find("](") + 2:text.find(")'")]
+    text = call.message.html_text.split("\n")
+    link = text[-1][text.find("](") + 2:text.find(")'")]
+    link = link[link.find('="')+2:link.find('">')]
     print(text)
     print(link+"-------123123123")
     # WorkWithData.insert_subscribe_data(call.message.chat.id, link, call.message.from_user.id)
