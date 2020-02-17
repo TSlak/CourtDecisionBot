@@ -9,6 +9,7 @@ from psycopg2 import connect
 import ChangeTracking
 import WorkWithData
 import WorkWithLicense
+import CourtService
 
 DATABASE_URL = os.environ['DATABASE_URL']
 conn = connect(DATABASE_URL, sslmode='require')
@@ -57,7 +58,7 @@ def show_subscribe_command(message):
     key = telebot.types.InlineKeyboardMarkup()
     key.add(telebot.types.InlineKeyboardButton("Отписаться", callback_data="unsubscribe"))
     for item in subscribe_list:
-        case_number = ChangeTracking.get_head_case_data_by_link(item[1])
+        case_number = CourtService.get_head_case_data_by_link(item[1])
         message_text = case_number.get_text(strip=True) + '\n' + item[1]
         bot.send_message(message.chat.id, message_text, reply_markup=key)
     if len(subscribe_list) == 0:
@@ -111,8 +112,7 @@ def echo_message(message):
     key = telebot.types.InlineKeyboardMarkup()
     key.add(telebot.types.InlineKeyboardButton("Подписаться", callback_data="save"))
     if message.text.find('https://') == 0:
-        case_number = ChangeTracking.get_head_case_data_by_link(message.text).get_text(strip=True)
-        message_text = str(case_number) + str("\n") + str(message.text)
+        message_text = CourtService.get_court_message_by_link(message.text)
         bot.send_message(message.chat.id, message_text, reply_markup=key)
     elif message.text == 'Мои подписки':
         show_subscribe_command(message)

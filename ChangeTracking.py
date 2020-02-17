@@ -6,161 +6,70 @@ import WorkWithData
 import time
 
 
-def check_to_notify_by_link(link):
-    cont1, cont2, cont3, cont4, cont5, head_case_number, court_result_link = ParseSevice.parse_court_by_link(link)
-    data_court = WorkWithData.get_court_data_by_link(link)
-
-def check_to_notify(connect, link=None):
-
-    if link:
-        if WorkWithData.get_count_data_by_link(connect, link) != 0:
-            return
-        court_link = link
-        r = requests.get(court_link, headers=headers)
-        soup = BeautifulSoup(r.text, features="html.parser")
-        cont1_data = parse_cont1(soup)
-        parse_cont2(soup)
-        parse_cont3(soup)
-        parse_cont4(soup)
-        parse_head_case_data(soup)
-        court_result_link = court_link[:court_link.find('/modules')] + court_result_link_data
-        WorkWithData.insert_court_data(connect, link, cont1_data, cont2_data, cont3_data, head_case_data,
-                                       court_result_link, cont4_data)
-    else:
-        court_link_list = WorkWithData.get_all_court_link(connect)
-        messages_list = {}
-        for court_link in court_link_list:
-            time.sleep(5)
-            data_court = WorkWithData.get_court_data_by_link(connect, court_link)
-            messages = ""
-            updated = False
-            court_link = court_link[0]
-            r = requests.get(court_link, headers=headers)
-            soup = BeautifulSoup(r.text, features="html.parser")
-            reset_value()
-            cont1_data = parse_cont1(soup)
-            parse_cont2(soup)
-            parse_cont3(soup)
-            parse_cont4(soup)
-            parse_head_case_data(soup)
-            parse_court_result_link(soup)
-            court_result_link = court_link[:court_link.find('/modules')] + court_result_link_data
-            i = 0
-            messages = messages + 'Номер дела: ' + head_case_data + '\n*Изменены следующие поля: * \n'
-
-            cont1_messages = ""
-            for cont1 in cont1_data.keys():
-                if cont1_data[cont1] != data_court[i]:
-                    cont1_messages = cont1_messages + '\n*' + cont1 + ':* ' + cont1_data[cont1]
-                    updated = True
-                i = i + 1
-
-            if cont1_messages:
-                messages = messages + '\n------\n*Дело*\n------' + cont1_messages
-
-            cont2_messages = ""
-            for cont2 in cont2_data.keys():
-                if cont2_data[cont2] != data_court[i]:
-                    cont2_messages = cont2_messages + '\n*' + cont2 + ':* ' + cont2_data[cont2]
-                    updated = True
-                i = i + 1
-
-            if cont2_messages:
-                messages = messages + '\n------\n*Движение дела*\n------' + cont2_messages
-
-            if cont3_data != data_court[i]:
-                messages = messages + '\n*Стороны:*' + cont3_data
-                updated = True
-
-            i = i + 3
-
-            if court_result_link != data_court[i]:
-                messages = messages + '\n*Добавлен судебный акт: * [Перейти](' + court_result_link + ')'
-                updated = True
-
-            i = i + 1
-
-            if cont4_data != data_court[i]:
-                messages = messages + '\n------\n*Изменения в пересмотре: * \n------\n' + cont4_data
-                updated = True
-
-            if updated:
-                WorkWithData.update_court_data(connect, court_link, cont1_data, cont2_data, cont3_data, head_case_data,
-                                               court_result_link, cont4_data)
-                messages_list[court_link] = messages
-
-        return messages_list
-
-
-def check_to_notify_by_link(connect, link_list):
-    headers = {'user-agent': 'my-app/0.0.1'}
+def check_to_notify_by_link(court_link):
+    cont1, cont2, cont3, cont4, cont5, case_number, court_result_link = ParseSevice.parse_court_by_link(court_link)
+    data_court = WorkWithData.get_court_data_by_link(court_link)
+    updated, messages = get_change_message(cont1, cont2, cont3, cont4, cont5, case_number, court_result_link,
+                                           data_court)
     messages_list = {}
-    for court_link in link_list:
-        data_court = WorkWithData.get_court_data_by_link(connect, court_link)
-        messages = ""
-        updated = False
-        court_link = court_link[0]
-        r = requests.get(court_link, headers=headers)
-        soup = BeautifulSoup(r.text, features="html.parser")
-        reset_value()
-        cont1_data = parse_cont1(soup)
-        parse_cont2(soup)
-        parse_cont3(soup)
-        parse_cont4(soup)
-        parse_head_case_data(soup)
-        parse_court_result_link(soup)
-        court_result_link = court_link[:court_link.find('/modules')] + court_result_link_data
-        i = 0
-        messages = messages + 'Номер дела: ' + head_case_data + '\n*Изменены следующие поля: * \n'
 
-        cont1_messages = ""
-        for cont1 in cont1_data.keys():
-            if cont1_data[cont1] != data_court[i]:
-                cont1_messages = cont1_messages + '\n*' + cont1 + ':* ' + cont1_data[cont1]
-                updated = True
-            i = i + 1
-
-        if cont1_messages:
-            messages = messages + '\n------\n*Дело*\n------' + cont1_messages
-
-        cont2_messages = ""
-        for cont2 in cont2_data.keys():
-            if cont2_data[cont2] != data_court[i]:
-                cont2_messages = cont2_messages + '\n*' + cont2 + ':* ' + cont2_data[cont2]
-                updated = True
-            i = i + 1
-
-        if cont2_messages:
-            messages = messages + '\n------\n*Движение дела*\n------' + cont2_messages
-
-        if cont3_data != data_court[i]:
-            messages = messages + '\n------\n*Изменены стороны:* \n------' + cont3_data
-            updated = True
-
-        i = i + 3
-
-        if court_result_link != data_court[i]:
-            messages = messages + '\n*Добавлен судебный акт: * [Перейти](' + court_result_link + ')'
-            updated = True
-
-        i = i + 1
-
-        if cont4_data != data_court[i]:
-            messages = messages + '\n------\n*Изменения в пересмотре: * \n------\n' + cont4_data
-            updated = True
-
-        if updated:
-            WorkWithData.update_court_data(connect, court_link, cont1_data, cont2_data, cont3_data, head_case_data,
-                                           court_result_link, cont4_data)
-            messages_list[court_link] = messages
+    if updated:
+        WorkWithData.update_court_data(cont1, cont3, cont4, cont5, case_number, court_result_link, court_link)
+        messages_list[court_link] = messages
 
     return messages_list
 
 
+def get_change_message(cont1, cont2, cont3, cont4, cont5, head_case_number, court_result_link, data_court):
+    messages = 'Номер дела: ' + head_case_number + '\n*Изменены следующие поля: * \n'
+    updated = False
+    i = 0
+    cont1_messages = ""
+    for cont1_key in cont1.keys():
+        if cont1[cont1_key] != data_court[i]:
+            cont1_messages = cont1_messages + '\n*' + cont1_key + ':* ' + cont1[cont1_key]
+            updated = True
+        i = i + 1
 
-def get_head_case_data_by_link(link):
-    headers = {'user-agent': 'my-app/0.0.1'}
-    r = requests.get(link, headers=headers)
-    soup = BeautifulSoup(r.text, features="html.parser")
-    case_number = soup.find('div', {'class': 'casenumber'})
-    return case_number
+    if cont1_messages:
+        messages = messages + '\n------\n*Дело*\n------' + cont1_messages
+
+    cont2_messages = ""
+    for cont2_key in cont2.keys():
+        if cont2[cont2_key] != data_court[i]:
+            cont2_messages = cont2_messages + '\n*' + cont2 + ':* ' + cont2[cont2_key]
+            updated = True
+        i = i + 1
+
+    if cont2_messages:
+        messages = messages + '\n------\n*Движение дела*\n------' + cont2_messages
+
+    if cont3 != data_court[i]:
+        messages = messages + '\n*Стороны:*' + cont3
+        updated = True
+
+    i = i + 1
+
+    if cont4 != data_court[i]:
+        messages = messages + '\n------\n*Изменения в пересмотре: * \n------\n' + cont4
+        updated = True
+
+    i = i + 1
+
+    if cont5 != data_court[i]:
+        messages = messages + '\n------\n*Иные изменения: * \n------\n' + cont5
+        updated = True
+
+    i = i + 1
+
+    if head_case_number != data_court[i]:
+        messages = messages + '\n------\n*Изменен номер дела: * \n------\n' + head_case_number
+        updated = True
+
+    i = i + 1
+
+    if court_result_link != data_court[i]:
+        messages = messages + '\n*Добавлен судебный акт: * [Перейти](' + court_result_link + ')'
+        updated = True
+
+    return updated, messages

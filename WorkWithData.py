@@ -1,5 +1,6 @@
-import ChangeTracking
+import ParseSevice
 import Main
+import datetime
 
 
 def update_chat_id_by_user_id(chat_id, user_id):
@@ -14,19 +15,24 @@ def get_user_payment_license_date(user_id):
     return cursor.fetchone()[0]
 
 
-
-
-
-def insert_subscribe_data(chat_id, link, connect):
-    if subscribe_ready(chat_id, link, connect):
+def insert_subscribe_data(chat_id, link):
+    if subscribe_ready(chat_id, link):
         return
-    cursor = connect.cursor()
+    set_court_data_save_flag(link, True)
+    cursor = Main.conn.cursor()
     cursor.execute("INSERT INTO subscribe_court (chat_id, court_link) VALUES (%s, %s)", (chat_id, link))
-    connect.commit()
+    Main.conn.commit()
 
 
-def subscribe_ready(chat_id, link, connect):
-    cursor = connect.cursor()
+def set_court_data_save_flag(court_link, flag):
+    query = 'UPDATE court_data SET is_saved=%s, WHERE link = %s'
+    cursor = Main.conn.cursor()
+    cursor.execute(query, [flag, court_link])
+    Main.conn.commit()
+
+
+def subscribe_ready(chat_id, link):
+    cursor = Main.conn.cursor()
     cursor.execute("SELECT COUNT(*) FROM subscribe_court WHERE chat_id = %s AND court_link = %s", (str(chat_id), link))
     count = cursor.fetchone()[0]
     return count > 0
@@ -88,34 +94,33 @@ def get_all_court_link(connect):
     return cursor.fetchall()
 
 
-def update_court_data(connect, link, cont1_data, cont2_data, cont3_data, case_number, court_result_link, appeal_decision):
-    query = 'UPDATE court_data SET date_of_receipt=%s, protocol_number=%s, judge=%s, date_of_review=%s, ' \
-            'result=%s, event_name=%s, event_date=%s, event_time=%s, event_courtroom=%s, event_result=%s, ' \
-            'event_placement=%s, sides=%s, case_number=%s, court_result_link=%s, appeal_decision = %s WHERE link = %s '
-    cursor = connect.cursor()
-    cursor.execute(query, [cont1_data[ChangeTracking.DATE_OF_RECEIPT], cont1_data[ChangeTracking.PROTOCOL_NUMBER],
-                           cont1_data[ChangeTracking.JUDGE], cont1_data[ChangeTracking.DATE_OF_REVIEW],
-                           cont1_data[ChangeTracking.RESULT], cont2_data[ChangeTracking.EVENT_NAME],
-                           cont2_data[ChangeTracking.EVENT_DATE], cont2_data[ChangeTracking.EVENT_TIME],
-                           cont2_data[ChangeTracking.EVENT_COURTROOM], cont2_data[ChangeTracking.EVENT_RESULT],
-                           cont2_data[ChangeTracking.EVENT_PLACEMENT], cont3_data, case_number,
-                           court_result_link, appeal_decision, link])
-    connect.commit()
+def update_court_data(cont1, cont3, cont4, cont5, case_number, court_result_link, court_link):
+    query = 'UPDATE court_data SET date_of_receipt=%s, protocol_number=%s, judge=%s, date_of_review=%s, result=%s, ' \
+            'sides=?, link=%s, case_number=%s, court_result_link=%s, appeal_decision=%s, unic_id=%s, ' \
+            'case_category=%s, sign_of_review=%s, create_date=%s, undefined_field=%s ' \
+            'WHERE link = %s '
+    cursor = Main.conn.cursor()
+    cursor.execute(query, [cont1[ParseSevice.DATE_OF_RECEIPT], cont1[ParseSevice.PROTOCOL_NUMBER],
+                           cont1[ParseSevice.JUDGE], cont1[ParseSevice.DATE_OF_REVIEW],
+                           cont1[ParseSevice.RESULT], court_link, case_number, court_result_link, cont4,
+                           cont1[ParseSevice.UNIC_ID], cont1[ParseSevice.CASE_CATEGORY],
+                           cont1[ParseSevice.SIGN_OF_REVIEW], datetime.datetime.now(), cont5, court_link
+                           ])
+    Main.conn.commit()
 
 
-def insert_court_data(connect, link, cont1_data, cont2_data, cont3_data, case_number, court_result_link, appeal_decision):
-    query = 'INSERT INTO court_data(date_of_receipt, protocol_number, judge, date_of_review, result, event_name, ' \
-            'event_date, event_time, event_courtroom, event_result, event_placement, sides, link, case_number, ' \
-            'court_result_link, appeal_decision) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
-    cursor = connect.cursor()
-    cursor.execute(query, [cont1_data[ChangeTracking.DATE_OF_RECEIPT], cont1_data[ChangeTracking.PROTOCOL_NUMBER],
-                           cont1_data[ChangeTracking.JUDGE], cont1_data[ChangeTracking.DATE_OF_REVIEW],
-                           cont1_data[ChangeTracking.RESULT], cont2_data[ChangeTracking.EVENT_NAME],
-                           cont2_data[ChangeTracking.EVENT_DATE], cont2_data[ChangeTracking.EVENT_TIME],
-                           cont2_data[ChangeTracking.EVENT_COURTROOM], cont2_data[ChangeTracking.EVENT_RESULT],
-                           cont2_data[ChangeTracking.EVENT_PLACEMENT], cont3_data, link, case_number,
-                           court_result_link, appeal_decision])
-    connect.commit()
+def insert_court_data(cont1, cont3, cont4, cont5, case_number, court_result_link, link):
+    query = 'INSERT INTO court_data(date_of_receipt, protocol_number, judge, date_of_review, result, sides, link, ' \
+            'case_number, court_result_link, appeal_decision, unic_id, case_category, sign_of_review, create_date, ' \
+            'is_saved, undefined_field) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
+    cursor = Main.conn.cursor()
+    cursor.execute(query, [cont1[ParseSevice.DATE_OF_RECEIPT], cont1[ParseSevice.PROTOCOL_NUMBER],
+                           cont1[ParseSevice.JUDGE], cont1[ParseSevice.DATE_OF_REVIEW],
+                           cont1[ParseSevice.RESULT], cont3, link, case_number,
+                           court_result_link, cont4, cont1[ParseSevice.UNIC_ID],
+                           cont1[ParseSevice.CASE_CATEGORY], cont1[ParseSevice.SIGN_OF_REVIEW],
+                           datetime.datetime.now(), False, cont5])
+    Main.conn.commit()
 
 
 def get_count_data_by_link(connect, link):
