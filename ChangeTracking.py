@@ -10,15 +10,15 @@ def check_to_notify_by_link_list(court_link_list):
     messages_list = {}
     print(court_link_list)
     for court_link in court_link_list:
-        cont1, cont2, cont3, cont4, cont5, case_number, court_result_link = ParseSevice.parse_court_by_link(court_link)
-        data_court = WorkWithData.get_court_data_by_link(court_link)
+        cont1, cont2, cont3, cont4, cont5, case_number, court_result_link = ParseSevice.parse_court_by_link(court_link[0])
+        data_court = WorkWithData.get_court_data_by_link(court_link[0])
         updated, messages = get_change_message(cont1, cont2, cont3, cont4, cont5, case_number, court_result_link,
                                                data_court)
         print(court_link + '--222222222222222')
         if updated:
             WorkWithData.update_court_data(cont1, cont2, cont3, cont4, cont5, case_number, court_result_link,
-                                           court_link)
-            messages_list[court_link] = messages
+                                           court_link[0])
+            messages_list[court_link[0]] = messages
     print(messages_list)
     return messages_list
 

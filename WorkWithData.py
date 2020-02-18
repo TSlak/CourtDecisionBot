@@ -13,7 +13,12 @@ def update_chat_id_by_user_id(chat_id, user_id):
 def get_user_payment_license_date(user_id):
     cursor = Main.conn.cursor()
     cursor.execute("SELECT date_end FROM user_payment WHERE user_id = %s", (str(user_id),))
-    return cursor.fetchone()[0]
+    result = cursor.fetchone()
+    cursor.close()
+    if result:
+        return result[0]
+    else:
+        return None
 
 
 def insert_subscribe_data(chat_id, link, user_id):
