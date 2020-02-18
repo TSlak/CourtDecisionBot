@@ -81,7 +81,8 @@ def callback_inline(call):
             start(call.message)
         if call.data == 'more_data':
             key = telebot.types.InlineKeyboardMarkup()
-            key.add(Helper.less_data_kb, Helper.court_moving_kb, Helper.unsubscribe_kb)
+            key.add(Helper.less_data_kb, Helper.court_moving_kb)
+            key.add(Helper.unsubscribe_kb)
             link = CourtService.get_link_by_message(call.message)
             message_text = CourtService.get_court_message_by_link(link)
             bot.edit_message_text(message_text, call.message.chat.id, call.message.message_id,
