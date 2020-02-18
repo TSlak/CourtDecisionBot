@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import WorkWithData
 
@@ -14,3 +14,9 @@ def check_license(user_id):
         print('False')
     print('False_2')
     return False
+
+
+def set_trial(user_id):
+    current_date = datetime.now().date()
+    end_date = current_date + timedelta(days=60)
+    WorkWithData.insert_trial_license(user_id, end_date)

@@ -32,6 +32,13 @@ def insert_subscribe_data(chat_id, link, user_id):
     Main.conn.commit()
 
 
+def insert_trial_license(user_id, date):
+    cursor = Main.conn.cursor()
+    cursor.execute("INSERT INTO user_payment (user_id, date_end) VALUES (%s, %s, )",
+                   (str(user_id), date))
+    Main.conn.commit()
+
+
 def set_court_data_save_flag(court_link, flag):
     query = 'UPDATE court_data SET is_saved=%s WHERE link = %s'
     cursor = Main.conn.cursor()
