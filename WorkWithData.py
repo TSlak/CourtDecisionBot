@@ -4,15 +4,9 @@ import Main
 import ParseSevice
 
 
-def update_chat_id_by_user_id(chat_id, user_id):
+def get_user_payment_license_date(chat_id):
     cursor = Main.conn.cursor()
-    cursor.execute("UPDATE subscribe_court SET chat_id=%s WHERE user_id=%s", (str(chat_id), str(user_id)))
-    Main.conn.commit()
-
-
-def get_user_payment_license_date(user_id):
-    cursor = Main.conn.cursor()
-    cursor.execute("SELECT date_end FROM user_payment WHERE user_id = %s", (str(user_id),))
+    cursor.execute("SELECT date_end FROM user_payment WHERE chat_id = %s", (str(chat_id),))
     result = cursor.fetchone()
     cursor.close()
     if result:
@@ -21,26 +15,26 @@ def get_user_payment_license_date(user_id):
         return None
 
 
-def insert_subscribe_data(chat_id, link, user_id):
-    if subscribe_ready(chat_id, link, user_id):
+def insert_subscribe_data(chat_id, link):
+    if subscribe_ready(chat_id, link):
         return
     set_court_data_save_flag(link, True)
     cursor = Main.conn.cursor()
-    cursor.execute("INSERT INTO subscribe_court (chat_id, court_link, user_id) VALUES (%s, %s, %s)",
-                   (chat_id, link, user_id))
+    cursor.execute("INSERT INTO subscribe_court (chat_id, court_link) VALUES (%s, %s)",
+                   (chat_id, link))
     Main.conn.commit()
 
 
-def insert_trial_license(user_id, date):
+def insert_trial_license(chat_id, date):
     cursor = Main.conn.cursor()
-    cursor.execute("INSERT INTO user_payment (user_id, date_end) VALUES (%s, %s)",
-                   (str(user_id), date))
+    cursor.execute("INSERT INTO user_payment (chat_id, date_end) VALUES (%s, %s)",
+                   (str(chat_id), date))
     Main.conn.commit()
 
 
-def access_trial_license(user_id):
+def access_trial_license(chat_id):
     cursor = Main.conn.cursor()
-    cursor.execute('SELECT COUNT(*) FROM user_payment WHERE date_end IS NOT NULL AND user_id=%s', (str(user_id),))
+    cursor.execute('SELECT COUNT(*) FROM user_payment WHERE date_end IS NOT NULL AND chat_id=%s', (str(chat_id),))
     count = cursor.fetchone()[0]
     if count == 0:
         return True
@@ -54,10 +48,10 @@ def set_court_data_save_flag(court_link, flag):
     Main.conn.commit()
 
 
-def subscribe_ready(chat_id, link, user_id):
+def subscribe_ready(chat_id, link):
     cursor = Main.conn.cursor()
     cursor.execute("SELECT COUNT(*) FROM subscribe_court "
-                   "WHERE chat_id = %s AND court_link = %s AND user_id = %s", (str(chat_id), link, str(user_id)))
+                   "WHERE chat_id = %s AND court_link = %s", (str(chat_id), link))
     count = cursor.fetchone()[0]
     return count > 0
 
@@ -68,10 +62,9 @@ def get_all_subscribe_link_by_chat_id(chat_id):
     return cursor.fetchall()
 
 
-def delete_subscribe_data(chat_id, link, user_id):
+def delete_subscribe_data(chat_id, link):
     cursor = Main.conn.cursor()
-    cursor.execute("DELETE FROM subscribe_court WHERE chat_id = %s AND court_link = %s "
-                   "AND user_id = %s", (str(chat_id), link, str(user_id)))
+    cursor.execute("DELETE FROM subscribe_court WHERE chat_id = %s AND court_link = %s", (str(chat_id), link))
     Main.conn.commit()
     cursor = Main.conn.cursor()
     cursor.execute("SELECT COUNT(*) FROM subscribe_court WHERE court_link = %s", (link,))

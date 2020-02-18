@@ -21,8 +21,7 @@ server = Flask(__name__)
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    WorkWithData.update_chat_id_by_user_id(message.chat.id, message.from_user.id)
-    license_valid = WorkWithLicense.check_license(message.from_user.id)
+    license_valid = WorkWithLicense.check_license(message.chat.id)
     if not license_valid:
         send_payment_message(message)
         return
@@ -49,7 +48,7 @@ def send_payment_message(message):
                    '\n------' \
                    '\nИли нажмите на кнопку "Проверить подписку", в случае, если оплата была проведена' \
                    '\nВозникли проблемы? Обращаться @TSlak ' \
-                   '\nВаш id пользователя:\n' + str(message.from_user.id)
+                   '\nВаш id пользователя:\n' + str(message.chat.id)
     key = telebot.types.InlineKeyboardMarkup()
     key.add(Helper.trial_kb, telebot.types.InlineKeyboardButton("Оплатить", url='https://yandex.ru'))
     key.add(Helper.check_payment_kb)
@@ -77,7 +76,7 @@ def callback_inline(call):
             bot.answer_callback_query(call.id, text="Вы успешно подписаны")
         if call.data == "unsubscribe":
             link = CourtService.get_link_by_message(call.message)
-            WorkWithData.delete_subscribe_data(call.message.chat.id, link, call.message.from_user.id)
+            WorkWithData.delete_subscribe_data(call.message.chat.id, link)
             bot.answer_callback_query(call.id, text="Подписка отменена")
         if call.data == 'check_payment':
             # TODO:Добавить проверку оплаты
@@ -108,8 +107,7 @@ def callback_inline(call):
                                   parse_mode='Markdown', reply_markup=key)
 
         if call.data == 'get_trial':
-            user_id = call.message.text.split('\n')[-1]
-            if WorkWithLicense.set_trial(user_id):
+            if WorkWithLicense.set_trial(call.message.chat.id):
                 bot.answer_callback_query(call.id, text="Триал подписка активирована")
                 greeting_user(call.message)
                 bot.delete_message(call.message.chat.id, call.message.message_id)
@@ -176,7 +174,7 @@ def update_court_state():
 
 def delete_unused_data():
     while True:
-        time.sleep(30)
+        time.sleep(86400)
         WorkWithData.delete_unused_data()
 
 
