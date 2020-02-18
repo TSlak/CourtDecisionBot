@@ -104,7 +104,7 @@ def get_all_court_link():
 
 def update_court_data(cont1, cont2, cont3, cont4, cont5, case_number, court_result_link, court_link):
     query = 'UPDATE court_data SET date_of_receipt=%s, protocol_number=%s, judge=%s, date_of_review=%s, result=%s, ' \
-            'sides=?, case_number=%s, court_result_link=%s, appeal_decision=%s, unic_id=%s, ' \
+            'sides=%s, case_number=%s, court_result_link=%s, appeal_decision=%s, unic_id=%s, ' \
             'case_category=%s, sign_of_review=%s, undefined_field=%s, event_name=%s, event_date=%s, ' \
             'event_time=%s, event_room=%s, event_result=%s, event_basis=%s, event_note=%s, event_placement_date=%s' \
             'WHERE link = %s '
