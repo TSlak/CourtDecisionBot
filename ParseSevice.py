@@ -120,8 +120,8 @@ def _parse_cont5(soup):
         header_len = len(rows)
         rows = item.findAll('td')
         for data_item in range(header_len, len(rows)):
-            if data_item % header_len == 0:
-                cont5_data = cont5_data + '\n'
+            # if data_item % header_len == 0:
+            #     cont5_data = cont5_data + '\n'
             cont5_data = cont5_data + " " + rows[data_item].get_text(strip=True)
 
     return cont5_data
