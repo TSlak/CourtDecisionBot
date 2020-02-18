@@ -159,6 +159,5 @@ def get_count_data_by_link(connect, link):
 def delete_unused_data():
     current_day = datetime.now()
     yesterday = current_day - timedelta(days=1)
-    # cursor = Main.conn.cursor()
-    print(yesterday)
-    # cursor.execute('DELETE FROM court_data WHERE is_saved is FALSE AND create_date < %s', yesterday)
+    cursor = Main.conn.cursor()
+    cursor.execute('DELETE FROM court_data WHERE is_saved is FALSE AND create_date < %s', yesterday)

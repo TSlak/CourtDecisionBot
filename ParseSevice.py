@@ -38,7 +38,6 @@ def parse_court_by_link(court_link):
 
 
 def _parse_cont1(soup):
-    print("cont1")
     cont1_data = {UNIC_ID: "", CASE_CATEGORY: "", DATE_OF_RECEIPT: "", PROTOCOL_NUMBER: "", JUDGE: "",
                   DATE_OF_REVIEW: "", SIGN_OF_REVIEW: "", RESULT: ""}
     cont1_list = soup.findAll('div', {'id': 'cont1'})
@@ -62,7 +61,6 @@ def _parse_cont1(soup):
                 cont1_data[SIGN_OF_REVIEW] = rows[data_item + 1].get_text(strip=True).split('\n')[0]
             elif values[0] == RESULT:
                 cont1_data[RESULT] = rows[data_item + 1].get_text(strip=True).split('\n')[0]
-    print(cont1_data)
     return cont1_data
 
 
@@ -173,5 +171,4 @@ def parse_court_moving_history(court_link):
                         result = result + '\n*' + index + ':* ' + rows[data_item].get_text(strip=True)
                     if data_item % header_len == header_len - 1:
                             result = result + '\n-----'
-    print(result)
     return result
