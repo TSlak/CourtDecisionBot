@@ -40,7 +40,7 @@ def get_change_message(cont1, cont2, cont3, cont4, cont5, head_case_number, cour
     cont2_messages = ""
     for cont2_key in cont2.keys():
         if cont2[cont2_key] != data_court[i]:
-            cont2_messages = cont2_messages + '\n*' + cont2 + ':* ' + cont2[cont2_key]
+            cont2_messages = cont2_messages + '\n*' + cont2_key + ':* ' + cont2[cont2_key]
             updated = True
         i = i + 1
 
