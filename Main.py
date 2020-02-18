@@ -26,13 +26,17 @@ def start(message):
     if not license_valid:
         send_payment_message(message)
         return
+    greeting_user(message)
+
+
+def greeting_user(message):
     keyboard = telebot.types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
     button_subscribe_list = telebot.types.KeyboardButton(text="Мои подписки")
     button_update = telebot.types.KeyboardButton(text="Проверить обновления")
     button_help = telebot.types.KeyboardButton(text="Показать справку")
     button_license = telebot.types.KeyboardButton(text="Остаток по подписке")
     keyboard.add(button_subscribe_list, button_update, button_help, button_license)
-    bot.reply_to(message, 'Привет, перед началом прочти /help', reply_markup=keyboard)
+    bot.send_message(message.chat.id, 'Привет, перед началом прочти /help', reply_markup=keyboard)
 
 
 def send_payment_message(message):
@@ -45,7 +49,7 @@ def send_payment_message(message):
                    '\n------' \
                    '\nИли нажмите на кнопку "Проверить подписку", в случае, если оплата была проведена' \
                    '\nВозникли проблемы? Обращаться @TSlak ' \
-                   '\nВаш id пользователя:\n' + message.from_user.id
+                   '\nВаш id пользователя:\n' + str(message.from_user.id)
     key = telebot.types.InlineKeyboardMarkup()
     key.add(Helper.trial_kb, telebot.types.InlineKeyboardButton("Оплатить", url='https://yandex.ru'))
     key.add(Helper.check_payment_kb)
@@ -107,7 +111,7 @@ def callback_inline(call):
             user_id = call.message.text.split('\n')[-1]
             if WorkWithLicense.set_trial(user_id):
                 bot.answer_callback_query(call.id, text="Триал подписка активирована")
-                start(call.message)
+                greeting_user(call.message)
                 bot.delete_message(call.message.chat.id, call.message.message_id)
             else:
                 bot.answer_callback_query(call.id, text="Триал подписка недоступна")
