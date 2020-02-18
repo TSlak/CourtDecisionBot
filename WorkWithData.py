@@ -14,7 +14,6 @@ def get_user_payment_license_date(user_id):
     cursor = Main.conn.cursor()
     cursor.execute("SELECT date_end FROM user_payment WHERE user_id = %s", (str(user_id),))
     result = cursor.fetchone()
-    print(result)
     cursor.close()
     if result:
         return result[0]

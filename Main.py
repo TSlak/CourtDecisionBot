@@ -39,13 +39,13 @@ def start(message):
 def send_payment_message(chat_id):
     message_text = 'Привет. Для работы с ботом, пожалуйста, произведите оплату.' \
                    '\n------' \
-                   '\nОдин месяц - 50р.' \
-                   '\nТри месяца - 125р.' \
-                   '\nШесть месяцев - 250р.' \
-                   '\nГод - 475р.' \
+                   '\n*30 дней* - 50₽.' \
+                   '\n*90 дней* - 125₽.' \
+                   '\n*180 дней* - 250₽.' \
+                   '\n*365 дня* - 475₽.' \
                    '\n------' \
                    '\nИли нажмите на кнопку "Проверить наличие оплаты", в случае, если оплата была проведена' \
-                   '\nПроблема с доступом? Обращаться @TSlak'
+                   '\nВозникли проблемы? Обращаться @TSlak'
     key = telebot.types.InlineKeyboardMarkup()
     key.add(Helper.trial_kb,
             telebot.types.InlineKeyboardButton("Оплатить", url='https://yandex.ru'),
@@ -115,8 +115,6 @@ def callback_inline(call):
 @bot.message_handler(commands=['check'])
 def check_command(message):
     link_list = WorkWithData.get_all_link_by_chat_id(message.chat.id)
-    print(link_list)
-    print('Выше список ссылок')
     messages_list = ChangeTracking.check_to_notify_by_link_list(link_list)
     for message_item in messages_list.keys():
         link_keyboard = telebot.types.InlineKeyboardMarkup()

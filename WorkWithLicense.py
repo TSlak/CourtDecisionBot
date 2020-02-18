@@ -6,13 +6,9 @@ import WorkWithData
 def check_license(user_id):
     current_date = datetime.now()
     license_end_date = WorkWithData.get_user_payment_license_date(user_id)
-    print(license_end_date)
     if license_end_date:
         if current_date.date() < license_end_date:
-            print(license_end_date)
             return True
-        print('False')
-    print('False_2')
     return False
 
 
@@ -22,4 +18,5 @@ def set_trial(user_id):
         end_date = current_date + timedelta(days=15)
         WorkWithData.insert_trial_license(user_id, end_date)
         return True
-    else: return False
+    else:
+        return False
