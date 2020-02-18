@@ -71,8 +71,8 @@ def get_all_chat_id(connect):
     return cursor.fetchall()
 
 
-def get_all_chat_id_by_link(connect, link):
-    cursor = connect.cursor()
+def get_all_chat_id_by_link(link):
+    cursor = Main.conn.cursor()
     cursor.execute("SELECT chat_id FROM subscribe_court WHERE court_link = %s", (link,))
     return cursor.fetchall()
 

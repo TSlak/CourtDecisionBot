@@ -21,7 +21,7 @@ def check_to_notify_by_link_list(court_link_list):
 
 
 def get_change_message(cont1, cont2, cont3, cont4, cont5, head_case_number, court_result_link, data_court):
-    messages = 'Номер дела: ' + head_case_number + '\n*Изменены следующие поля: * \n'
+    messages = 'Номер дела: ' + head_case_number + '\n*Изменены следующие поля: *'
     updated = False
     i = 0
     cont1_messages = ""
@@ -69,7 +69,7 @@ def get_change_message(cont1, cont2, cont3, cont4, cont5, head_case_number, cour
     i = i + 1
 
     if court_result_link != data_court[i]:
-        messages = messages + '\n*Добавлен судебный акт: * [Перейти](' + court_result_link + ')'
+        messages = messages + '\n------\n*Добавлен судебный акт: * [Перейти](' + court_result_link + ')'
         updated = True
 
     return updated, messages

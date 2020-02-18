@@ -117,7 +117,7 @@ def check_command(message):
         link_keyboard = telebot.types.InlineKeyboardMarkup()
         link_button = telebot.types.InlineKeyboardButton(text='Открыть дело в браузере', url=message_item)
         link_keyboard.add(link_button)
-        chat_id_list = WorkWithData.get_all_chat_id_by_link(conn, message_item)
+        chat_id_list = WorkWithData.get_all_chat_id_by_link(message_item)
         for chat_id in chat_id_list:
             bot.send_message(chat_id[0], messages_list[message_item], parse_mode='Markdown', reply_markup=link_keyboard)
     if len(messages_list) == 0:
@@ -153,14 +153,14 @@ def echo_message(message):
 
 def update_court_state():
     while True:
-        time.sleep(1200)
+        time.sleep(100)
         all_court_link = WorkWithData.get_all_court_link()
         messages_list = ChangeTracking.check_to_notify_by_link_list(all_court_link)
         for message_item in messages_list.keys():
             link_keyboard = telebot.types.InlineKeyboardMarkup()
             link_button = telebot.types.InlineKeyboardButton(text='Открыть дело в браузере', url=message_item)
             link_keyboard.add(link_button)
-            chat_id_list = WorkWithData.get_all_chat_id_by_link(conn, message_item)
+            chat_id_list = WorkWithData.get_all_chat_id_by_link(message_item)
             for chat_id in chat_id_list:
                 bot.send_message(chat_id[0], messages_list[message_item], parse_mode='Markdown',
                                  reply_markup=link_keyboard)
