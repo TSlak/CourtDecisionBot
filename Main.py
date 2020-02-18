@@ -109,8 +109,8 @@ def callback_inline(call):
 
 @bot.message_handler(commands=['check'])
 def check_command(message):
-    link_list = WorkWithData.get_all_link_by_chat_id(conn, message.chat.id)
-    messages_list = ChangeTracking.check_to_notify_by_link(conn, link_list)
+    link_list = WorkWithData.get_all_link_by_chat_id(message.chat.id)
+    messages_list = ChangeTracking.check_to_notify_by_link_list(link_list)
     for message_item in messages_list.keys():
         link_keyboard = telebot.types.InlineKeyboardMarkup()
         link_button = telebot.types.InlineKeyboardButton(text='Открыть дело в браузере', url=message_item)
@@ -152,7 +152,8 @@ def echo_message(message):
 def update_court_state():
     while True:
         time.sleep(1200)
-        messages_list = ChangeTracking.check_to_notify(conn)
+        all_court_link = WorkWithData.get_all_court_link()
+        messages_list = ChangeTracking.check_to_notify_by_link_list(all_court_link)
         for message_item in messages_list.keys():
             link_keyboard = telebot.types.InlineKeyboardMarkup()
             link_button = telebot.types.InlineKeyboardButton(text='Открыть дело в браузере', url=message_item)

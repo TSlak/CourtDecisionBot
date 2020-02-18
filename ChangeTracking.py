@@ -6,16 +6,18 @@ import WorkWithData
 import time
 
 
-def check_to_notify_by_link(court_link):
-    cont1, cont2, cont3, cont4, cont5, case_number, court_result_link = ParseSevice.parse_court_by_link(court_link)
-    data_court = WorkWithData.get_court_data_by_link(court_link)
-    updated, messages = get_change_message(cont1, cont2, cont3, cont4, cont5, case_number, court_result_link,
-                                           data_court)
+def check_to_notify_by_link_list(court_link_list):
     messages_list = {}
+    for court_link in court_link_list:
+        cont1, cont2, cont3, cont4, cont5, case_number, court_result_link = ParseSevice.parse_court_by_link(court_link)
+        data_court = WorkWithData.get_court_data_by_link(court_link)
+        updated, messages = get_change_message(cont1, cont2, cont3, cont4, cont5, case_number, court_result_link,
+                                               data_court)
 
-    if updated:
-        WorkWithData.update_court_data(cont1, cont2, cont3, cont4, cont5, case_number, court_result_link, court_link)
-        messages_list[court_link] = messages
+        if updated:
+            WorkWithData.update_court_data(cont1, cont2, cont3, cont4, cont5, case_number, court_result_link,
+                                           court_link)
+            messages_list[court_link] = messages
 
     return messages_list
 
