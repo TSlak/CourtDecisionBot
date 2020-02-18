@@ -105,7 +105,7 @@ def get_all_court_link():
 def update_court_data(cont1, cont2, cont3, cont4, cont5, case_number, court_result_link, court_link):
     query = 'UPDATE court_data SET date_of_receipt=%s, protocol_number=%s, judge=%s, date_of_review=%s, result=%s, ' \
             'sides=?, case_number=%s, court_result_link=%s, appeal_decision=%s, unic_id=%s, ' \
-            'case_category=%s, sign_of_review=%s, create_date=%s, undefined_field=%s, event_name=%s, event_date=%s ' \
+            'case_category=%s, sign_of_review=%s, undefined_field=%s, event_name=%s, event_date=%s ' \
             'event_time=%s, event_room=%s, event_result=%s, event_basis=%s, event_note=%s, event_placement_date=%s' \
             'WHERE link = %s '
     cursor = Main.conn.cursor()
@@ -113,12 +113,11 @@ def update_court_data(cont1, cont2, cont3, cont4, cont5, case_number, court_resu
                            cont1[ParseSevice.JUDGE], cont1[ParseSevice.DATE_OF_REVIEW],
                            cont1[ParseSevice.RESULT], cont3, case_number, court_result_link, cont4,
                            cont1[ParseSevice.UNIC_ID], cont1[ParseSevice.CASE_CATEGORY],
-                           cont1[ParseSevice.SIGN_OF_REVIEW], datetime.datetime.now(), cont5,
+                           cont1[ParseSevice.SIGN_OF_REVIEW], cont5,
                            cont2[ParseSevice.EVENT_NAME], cont2[ParseSevice.EVENT_DATE], cont2[ParseSevice.EVENT_TIME],
                            cont2[ParseSevice.EVENT_COURTROOM], cont2[ParseSevice.EVENT_RESULT],
                            cont2[ParseSevice.EVENT_BASIS], cont2[ParseSevice.EVENT_NOTE],
-                           cont2[ParseSevice.EVENT_DATE_PLACEMENT], court_link
-                           ])
+                           cont2[ParseSevice.EVENT_DATE_PLACEMENT], court_link])
     Main.conn.commit()
 
 
