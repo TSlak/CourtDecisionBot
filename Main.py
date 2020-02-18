@@ -53,7 +53,7 @@ def send_payment_message(message):
     key = telebot.types.InlineKeyboardMarkup()
     key.add(Helper.trial_kb, telebot.types.InlineKeyboardButton("Оплатить", url='https://yandex.ru'))
     key.add(Helper.check_payment_kb)
-    bot.send_message(message.chat_id, message_text, reply_markup=key)
+    bot.send_message(message.chat.id, message_text, reply_markup=key)
 
 
 @bot.message_handler(commands=['sub'])
