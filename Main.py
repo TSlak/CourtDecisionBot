@@ -11,6 +11,8 @@ import CourtService
 import WorkWithData
 import WorkWithLicense
 
+print('--------------------Мы в Main-------------------------')
+
 DATABASE_URL = os.environ['DATABASE_URL']
 conn = connect(DATABASE_URL, sslmode='require')
 TOKEN = '946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw'
@@ -80,9 +82,18 @@ def callback_inline(call):
             start(call.message)
         if call.data == 'more_data':
             key = telebot.types.InlineKeyboardMarkup()
-            key.add(telebot.types.InlineKeyboardButton("Отписаться", callback_data="unsubscribe"))
+            key.add(telebot.types.InlineKeyboardButton("Показать движение дела", callback_data='court_moving'),
+                    telebot.types.InlineKeyboardButton("Отписаться", callback_data="unsubscribe"))
             link = CourtService.get_link_by_message(call.message)
             message_text = CourtService.get_court_message_by_link(link)
+            bot.edit_message_text(message_text, call.message.chat.id, call.message.message_id,
+                                  parse_mode='Markdown', reply_markup=key)
+        if call.data == 'court_moving':
+            key = telebot.types.InlineKeyboardMarkup()
+            key.add(telebot.types.InlineKeyboardButton("Показать всю информацию", callback_data='more_data'),
+                    telebot.types.InlineKeyboardButton("Отписаться", callback_data="unsubscribe"))
+            link = CourtService.get_link_by_message(call.message)
+            message_text = CourtService.get_court_moving_history_message(link)
             bot.edit_message_text(message_text, call.message.chat.id, call.message.message_id,
                                   parse_mode='Markdown', reply_markup=key)
 

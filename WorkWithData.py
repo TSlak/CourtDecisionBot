@@ -86,7 +86,7 @@ def get_court_data_by_link(link):
                    "cd.event_basis, cd.event_note, cd.event_placement_date, "
                    "cd.sides, cd.appeal_decision, cd.undefined_field, cd.case_number, cd.court_result_link, cd.link "
                    "FROM court_data as cd "
-                   "WHERE link = %s LIMIT 1", (link,))
+                   "WHERE link = %s", (link,))
 
     return cursor.fetchone()
 

@@ -146,3 +146,32 @@ def _parse_court_result_link(soup):
             return str(link)
     else:
         return ""
+
+
+def parse_court_moving_history(court_link):
+    headers = {'user-agent': 'my-app/0.0.1'}
+    r = requests.get(court_link, headers=headers)
+    soup = BeautifulSoup(r.text, features="html.parser")
+    cont2_index = {EVENT_NAME: "", EVENT_DATE: "", EVENT_TIME: "", EVENT_COURTROOM: "", EVENT_RESULT: "",
+                   EVENT_BASIS: "", EVENT_NOTE: "", EVENT_DATE_PLACEMENT: ""}
+    cont2_list = soup.findAll('div', {'id': 'cont2'})
+    result = ""
+    for item in cont2_list:
+        rows = item.findAll('td', {'align': 'center'})
+        header_len = len(rows)
+        for index in range(header_len):
+            values = rows[index].get_text(strip=True).split('\n')
+            for event in cont2_index.keys():
+                if values[0] == event:
+                    cont2_index[event] = index
+        rows = item.findAll('td')
+
+        for data_item in range(header_len, len(rows)):
+            for index in cont2_index.keys():
+                if data_item % header_len == cont2_index[index]:
+                    if rows[data_item].get_text(strip=True):
+                        result = result + '\n*' + index + ':* ' + rows[data_item].get_text(strip=True)
+                        if data_item % header_len == header_len - 1:
+                            result = result + '\n-----'
+    print(result)
+    return result

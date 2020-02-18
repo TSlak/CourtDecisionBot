@@ -37,7 +37,8 @@ def form_court_message(court_data):
     if court_data[7]:
         messages = messages + '\n*Результат рассмотрения:* ' + court_data[7]
 
-        messages = messages + '\n------\n*Движение дела*\n------'
+    messages = messages + '\n------\n*Движение дела*\n------'
+
     if court_data[8]:
         messages = messages + '\n*Наименование события:* ' + court_data[8]
     if court_data[9]:
@@ -102,3 +103,13 @@ def get_link_by_message(message):
     text = message.html_text.split("\n")
     link = text[0]
     return link[link.find('="')+2:link.find('">')]
+
+
+def get_court_moving_history_message(link):
+    return form_court_moving_history_message(link)
+
+
+def form_court_moving_history_message(link):
+    message = '[Открыть дело в браузере](' + link + ')'
+    message = message + '\n' + ParseSevice.parse_court_moving_history(link)
+    return message
