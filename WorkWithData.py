@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, timedelta
 
 import Main
 import ParseSevice
@@ -62,8 +62,8 @@ def subscribe_ready(chat_id, link, user_id):
     return count > 0
 
 
-def get_all_subscribe_link_by_chat_id(connect, chat_id):
-    cursor = connect.cursor()
+def get_all_subscribe_link_by_chat_id(chat_id):
+    cursor = Main.conn.cursor()
     cursor.execute("SELECT court_link FROM subscribe_court WHERE chat_id = %s", (str(chat_id),))
     return cursor.fetchall()
 
@@ -149,7 +149,7 @@ def insert_court_data(cont1, cont2, cont3, cont4, cont5, case_number, court_resu
                            cont1[ParseSevice.RESULT], cont3, link, case_number,
                            court_result_link, cont4, cont1[ParseSevice.UNIC_ID],
                            cont1[ParseSevice.CASE_CATEGORY], cont1[ParseSevice.SIGN_OF_REVIEW],
-                           datetime.datetime.now(), False, cont5, cont2[ParseSevice.EVENT_NAME],
+                           datetime.now(), False, cont5, cont2[ParseSevice.EVENT_NAME],
                            cont2[ParseSevice.EVENT_DATE], cont2[ParseSevice.EVENT_TIME],
                            cont2[ParseSevice.EVENT_COURTROOM], cont2[ParseSevice.EVENT_RESULT],
                            cont2[ParseSevice.EVENT_BASIS], cont2[ParseSevice.EVENT_NOTE],
@@ -161,3 +161,11 @@ def get_count_data_by_link(connect, link):
     cursor = connect.cursor()
     cursor.execute("SELECT COUNT(*) FROM court_data WHERE link = %s", (link,))
     return cursor.fetchone()[0]
+
+
+def delete_unused_data():
+    current_day = datetime.now()
+    yesterday = current_day - timedelta(days=1)
+    # cursor = Main.conn.cursor()
+    print(yesterday)
+    # cursor.execute('DELETE FROM court_data WHERE is_saved is FALSE AND create_date < %s', yesterday)

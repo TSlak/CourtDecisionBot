@@ -58,7 +58,7 @@ def send_payment_message(message):
 
 @bot.message_handler(commands=['sub'])
 def show_subscribe_command(message):
-    subscribe_list = WorkWithData.get_all_subscribe_link_by_chat_id(conn, message.chat.id)
+    subscribe_list = WorkWithData.get_all_subscribe_link_by_chat_id(message.chat.id)
     key = telebot.types.InlineKeyboardMarkup()
     key.add(Helper.more_data_kb, Helper.unsubscribe_kb)
     for item in subscribe_list:
@@ -174,6 +174,12 @@ def update_court_state():
                                  reply_markup=link_keyboard)
 
 
+def delete_unused_data():
+    while True:
+        time.sleep(30)
+        WorkWithData.delete_unused_data()
+
+
 @server.route('/' + TOKEN, methods=['POST'])
 def getMessage():
     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
@@ -188,6 +194,8 @@ def webhook():
 
 
 if __name__ == "__main__":
-    thread = threading.Thread(target=update_court_state)
-    thread.start()
+    notify_thread = threading.Thread(target=update_court_state)
+    notify_thread.start()
+    delete_unused_data_thread = threading.Thread(target=delete_unused_data)
+    delete_unused_data_thread.start()
     server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
