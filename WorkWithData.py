@@ -12,7 +12,7 @@ def update_chat_id_by_user_id(chat_id, user_id):
 
 def get_user_payment_license_date(user_id):
     cursor = Main.conn.cursor()
-    cursor.execute("SELECT data_end FROM user_payment WHERE user_id = %s", (str(user_id),))
+    cursor.execute("SELECT date_end FROM user_payment WHERE user_id = %s", (str(user_id),))
     return cursor.fetchone()[0]
 
 

@@ -171,7 +171,7 @@ def parse_court_moving_history(court_link):
                 if data_item % header_len == cont2_index[index]:
                     if rows[data_item].get_text(strip=True):
                         result = result + '\n*' + index + ':* ' + rows[data_item].get_text(strip=True)
-                        if data_item % header_len == header_len - 1:
+                    if data_item % header_len == header_len - 1:
                             result = result + '\n-----'
     print(result)
     return result
