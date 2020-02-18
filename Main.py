@@ -110,6 +110,8 @@ def callback_inline(call):
 @bot.message_handler(commands=['check'])
 def check_command(message):
     link_list = WorkWithData.get_all_link_by_chat_id(message.chat.id)
+    print(link_list)
+    print('Выше список ссылок')
     messages_list = ChangeTracking.check_to_notify_by_link_list(link_list)
     for message_item in messages_list.keys():
         link_keyboard = telebot.types.InlineKeyboardMarkup()

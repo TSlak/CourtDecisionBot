@@ -19,7 +19,7 @@ def check_to_notify_by_link_list(court_link_list):
             WorkWithData.update_court_data(cont1, cont2, cont3, cont4, cont5, case_number, court_result_link,
                                            court_link)
             messages_list[court_link] = messages
-    print(messages_list + '--33333333333333')
+    print(messages_list)
     return messages_list
 
 
