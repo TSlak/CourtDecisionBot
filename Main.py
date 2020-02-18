@@ -21,7 +21,7 @@ server = Flask(__name__)
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    # WorkWithData.update_chat_id_by_user_id(message.chat.id, message.from_user.id)
+    WorkWithData.update_chat_id_by_user_id(message.chat.id, message.from_user.id)
     license_valid = WorkWithLicense.check_license(message.from_user.id)
     if not license_valid:
         send_payment_message(message)
