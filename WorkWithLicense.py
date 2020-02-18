@@ -17,6 +17,9 @@ def check_license(user_id):
 
 
 def set_trial(user_id):
-    current_date = datetime.now().date()
-    end_date = current_date + timedelta(days=60)
-    WorkWithData.insert_trial_license(user_id, end_date)
+    if WorkWithData.access_trial_license(user_id):
+        current_date = datetime.now().date()
+        end_date = current_date + timedelta(days=15)
+        WorkWithData.insert_trial_license(user_id, end_date)
+        return True
+    else: return False

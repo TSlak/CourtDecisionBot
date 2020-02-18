@@ -39,6 +39,15 @@ def insert_trial_license(user_id, date):
     Main.conn.commit()
 
 
+def access_trial_license(user_id):
+    cursor = Main.conn.cursor()
+    cursor.execute('SELECT COUNT(*) FROM user_payment WHERE date_end IS NOT NULL AND user_id=%s', (str(user_id),))
+    count = cursor.fetchone()[0]
+    if count == 0:
+        return True
+    return False
+
+
 def set_court_data_save_flag(court_link, flag):
     query = 'UPDATE court_data SET is_saved=%s WHERE link = %s'
     cursor = Main.conn.cursor()

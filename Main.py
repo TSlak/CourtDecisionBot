@@ -105,7 +105,11 @@ def callback_inline(call):
                                   parse_mode='Markdown', reply_markup=key)
 
         if call.data == 'get_trial':
-            WorkWithLicense.set_trial(call.message.from_user.id)
+            if WorkWithLicense.set_trial(call.message.from_user.id):
+                bot.answer_callback_query(call.id, text="Триал подписка активирована")
+            else:
+                bot.answer_callback_query(call.id, text="Триал подписка недоступна")
+            start(call.message)
 
 
 @bot.message_handler(commands=['check'])
