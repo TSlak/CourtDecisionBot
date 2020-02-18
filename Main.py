@@ -24,7 +24,7 @@ def start(message):
     WorkWithData.update_chat_id_by_user_id(message.chat.id, message.from_user.id)
     license_valid = WorkWithLicense.check_license(message.from_user.id)
     if not license_valid:
-        send_payment_message(message.chat.id)
+        send_payment_message(message)
         return
     keyboard = telebot.types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
     button_subscribe_list = telebot.types.KeyboardButton(text="Мои подписки")
@@ -35,7 +35,7 @@ def start(message):
     bot.reply_to(message, 'Привет, перед началом прочти /help', reply_markup=keyboard)
 
 
-def send_payment_message(chat_id):
+def send_payment_message(message):
     message_text = 'Привет. Для работы с ботом, пожалуйста, произведите оплату.' \
                    '\n------' \
                    '\n*30 дней* - 50₽.' \
@@ -44,11 +44,12 @@ def send_payment_message(chat_id):
                    '\n*365 дня* - 475₽.' \
                    '\n------' \
                    '\nИли нажмите на кнопку "Проверить подписку", в случае, если оплата была проведена' \
-                   '\nВозникли проблемы? Обращаться @TSlak'
+                   '\nВозникли проблемы? Обращаться @TSlak ' \
+                   '\nВаш id пользователя:\n' + message.from_user.id
     key = telebot.types.InlineKeyboardMarkup()
     key.add(Helper.trial_kb, telebot.types.InlineKeyboardButton("Оплатить", url='https://yandex.ru'))
     key.add(Helper.check_payment_kb)
-    bot.send_message(chat_id, message_text, reply_markup=key, parse_mode='Markdown')
+    bot.send_message(message.chat_id, message_text, reply_markup=key)
 
 
 @bot.message_handler(commands=['sub'])
@@ -103,9 +104,10 @@ def callback_inline(call):
                                   parse_mode='Markdown', reply_markup=key)
 
         if call.data == 'get_trial':
-            if WorkWithLicense.set_trial(call.message.contact.user_id):
+            user_id = call.message.text.split('\n')[-1]
+            if WorkWithLicense.set_trial(user_id):
                 bot.answer_callback_query(call.id, text="Триал подписка активирована")
-                start(call.message.contact.user_id)
+                start(call.message)
                 bot.delete_message(call.message.chat.id, call.message.message_id)
             else:
                 bot.answer_callback_query(call.id, text="Триал подписка недоступна")
