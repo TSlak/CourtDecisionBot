@@ -8,9 +8,9 @@ from psycopg2 import connect
 
 import ChangeTracking
 import CourtService
+import Helper
 import WorkWithData
 import WorkWithLicense
-import Helper
 
 DATABASE_URL = os.environ['DATABASE_URL']
 conn = connect(DATABASE_URL, sslmode='require')
@@ -107,9 +107,10 @@ def callback_inline(call):
         if call.data == 'get_trial':
             if WorkWithLicense.set_trial(call.message.from_user.id):
                 bot.answer_callback_query(call.id, text="Триал подписка активирована")
+                bot.delete_message(call.message.chat.id, call.message.message_id)
+                start(call.message)
             else:
                 bot.answer_callback_query(call.id, text="Триал подписка недоступна")
-            start(call.message)
 
 
 @bot.message_handler(commands=['check'])
