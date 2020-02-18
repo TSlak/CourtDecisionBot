@@ -32,8 +32,7 @@ def start(message):
     button_help = telebot.types.KeyboardButton(text="Показать справку")
     button_license = telebot.types.KeyboardButton(text="Остаток по подписке")
     keyboard.add(button_subscribe_list, button_update, button_help, button_license)
-    bot.reply_to(message, 'Привет, ' + message.from_user.first_name + ', перед началом прочти /help',
-                 reply_markup=keyboard)
+    bot.reply_to(message, 'Привет, перед началом прочти /help', reply_markup=keyboard)
 
 
 def send_payment_message(chat_id):
@@ -44,12 +43,11 @@ def send_payment_message(chat_id):
                    '\n*180 дней* - 250₽.' \
                    '\n*365 дня* - 475₽.' \
                    '\n------' \
-                   '\nИли нажмите на кнопку "Проверить наличие оплаты", в случае, если оплата была проведена' \
+                   '\nИли нажмите на кнопку "Проверить подписку", в случае, если оплата была проведена' \
                    '\nВозникли проблемы? Обращаться @TSlak'
     key = telebot.types.InlineKeyboardMarkup()
-    key.add(Helper.trial_kb,
-            telebot.types.InlineKeyboardButton("Оплатить", url='https://yandex.ru'),
-            Helper.check_payment_kb)
+    key.add(Helper.trial_kb, telebot.types.InlineKeyboardButton("Оплатить", url='https://yandex.ru'))
+    key.add(Helper.check_payment_kb)
     bot.send_message(chat_id, message_text, reply_markup=key)
 
 
@@ -105,10 +103,10 @@ def callback_inline(call):
                                   parse_mode='Markdown', reply_markup=key)
 
         if call.data == 'get_trial':
-            if WorkWithLicense.set_trial(call.message.from_user.id):
+            if WorkWithLicense.set_trial(call.message.contact.user_id):
                 bot.answer_callback_query(call.id, text="Триал подписка активирована")
+                start(call.message.contact.user_id)
                 bot.delete_message(call.message.chat.id, call.message.message_id)
-                start(call.message)
             else:
                 bot.answer_callback_query(call.id, text="Триал подписка недоступна")
 

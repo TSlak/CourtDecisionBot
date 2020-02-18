@@ -1,7 +1,7 @@
 import telebot
 
-trial_kb = telebot.types.InlineKeyboardButton("Получить триал на 15 дней", callback_data="get_trial")
-check_payment_kb = telebot.types.InlineKeyboardButton("Проверить наличие оплаты", callback_data="check_payment")
+trial_kb = telebot.types.InlineKeyboardButton("Получить триал (15 дней)", callback_data="get_trial")
+check_payment_kb = telebot.types.InlineKeyboardButton("Проверить подписку", callback_data="check_payment")
 more_data_kb = telebot.types.InlineKeyboardButton("Раскрыть", callback_data="more_data")
 unsubscribe_kb = telebot.types.InlineKeyboardButton("Отписаться", callback_data="unsubscribe")
 less_data_kb = telebot.types.InlineKeyboardButton('Свернуть', callback_data='less_data')
