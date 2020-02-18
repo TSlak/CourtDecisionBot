@@ -21,7 +21,7 @@ server = Flask(__name__)
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    WorkWithData.update_chat_id_by_user_id(message.chat.id, message.from_user.id)
+    # WorkWithData.update_chat_id_by_user_id(message.chat.id, message.from_user.id)
     license_valid = WorkWithLicense.check_license(message.from_user.id)
     if not license_valid:
         send_payment_message(message)
@@ -81,7 +81,7 @@ def callback_inline(call):
             bot.answer_callback_query(call.id, text="Подписка отменена")
         if call.data == 'check_payment':
             # TODO:Добавить проверку оплаты
-            start(call.message)
+            print()
         if call.data == 'more_data':
             key = telebot.types.InlineKeyboardMarkup()
             key.add(Helper.less_data_kb, Helper.court_moving_kb)
