@@ -10,6 +10,7 @@ import ChangeTracking
 import CourtService
 import WorkWithData
 import WorkWithLicense
+import Helper
 
 DATABASE_URL = os.environ['DATABASE_URL']
 conn = connect(DATABASE_URL, sslmode='require')
@@ -46,17 +47,17 @@ def send_payment_message(chat_id):
                    '\nИли нажмите на кнопку "Проверить наличие оплаты", в случае, если оплата была проведена' \
                    '\nПроблема с доступом? Обращаться @TSlak'
     key = telebot.types.InlineKeyboardMarkup()
-    key.add(telebot.types.InlineKeyboardButton("Оплатить", url='https://yandex.ru'),
-            telebot.types.InlineKeyboardButton("Проверить наличие оплаты", callback_data="check_payment"))
-    bot.send_message(chat_id, message_text, key)
+    key.add(Helper.trial_kb,
+            telebot.types.InlineKeyboardButton("Оплатить", url='https://yandex.ru'),
+            Helper.check_payment_kb)
+    bot.send_message(chat_id, message_text, reply_markup=key)
 
 
 @bot.message_handler(commands=['sub'])
 def show_subscribe_command(message):
     subscribe_list = WorkWithData.get_all_subscribe_link_by_chat_id(conn, message.chat.id)
     key = telebot.types.InlineKeyboardMarkup()
-    key.add(telebot.types.InlineKeyboardButton("Раскрыть", callback_data="more_data"),
-            telebot.types.InlineKeyboardButton("Отписаться", callback_data="unsubscribe"))
+    key.add(Helper.more_data_kb, Helper.unsubscribe_kb)
     for item in subscribe_list:
         message_text = CourtService.get_short_message_by_link(item[0])
         message_text = message_text[:message_text.find('------\n*Движение дела*')]
@@ -80,17 +81,14 @@ def callback_inline(call):
             start(call.message)
         if call.data == 'more_data':
             key = telebot.types.InlineKeyboardMarkup()
-            key.add(telebot.types.InlineKeyboardButton('Свернуть', callback_data='less_data'),
-                    telebot.types.InlineKeyboardButton("Показать движение дела", callback_data='court_moving'),
-                    telebot.types.InlineKeyboardButton("Отписаться", callback_data="unsubscribe"))
+            key.add(Helper.less_data_kb, Helper.court_moving_kb, Helper.unsubscribe_kb)
             link = CourtService.get_link_by_message(call.message)
             message_text = CourtService.get_court_message_by_link(link)
             bot.edit_message_text(message_text, call.message.chat.id, call.message.message_id,
                                   parse_mode='Markdown', reply_markup=key)
         if call.data == 'court_moving':
             key = telebot.types.InlineKeyboardMarkup()
-            key.add(telebot.types.InlineKeyboardButton("Показать общую информацию", callback_data='more_data'),
-                    telebot.types.InlineKeyboardButton("Отписаться", callback_data="unsubscribe"))
+            key.add(Helper.more_data_kb, Helper.unsubscribe_kb)
             link = CourtService.get_link_by_message(call.message)
             message_text = CourtService.get_court_moving_history_message(link)
             bot.edit_message_text(message_text, call.message.chat.id, call.message.message_id,
@@ -98,13 +96,16 @@ def callback_inline(call):
 
         if call.data == 'less_data':
             key = telebot.types.InlineKeyboardMarkup()
-            key.add(telebot.types.InlineKeyboardButton("Раскрыть", callback_data="more_data"),
-                    telebot.types.InlineKeyboardButton("Отписаться", callback_data="unsubscribe"))
+            key.add(Helper.more_data_kb, Helper.unsubscribe_kb)
             link = CourtService.get_link_by_message(call.message)
             message_text = CourtService.get_short_message_by_link(link)
             message_text = message_text[:message_text.find('------\n*Движение дела*')]
             bot.edit_message_text(message_text, call.message.chat.id, call.message.message_id,
                                   parse_mode='Markdown', reply_markup=key)
+
+        if call.data == 'get_trial':
+            # TODO://
+            print()
 
 
 @bot.message_handler(commands=['check'])
@@ -137,7 +138,7 @@ def help_command(message):
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def echo_message(message):
     key = telebot.types.InlineKeyboardMarkup()
-    key.add(telebot.types.InlineKeyboardButton("Подписаться", callback_data="subscribe"))
+    key.add(Helper.subscribe_kb)
     if message.text.find('https://') == 0:
         message_text = CourtService.get_court_message_by_link(message.text)
         bot.send_message(message.chat.id, message_text, reply_markup=key, parse_mode='Markdown')
