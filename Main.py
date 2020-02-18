@@ -153,7 +153,7 @@ def echo_message(message):
 
 def update_court_state():
     while True:
-        time.sleep(100)
+        time.sleep(3600)
         all_court_link = WorkWithData.get_all_court_link()
         messages_list = ChangeTracking.check_to_notify_by_link_list(all_court_link)
         for message_item in messages_list.keys():
