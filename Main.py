@@ -104,8 +104,7 @@ def callback_inline(call):
                                   parse_mode='Markdown', reply_markup=key)
 
         if call.data == 'get_trial':
-            # TODO://
-            print()
+            WorkWithLicense.set_trial(call.message.from_user.id)
 
 
 @bot.message_handler(commands=['check'])
