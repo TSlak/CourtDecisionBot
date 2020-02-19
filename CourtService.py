@@ -61,7 +61,7 @@ def form_court_message(court_data):
     if court_data[17]:
         messages = messages + '\n------\n*Данные пересмотра: * \n------\n' + court_data[17]
     if court_data[18]:
-        messages = messages + '\n------\n*Иные сведения: * \n------' + court_data[18]
+        messages = messages + '------\n*Иные сведения: * \n------' + court_data[18]
     if court_data[20]:
         messages = messages + '\n*Судебный акт: * [Перейти](' + court_data[20] + ')'
     return messages
