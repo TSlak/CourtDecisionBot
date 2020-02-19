@@ -27,13 +27,13 @@ def parse_court_by_link(court_link):
     cont1 = _parse_cont1(soup)
     cont2 = _parse_cont2(soup)
     if r.text.find('ЛИЦА') > -1:
-        cont3 = _parse_cont4(soup)
-        cont4 = _parse_cont5(soup)
-        cont5 = _parse_cont3(soup)
+        cont3 = _parse_cont3(soup, 'cont4')
+        cont4 = _parse_cont4(soup, 'cont5')
+        cont5 = _parse_cont5(soup, 'cont3')
     else:
-        cont3 = _parse_cont3(soup)
-        cont4 = _parse_cont4(soup)
-        cont5 = _parse_cont5(soup)
+        cont3 = _parse_cont3(soup, 'cont3')
+        cont4 = _parse_cont4(soup, 'cont4')
+        cont5 = _parse_cont5(soup, 'cont5')
     head_case_number = _parse_head_case_number(soup)
     court_result_link = _parse_court_result_link(soup)
     if court_result_link:
@@ -90,9 +90,9 @@ def _parse_cont2(soup):
     return cont2_data
 
 
-def _parse_cont3(soup):
+def _parse_cont3(soup, cont_number):
     cont3_data = ""
-    cont3_list = soup.findAll('div', {'id': 'cont3'})
+    cont3_list = soup.findAll('div', {'id': cont_number})
     for item in cont3_list:
         rows = item.findAll('td', {'align': 'center'})
         header_len = len(rows)
@@ -105,9 +105,9 @@ def _parse_cont3(soup):
     return cont3_data
 
 
-def _parse_cont4(soup):
+def _parse_cont4(soup, cont_number):
     cont4_data = ""
-    cont4_list = soup.findAll('div', {'id': 'cont4'})
+    cont4_list = soup.findAll('div', {'id': cont_number})
     for item in cont4_list:
         rows = item.findAll('td')
         for data_item in range(1, len(rows) - 1, 2):
@@ -117,16 +117,16 @@ def _parse_cont4(soup):
     return cont4_data
 
 
-def _parse_cont5(soup):
+def _parse_cont5(soup, cont_number):
     cont5_data = ""
-    cont5_list = soup.findAll('div', {'id': 'cont5'})
+    cont5_list = soup.findAll('div', {'id': cont_number})
     for item in cont5_list:
         rows = item.findAll('td', {'align': 'center'})
         header_len = len(rows)
         rows = item.findAll('td')
         for data_item in range(header_len, len(rows)):
-            # if data_item % header_len == 0:
-            #     cont5_data = cont5_data + '\n'
+            if data_item % header_len == 0:
+                cont5_data = cont5_data + '\n'
             cont5_data = cont5_data + " " + rows[data_item].get_text(strip=True)
 
     return cont5_data
