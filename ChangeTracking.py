@@ -9,7 +9,7 @@ import time
 def check_to_notify_by_link_list(court_link_list):
     messages_list = {}
     for court_link in court_link_list:
-        time.sleep(1)
+        time.sleep(2)
         cont1, cont2, cont3, cont4, cont5, case_number, court_result_link = ParseSevice.parse_court_by_link(court_link[0])
         data_court = WorkWithData.get_court_data_by_link(court_link[0])
         updated, messages = get_change_message(cont1, cont2, cont3, cont4, cont5, case_number, court_result_link,
@@ -58,7 +58,7 @@ def get_change_message(cont1, cont2, cont3, cont4, cont5, head_case_number, cour
     i = i + 1
 
     if cont5 != data_court[i]:
-        messages = messages + '------\n*Иные изменения: * \n------' + cont5
+        messages = messages + '\n------\n*Иные изменения: * \n------' + cont5
         updated = True
 
     i = i + 1
