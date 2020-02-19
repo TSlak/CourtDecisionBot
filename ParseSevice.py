@@ -27,9 +27,13 @@ def parse_court_by_link(court_link):
     cont1 = _parse_cont1(soup)
     cont2 = _parse_cont2(soup)
     if r.text.find('ЛИЦА') > -1:
-        cont3 = _parse_cont3(soup, 'cont4')
-        cont4 = _parse_cont4(soup, 'cont5')
         cont5 = _parse_cont5(soup, 'cont3')
+        if r.text.find('СТОРОНЫ') > -1:
+            cont3 = ""
+            cont4 = _parse_cont4(soup, 'cont4')
+        else:
+            cont3 = _parse_cont3(soup, 'cont4')
+            cont4 = _parse_cont4(soup, 'cont5')
     else:
         cont3 = _parse_cont3(soup, 'cont3')
         cont4 = _parse_cont4(soup, 'cont4')
