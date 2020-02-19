@@ -26,7 +26,7 @@ def parse_court_by_link(court_link):
     soup = BeautifulSoup(r.text, features="html.parser")
     cont1 = _parse_cont1(soup)
     cont2 = _parse_cont2(soup)
-    if r.text.find('ЛИЦА') > -1 and r.text.find('ЛИЦА)') <0:
+    if r.text.find('ЛИЦА') > -1 and r.text.find('ЛИЦА)') < 0:
         cont5 = _parse_cont5(soup, 'cont3')
         if r.text.find('СТОРОНЫ') < 0:
             cont3 = ""
