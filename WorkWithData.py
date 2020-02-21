@@ -161,3 +161,4 @@ def delete_unused_data():
     yesterday = current_day - timedelta(days=1)
     cursor = Main.conn.cursor()
     cursor.execute('DELETE FROM court_data WHERE is_saved is FALSE AND create_date < %s', yesterday)
+    Main.conn.commit()
