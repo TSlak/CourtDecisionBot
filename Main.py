@@ -25,6 +25,7 @@ def start(message):
     if not license_valid:
         send_payment_message(message)
         return
+
     greeting_user(message)
 
 
