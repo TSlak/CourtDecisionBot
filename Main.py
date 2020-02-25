@@ -10,21 +10,13 @@ import ChangeTracking
 import CourtService
 import WorkWithData
 import WorkWithLicense
+import Helper
 
 DATABASE_URL = os.environ['DATABASE_URL']
 conn = connect(DATABASE_URL, sslmode='require')
 TOKEN = '946595650:AAHPQ9OOR7u3xy3tepfYmaUuaZCgIQ1g3cw'
 bot = telebot.TeleBot(TOKEN)
 server = Flask(__name__)
-
-
-trial_kb = telebot.types.InlineKeyboardButton("Получить триал (15 дней)", callback_data="get_trial")
-check_payment_kb = telebot.types.InlineKeyboardButton("Проверить подписку", callback_data="check_payment")
-more_data_kb = telebot.types.InlineKeyboardButton("Раскрыть", callback_data="more_data")
-unsubscribe_kb = telebot.types.InlineKeyboardButton("Отписаться", callback_data="unsubscribe")
-less_data_kb = telebot.types.InlineKeyboardButton('Свернуть', callback_data='less_data')
-court_moving_kb = telebot.types.InlineKeyboardButton("Показать движение дела", callback_data='court_moving')
-subscribe_kb = telebot.types.InlineKeyboardButton("Подписаться",callback_data="subscribe")
 
 
 @bot.message_handler(commands=['start'])
@@ -59,8 +51,8 @@ def send_payment_message(message):
                    '\nВозникли проблемы? Обращаться @TSlak ' \
                    '\nВаш id пользователя:\n' + str(message.chat.id)
     key = telebot.types.InlineKeyboardMarkup()
-    key.add(trial_kb, telebot.types.InlineKeyboardButton("Оплатить", url='https://yandex.ru'))
-    key.add(check_payment_kb)
+    key.add(Helper.trial_kb, telebot.types.InlineKeyboardButton("Оплатить", url='https://yandex.ru'))
+    key.add(Helper.check_payment_kb)
     bot.send_message(message.chat.id, message_text, reply_markup=key, parse_mode='Markdown')
 
 
@@ -68,7 +60,7 @@ def send_payment_message(message):
 def show_subscribe_command(message):
     subscribe_list = WorkWithData.get_all_subscribe_link_by_chat_id(message.chat.id)
     key = telebot.types.InlineKeyboardMarkup()
-    key.add(more_data_kb, unsubscribe_kb)
+    key.add(Helper.more_data_kb, Helper.unsubscribe_kb)
     for item in subscribe_list:
         message_text = CourtService.get_short_message_by_link(item[0])
         message_text = message_text[:message_text.find('------\n*Движение дела*')]
@@ -92,15 +84,15 @@ def callback_inline(call):
             print()
         if call.data == 'more_data':
             key = telebot.types.InlineKeyboardMarkup()
-            key.add(less_data_kb, court_moving_kb)
-            key.add(unsubscribe_kb)
+            key.add(Helper.less_data_kb, Helper.court_moving_kb)
+            key.add(Helper.unsubscribe_kb)
             link = CourtService.get_link_by_message(call.message)
             message_text = CourtService.get_court_message_by_link(link)
             bot.edit_message_text(message_text, call.message.chat.id, call.message.message_id,
                                   parse_mode='Markdown', reply_markup=key)
         if call.data == 'court_moving':
             key = telebot.types.InlineKeyboardMarkup()
-            key.add(more_data_kb, unsubscribe_kb)
+            key.add(Helper.more_data_kb, Helper.unsubscribe_kb)
             link = CourtService.get_link_by_message(call.message)
             message_text = CourtService.get_court_moving_history_message(link)
             bot.edit_message_text(message_text, call.message.chat.id, call.message.message_id,
@@ -108,7 +100,7 @@ def callback_inline(call):
 
         if call.data == 'less_data':
             key = telebot.types.InlineKeyboardMarkup()
-            key.add(more_data_kb, unsubscribe_kb)
+            key.add(Helper.more_data_kb, Helper.unsubscribe_kb)
             link = CourtService.get_link_by_message(call.message)
             message_text = CourtService.get_short_message_by_link(link)
             message_text = message_text[:message_text.find('------\n*Движение дела*')]
@@ -152,7 +144,7 @@ def help_command(message):
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def echo_message(message):
     key = telebot.types.InlineKeyboardMarkup()
-    key.add(subscribe_kb)
+    key.add(Helper.subscribe_kb)
     if message.text.find('https://') == 0:
         message_text = CourtService.get_court_message_by_link(message.text)
         bot.send_message(message.chat.id, message_text, reply_markup=key, parse_mode='Markdown')
