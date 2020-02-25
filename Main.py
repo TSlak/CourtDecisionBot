@@ -2,7 +2,7 @@ import os
 import threading
 import time
 
-from telebot import types
+from telebot import TeleBot, types
 from flask import Flask, request
 from psycopg2 import connect
 
