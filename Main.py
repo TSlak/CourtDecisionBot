@@ -2,7 +2,7 @@ import os
 import threading
 import time
 
-from telebot import TeleBot, types
+from telebot import types
 from flask import Flask, request
 from psycopg2 import connect
 
@@ -11,7 +11,6 @@ import CourtService
 import WorkWithData
 import WorkWithLicense
 import Helper
-
 
 DATABASE_URL = os.environ['DATABASE_URL']
 conn = connect(DATABASE_URL, sslmode='require')
