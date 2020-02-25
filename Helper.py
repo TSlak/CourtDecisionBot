@@ -6,4 +6,4 @@ more_data_kb = telebot.types.InlineKeyboardButton("Раскрыть", callback_d
 unsubscribe_kb = telebot.types.InlineKeyboardButton("Отписаться", callback_data="unsubscribe")
 less_data_kb = telebot.types.InlineKeyboardButton('Свернуть', callback_data='less_data')
 court_moving_kb = telebot.types.InlineKeyboardButton("Показать движение дела", callback_data='court_moving')
-subscribe_kb = telebot.types.InlineKeyboardButton("Подписаться",callback_data="subscribe")
+subscribe_kb = telebot.types.InlineKeyboardButton("Подписаться", callback_data="subscribe")
